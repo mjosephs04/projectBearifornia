@@ -1,5 +1,7 @@
 package org.example;
 
+//jan
+
 public class room {
     private Double cost = 0.00;
     private Integer roomNumber, numOfBeds, qualityLevel = 0;
