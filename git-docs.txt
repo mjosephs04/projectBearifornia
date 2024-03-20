@@ -1,0 +1,86 @@
+Basic Git--CSI 3471
+
+
+SUMMARY:
+The basic workflow will consist of branching, developing the feature, and merging.
+To develop the feature, we will code, stage, commit, and push.
+
+
+BRANCHES:
+The REMOTE is the repository on GitHub.
+The LOCAL is the repository on your machine, which you interact with via the command line.
+We sync the REMOTE and LOCAL by pushing our changes or pulling others' changes.
+
+The first time cloning a project from REMOTE to LOCAL, navigate to a directory you want the repository to live in, and use:
+$ git clone https://github.com/mjosephs04/projectBearifornia.git
+
+Every time you start working on your LOCAL again, pull changes from REMOTE:
+$ git pull
+
+ASIDE: a "git pull" is just a "git fetch" followed by a "git merge", but that distinction is unnecessary for most purposes. If you get an error that says something along the lines of "REMOTE x commits ahead of LOCAL", we will likely use some combination "git fetch" and "git rebase".
+
+To see all current branches, use:
+$ git branch
+
+NEVER COMMIT TO MAIN. ALWAYS work on a branch to prevent breaking main.
+To create a new branch and switch to it, use:
+$ git checkout -b new-branch-name
+
+To switch to an existing branch, use:
+$ git checkout existing-branch-name
+
+Name your branch something descriptive, like arlinghaus-cart-checkout or liu-modify-reservation. We call these feature branches, because we usually branch out for a new feature.
+The names help us identify who is working on what, especially if we have multiple branches on the REMOTE.
+
+Make ALL commits to your new feature-specific branch. You can also branch off a branch, and there are tools in Git to visualize the working tree.
+
+
+DEVELOPING THE FEATURE:
+Every time you make changes, take a snapshot of your changes with any of the following options:
+$ git add .								add entire directory recursively, including files that start with "."
+$ git add *								add all files in current directory, except files that start with "."
+$ git add filename1 filename2						add specific files
+
+ASIDE: because of technicalities, "git add *" also adds files that start with "." if they are in a subdirectory. This is because "*" is not a part of Git, it is a wildcard interpreted by the command line. For this reason, "git add ." respects .gitignore while "git add *" does not.
+Thus, use "git add ." for most purposes.
+
+The changes are now tracked in a temporary staging area. Save these changes by using:
+$ git commit -m "Commit message"
+
+Commit messages are important. For the sake of consistency, we will always use present tense.
+
+DO's and DONT's of commit messages
+DO's:
+$ git commit -m "Refactor getDetails in Room"
+$ git commit -m "Add authenticatePayment method to Payment"
+$ git commit -m "Edit viewReservation method in Reservation"
+$ git commit -m "Delete Shop class"
+
+DONT's:
+$ git commit -m "Added methods"
+$ git commit -m "editing"
+$ git commit -m "Will add extra changes later"
+$ git commit -m "Add viewReservation method to Reservation by using Swing and Java and editing the existing method"
+
+NOTE: DO NOT BE AFRAID TO MAKE SMALL COMMITS. The point of version control is that we can recover our working code if we break stuff. By using small commits, we have more checkpoints to rollback to. Commit generously and often.
+
+Push your commits to the REMOTE when you feel it is appropriate (there is no one-size-fits-all answer). Some ideas are:
+-At the end of your working session
+-At a logical checkpoint (finished working on a method/class)
+-Before starting a new task
+-Push early, push often!
+
+Push by using:
+$ git push
+
+NOTE: if files are deleted in LOCAL, you must also stage, commit, and push deleted files to reflect those deletions in the REMOTE
+
+
+MERGING:
+When finished working on a branch (and by extension, a feature), create a pull request (PR). Do not let the name confuse you, GitLab calls them merge requests and is probably more accurate.
+A PR will take the new code in your feature branch and merge it into your branch of choice (usually main).
+
+Add code reviewers to your PR, you can use people who work on similar features, or just add everyone (my preference)! It gives everyone experience with code review and adds an extra layer of security.
+When approved by all reviewers, the person who made the PR can merge the code.
+
+Merge conflicts may arise if you merge branches that have competing commits, and Git needs your help to decide which changes to incorporate in the final merge. It is easiest to resolve merge conflicts on GitHub, we will do these together to prevent errors.
