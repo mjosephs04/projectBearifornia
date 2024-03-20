@@ -3,8 +3,8 @@
 Roles:
 
     Mark:
-    Jacob:
-    Jan:
+    Jacob: Project Librarian
+    Jan: Quality Assurance Engineer
     Catherine:
     Willie:
     Oliver:
