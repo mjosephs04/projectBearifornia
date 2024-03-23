@@ -7,4 +7,4 @@ Roles:
     Jan: Quality Assurance Engineer
     Catherine:
     Willie:
-    Oliver:
+    Oliver: Project Manager
