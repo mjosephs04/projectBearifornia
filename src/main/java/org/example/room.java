@@ -57,4 +57,18 @@ public class room {
     public void setSmokingStatus(boolean b){
         this.smokingAllowed = b;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof room){
+            return ((room) obj).getRoomNumber().equals(roomNumber) &&
+                    ((room) obj).getNumOfBeds().equals(numOfBeds) &&
+                    ((room) obj).getQualityLevel().equals(qualityLevel) &&
+                    ((room) obj).getCost().equals(cost) &&
+                    ((room) obj).getTypeOfRoom().equals(typeOfRoom);
+        }
+        else{
+            return false;
+        }
+    }
 }
