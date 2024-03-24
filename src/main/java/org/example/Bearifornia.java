@@ -21,7 +21,7 @@ public class Bearifornia {
 
         ImageIcon icon = new ImageIcon("src/main/resources/bear_logo.png");
         JLabel logoLabel = new JLabel(icon);
-        logoLabel.setBorder(new EmptyBorder(20, 0, 0, 20));
+        logoLabel.setBorder(new EmptyBorder(20, 20, 0, 20));
         panel.add(logoLabel);
 
         JLabel textLabel = new JLabel("Hotel Bearifornia");
@@ -37,19 +37,6 @@ public class Bearifornia {
 
 
         JButton button1 = new JButton("Create Account");
-
-        Font buttonFont = new Font("Arial", Font.BOLD, 16);
-        Color buttonColor = Color.DARK_GRAY;
-        Dimension buttonSize = new Dimension(150, 40);
-        Border buttonBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-
-
-        button1.setFont(buttonFont);
-        button1.setForeground(buttonColor);
-        button1.setBackground(Color.BLUE);
-        button1.setPreferredSize(buttonSize);
-        button1.setBorder(buttonBorder);
-
 
         JButton button2 = new JButton("Login");
         buttonPanel.add(button1);
