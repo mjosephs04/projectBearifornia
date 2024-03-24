@@ -11,10 +11,6 @@ public interface User {
     //returns the name of the user
     public String getName();
 
-    //returns whether it is an admin, clerk, or guest
-    public User getType();
-
-
     //sets the idNumber variable
     public void setIdNumber(Integer id);
 
