@@ -15,6 +15,14 @@ public interface User {
     public User getType();
 
 
+    //sets the idNumber variable
+    public void setIdNumber(Integer id);
+
+
+    //sets the name variable
+    public void setName(String x);
+
+
     //returns id number
     public Integer getIdNumber();
 
