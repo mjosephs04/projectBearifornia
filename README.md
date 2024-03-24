@@ -2,7 +2,7 @@
 
 Roles:
 
-    Mark:
+    Mark: Data Engineeer
     Jacob: Project Librarian
     Jan: Quality Assurance Engineer
     Catherine:
