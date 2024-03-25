@@ -193,10 +193,5 @@ public class Guest implements User {
     private LocalDate getEndDate() {
         return LocalDate.now().plusDays(1);
     }
-
-
-    public void main(){
-
-    }
 }
 
