@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 //jan
@@ -63,6 +64,7 @@ public class room {
     public boolean getSmokingStatus(){
         return this.smokingAllowed;
     }
+    public String getBedType(){return this.bedType}
 
     //SETTERS
     public void setCost(Double c){
@@ -83,7 +85,7 @@ public class room {
     public void setSmokingStatus(boolean b){
         this.smokingAllowed = b;
     }
-
+    public void setBedType(String s){this.bedType = s;}
 
 
     @Override
@@ -93,7 +95,9 @@ public class room {
                     ((room) obj).getNumOfBeds().equals(numOfBeds) &&
                     ((room) obj).getQualityLevel().equals(qualityLevel) &&
                     ((room) obj).getCost().equals(cost) &&
-                    ((room) obj).getTypeOfRoom().equals(typeOfRoom);
+                    ((room) obj).getTypeOfRoom().equals(typeOfRoom) &&
+                    ((room) obj).getBedType().equals(bedType);
+
         }
         else{
             return false;

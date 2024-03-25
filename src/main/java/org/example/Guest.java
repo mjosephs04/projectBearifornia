@@ -1,14 +1,19 @@
 package org.example;
 
+import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Guest implements User {
 
     // Data Members
     private String name = "";
     private String streetAddress = "";
-
     private Integer idNumber = 0;
     private static Random random = new Random();
 
@@ -21,6 +26,11 @@ public class Guest implements User {
         this(); // This just calls the default constructor to increment the id number;
         this.name = name;
         this.streetAddress = streetAddress;
+    }
+
+    @Override
+    public String reserveRoom() {
+        return "Enter room parameter.";
     }
 
     // GETTERS
@@ -43,14 +53,121 @@ public class Guest implements User {
 
     // User class interface methods
 
-    public String reserveRoom(){
+    public String reserveRoom(room r) throws IOException {
         Integer roomID = generateId();
-
         String name = getName();
         LocalDate startDate = getStartDate();
         LocalDate endDate = getEndDate();
+        room reservedRoom = r;
 
         ReservationClass reservation = new ReservationClass(roomID, name, startDate, endDate);
+
+        //read in csv file hopefully and transfer the given room into the other csv somehow lmao
+        ArrayList<room> roomList = new ArrayList<>();
+        BufferedReader reader = null;
+        room currentRoom = new room();
+
+        InputStream is = getClass().getClassLoader().getResourceAsStream("RoomsAvailable.csv");
+        reader = new BufferedReader(new InputStreamReader(is));
+
+        reader.readLine(); //skip first line
+        String line = null;
+
+        //read in csv
+        while((line = reader.readLine()) != null){
+            String[] split = line.split(",");
+            currentRoom.setCost(Double.parseDouble(split[1]));
+            currentRoom.setRoomNumber(Integer.parseInt(split[0]));
+            currentRoom.setTypeOfRoom(split[2]);
+            currentRoom.setNumOfBeds(Integer.parseInt(split[3]));
+            currentRoom.setQualityLevel(Integer.parseInt(split[4]));
+            currentRoom.setBedType(split[5]);
+            if(split[6] == "Y"){
+                currentRoom.setSmokingStatus(true);
+            }
+            else{
+                currentRoom.setSmokingStatus(false);
+            }
+
+            roomList.add(currentRoom);
+        }
+
+        Integer lineToRemove = roomList.indexOf(r)+1;
+        ClassLoader classLoader = getClass().getClassLoader();
+        String resourceFolderPath = classLoader.getResource("").getPath();
+        String resourcesPath = resourceFolderPath + "resources" + File.separator;
+        String filePath = resourcesPath + "RoomsAvailable.csv";
+        try {
+            // Open the original file for reading
+            BufferedReader reader1 = new BufferedReader(new FileReader(filePath));
+
+            // Create a temporary file to write the updated content
+            File tempFile = new File("temp.csv");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            // Read and write lines, skipping the one to remove
+            String currentLine;
+            int lineNumber = 0;
+            while ((currentLine = reader1.readLine()) != null) {
+                lineNumber++;
+                // If the current line is not the one to remove, write it to the temporary file
+                if (lineNumber != lineToRemove) {
+                    writer.write(currentLine);
+                    writer.newLine(); // Write new line separator
+                }
+            }
+
+            // Close resources
+            reader1.close();
+            writer.close();
+
+            // Delete the original file
+            File originalFile = new File(filePath);
+            if (!originalFile.delete()) {
+                System.out.println("Failed to delete the original file.");
+                return "out";
+            }
+
+            // Rename the temporary file to the original filename
+            if (!tempFile.renameTo(originalFile)) {
+                System.out.println("Failed to rename the temporary file.");
+            }
+
+            System.out.println("Line removed successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //write info onto other csv
+        // Output file path
+        filePath = resourcesPath + "RoomsTaken.csv";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.newLine();
+            // Write data
+           writer.write(r.getRoomNumber());
+           writer.write(",");
+           writer.write(r.getCost()+"");
+           writer.write(",");
+           writer.write(r.getTypeOfRoom());
+           writer.write(",");
+           writer.write(r.getNumOfBeds());
+           writer.write(",");
+           writer.write(r.getQualityLevel());
+           writer.write(",");
+           writer.write(r.getBedType());
+           writer.write(",");
+           if(r.getSmokingStatus()==false){
+               writer.write("N");
+           }
+           else{
+               writer.write("Y");
+           }
+
+            System.out.println("Data has been written to " + filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Return a message indicating the reservation was successful
         return "Room reserved successfully. Reservation ID: " + reservation.getIdNumber();
@@ -58,6 +175,7 @@ public class Guest implements User {
 
     private Integer generateId() { // The reservation class should be generating this id when the constructor is called.
 
+        return 1;
     }
 
     public void setIdNumber(Integer id){ // For the Guest
@@ -75,6 +193,5 @@ public class Guest implements User {
     private LocalDate getEndDate() {
         return LocalDate.now().plusDays(1);
     }
-
 }
 
