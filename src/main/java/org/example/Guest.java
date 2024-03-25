@@ -174,7 +174,6 @@ public class Guest implements User {
     }
 
     private Integer generateId() { // The reservation class should be generating this id when the constructor is called.
-
         return 1;
     }
 

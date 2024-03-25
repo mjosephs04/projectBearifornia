@@ -50,6 +50,5 @@ public class Bearifornia {
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
-
     }
 }
