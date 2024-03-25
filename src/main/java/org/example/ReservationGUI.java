@@ -71,10 +71,10 @@ public class ReservationGUI {
         topLogoPanel.add(hotelBeariforniaLabel, BorderLayout.CENTER);
 
         JLabel reservationLabel = new JLabel("Reservations: ");
-        reservationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        reservationLabel.setHorizontalAlignment(SwingConstants.LEFT);
         reservationLabel.setFont(new Font("Arial", Font.BOLD, 35));
         reservationLabel.setForeground(Color.DARK_GRAY);
-        reservationLabel.setBorder(new EmptyBorder(0, 60, 0, 0));
+        reservationLabel.setBorder(new EmptyBorder(0, 40, 350, 0));
 
         DefaultTableModel model = loadCSV();
 
@@ -97,18 +97,29 @@ public class ReservationGUI {
         JScrollPane scrollPane = new JScrollPane(table);
 
         JPanel tablePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        table.setPreferredScrollableViewportSize(new Dimension(600, 200));
+        table.setPreferredScrollableViewportSize(new Dimension(600, 275));
         table.setFillsViewportHeight(true);
 
         tablePanel.add(scrollPane);
-        tablePanel.setBorder(new EmptyBorder(0, 50, 150, 50));
+        tablePanel.setBorder(new EmptyBorder(75, 0, 0, 85));
+
+        JPanel bottomButtons = new JPanel(new FlowLayout());
+
+        JButton addReservation = new JButton("Add Reservation");
+        JButton deleteReservation = new JButton("Delete Reservation");
+
+        bottomButtons.add(addReservation);
+        bottomButtons.add(deleteReservation);
+
+        //bottomButtons.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         // Add the scroll pane to the panel
-        contentPane.add(tablePanel, BorderLayout.SOUTH);
-
-        contentPane.add(topLogoPanel, BorderLayout.NORTH);
 
         contentPane.add(reservationLabel, BorderLayout.WEST);
+        contentPane.add(topLogoPanel, BorderLayout.NORTH);
+
+        contentPane.add(bottomButtons, BorderLayout.SOUTH);
+        contentPane.add(tablePanel, BorderLayout.EAST);
 
         frame.setVisible(true);
 
