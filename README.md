@@ -1,10 +1,24 @@
-# projectBearifornia
+# CSI 3471: Hotel Bearifornia
 
-Roles:
+Hotel Bearifornia is a stay & hsop reservation system.
 
-    Mark: Data Engineeer
-    Jacob: Project Librarian
-    Jan: Quality Assurance Engineer
-    Catherine:
-    Willie:
-    Oliver: Project Manager
+## Description
+
+Maven-based Java SE system with a Swing UI providing input/output functionality, tested with JUnit.
+
+## Usage
+
+```
+git clone https://github.com/mjosephs04/projectBearifornia.git
+```
+
+Navigate to ```src/main/java/bearifornia/hotel```.
+
+## Roles
+```
+Requirements Engineer: Catherine Arlinghaus
+Project Librarian: Jacob Celis
+Quality Assurance Engineer: Jan Jasa
+Design Engineers: Mark Josephs & Willie Brown
+Project Manager: Oliver Liu
+```
