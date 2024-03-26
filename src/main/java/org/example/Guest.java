@@ -4,7 +4,6 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,19 +52,19 @@ public class Guest implements User {
 
     // User class interface methods
 
-    public String reserveRoom(room r) throws IOException {
+    public String reserveRoom(Room r) throws IOException {
         Integer roomID = generateId();
         String name = getName();
         LocalDate startDate = getStartDate();
         LocalDate endDate = getEndDate();
-        room reservedRoom = r;
+        Room reservedRoom = r;
 
         ReservationClass reservation = new ReservationClass(roomID, name, startDate, endDate);
 
         //read in csv file hopefully and transfer the given room into the other csv somehow lmao
-        ArrayList<room> roomList = new ArrayList<>();
+        ArrayList<Room> roomList = new ArrayList<>();
         BufferedReader reader = null;
-        room currentRoom = new room();
+        Room currentRoom = new Room();
 
         InputStream is = getClass().getClassLoader().getResourceAsStream("RoomsAvailable.csv");
         reader = new BufferedReader(new InputStreamReader(is));

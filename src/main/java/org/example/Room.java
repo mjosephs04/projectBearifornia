@@ -1,26 +1,18 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 //jan
 
-public class room {
+public class Room {
     private Double cost = 0.00;
     private Integer roomNumber, numOfBeds, qualityLevel = 0;
     private String typeOfRoom, bedType = "";
     private boolean smokingAllowed = false;
 
     //DEFAULT CONSTRUCTOR
-    public room(){}
+    public Room(){}
 
     //CONSTRUCTOR
-    public room(Double c, Integer roomNum, Integer numBed, Integer quality, String roomType, boolean smoking) {
+    public Room(Double c, Integer roomNum, Integer numBed, Integer quality, String roomType, boolean smoking) {
         this.cost = c;
         this.roomNumber = roomNum;
         this.numOfBeds = numBed;
@@ -64,7 +56,7 @@ public class room {
     public boolean getSmokingStatus(){
         return this.smokingAllowed;
     }
-    public String getBedType(){return this.bedType}
+    public String getBedType(){return this.bedType; }
 
     //SETTERS
     public void setCost(Double c){
@@ -90,13 +82,13 @@ public class room {
 
     @Override
     public boolean equals(Object obj){
-        if(obj instanceof room){
-            return ((room) obj).getRoomNumber().equals(roomNumber) &&
-                    ((room) obj).getNumOfBeds().equals(numOfBeds) &&
-                    ((room) obj).getQualityLevel().equals(qualityLevel) &&
-                    ((room) obj).getCost().equals(cost) &&
-                    ((room) obj).getTypeOfRoom().equals(typeOfRoom) &&
-                    ((room) obj).getBedType().equals(bedType);
+        if(obj instanceof Room){
+            return ((Room) obj).getRoomNumber().equals(roomNumber) &&
+                    ((Room) obj).getNumOfBeds().equals(numOfBeds) &&
+                    ((Room) obj).getQualityLevel().equals(qualityLevel) &&
+                    ((Room) obj).getCost().equals(cost) &&
+                    ((Room) obj).getTypeOfRoom().equals(typeOfRoom) &&
+                    ((Room) obj).getBedType().equals(bedType);
 
         }
         else{
