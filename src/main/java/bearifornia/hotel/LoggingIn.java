@@ -1,4 +1,4 @@
-package org.example;
+package bearifornia.hotel;
 
 public class LoggingIn {
 

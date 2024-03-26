@@ -1,4 +1,4 @@
-package org.example;
+package bearifornia.hotel;
 
 import java.io.*;
 import java.time.LocalDate;
