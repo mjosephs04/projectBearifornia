@@ -5,38 +5,26 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Vector;
 
 public class ReservationGUI {
 
-    private static DefaultTableModel loadCSV(){
-        String[] columnNames = {"Room Number",
-                "Cost",
-                "Room Type",
-                "# of Beds",
-                "Quality Level",
-                "Bed Type",
-                "Smoking Allowed"};
-        Object[][] data = {
-                {"101", "Occupied"},
-                {"102", "Vacant"},
-                {"103", "Occupied"}
-        };
+    private static DefaultTableModel loadCSV() {
+        String[] columnNames = {"Room Number", "Cost", "Room Type", "# of Beds", "Quality Level", "Bed Type", "Smoking Allowed"};
+        Object[][] data = {{"101", "Occupied"}, {"102", "Vacant"}, {"103", "Occupied"}};
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         model.setRowCount(0); // remove table
-        try (BufferedReader br = new BufferedReader(
-                new FileReader(new File("/Users/markjosephs/IdeaProjects/projectBearifornia/src/main/resources/RoomsAvailable.csv")))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("/Users/markjosephs/IdeaProjects/projectBearifornia/src/main/resources/RoomsAvailable.csv")))) {
             String line;
             br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
                 Vector<Object> correction = new Vector<>();
-                for (int i = 0; i < 7; i++) {
-                    correction.add(row[i]);
-                }
+                correction.addAll(Arrays.asList(row).subList(0, 7));
                 model.addRow(correction);
             }
-        }catch (NullPointerException ex) {
+        } catch (NullPointerException ex) {
             JOptionPane.showMessageDialog(null, "Issue with loading file: " + ex.getMessage());
             ex.printStackTrace();
         } catch (FileNotFoundException ex) {

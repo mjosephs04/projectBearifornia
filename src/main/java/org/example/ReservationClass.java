@@ -10,39 +10,32 @@ public class ReservationClass {
     private static LocalDate endDay;
     private static Integer price;
 
-    public ReservationClass(Integer id, String n, LocalDate start, LocalDate end){
+    public ReservationClass(Integer id, String n, LocalDate start, LocalDate end) {
         idNumber = id;
         name = n;
         startDay = start;
         endDay = end;
     }
 
-    public ReservationClass(Integer id, String n){
+    public ReservationClass(Integer id, String n) {
         idNumber = id;
         name = n;
-    }
-
-    public Integer getIdNumber(){
-        return idNumber;
-    }
-    public String getName(){
-        return name;
-    }
-
-    public static void setStartDay(LocalDate startDay) {
-        ReservationClass.startDay = startDay;
-    }
-
-    public static void setEndDay(LocalDate endDay) {
-        ReservationClass.endDay = endDay;
     }
 
     public static LocalDate getStartDay() {
         return startDay;
     }
 
+    public static void setStartDay(LocalDate startDay) {
+        ReservationClass.startDay = startDay;
+    }
+
     public static LocalDate getEndDay() {
         return endDay;
+    }
+
+    public static void setEndDay(LocalDate endDay) {
+        ReservationClass.endDay = endDay;
     }
 
     public static Integer getPrice() {
@@ -53,13 +46,19 @@ public class ReservationClass {
         ReservationClass.price = price;
     }
 
+    public Integer getIdNumber() {
+        return idNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof ReservationClass){
-            return ((ReservationClass) obj).getIdNumber().equals(idNumber) &&
-                    ((ReservationClass) obj).getName().equals(name);
-        }
-        else{
+        if (obj instanceof ReservationClass) {
+            return ((ReservationClass) obj).getIdNumber().equals(idNumber) && ((ReservationClass) obj).getName().equals(name);
+        } else {
             return false;
         }
     }

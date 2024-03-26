@@ -4,24 +4,22 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class Guest implements User {
 
+    private static final Random random = new Random();
     // Data Members
     private String name = "";
     private String streetAddress = "";
     private Integer idNumber = 0;
-    private static Random random = new Random();
 
 
     // Constructor and default constructor
-    public Guest(){
-        this.idNumber = random.nextInt(99999 - 10000 + 1 ) + 10000;
+    public Guest() {
+        this.idNumber = random.nextInt(99999 - 10000 + 1) + 10000;
     }
-    public Guest(String name, String streetAddress){
+
+    public Guest(String name, String streetAddress) {
         this(); // This just calls the default constructor to increment the id number;
         this.name = name;
         this.streetAddress = streetAddress;
@@ -33,17 +31,17 @@ public class Guest implements User {
     }
 
     // GETTERS
-    public String getName(){
+    public String getName() {
         return this.name;
     }
-    public String getStreetAddress(){
-        return this.streetAddress;
-    }
-
 
     // SETTERS
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStreetAddress() {
+        return this.streetAddress;
     }
 
     public void setStreetAddress(String streetAddress) {
@@ -73,7 +71,7 @@ public class Guest implements User {
         String line = null;
 
         //read in csv
-        while((line = reader.readLine()) != null){
+        while ((line = reader.readLine()) != null) {
             String[] split = line.split(",");
             currentRoom.setCost(Double.parseDouble(split[1]));
             currentRoom.setRoomNumber(Integer.parseInt(split[0]));
@@ -81,17 +79,12 @@ public class Guest implements User {
             currentRoom.setNumOfBeds(Integer.parseInt(split[3]));
             currentRoom.setQualityLevel(Integer.parseInt(split[4]));
             currentRoom.setBedType(split[5]);
-            if(split[6] == "Y"){
-                currentRoom.setSmokingStatus(true);
-            }
-            else{
-                currentRoom.setSmokingStatus(false);
-            }
+            currentRoom.setSmokingStatus(split[6] == "Y");
 
             roomList.add(currentRoom);
         }
 
-        Integer lineToRemove = roomList.indexOf(r)+1;
+        Integer lineToRemove = roomList.indexOf(r) + 1;
         ClassLoader classLoader = getClass().getClassLoader();
         String resourceFolderPath = classLoader.getResource("").getPath();
         String resourcesPath = resourceFolderPath + "resources" + File.separator;
@@ -144,24 +137,23 @@ public class Guest implements User {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.newLine();
             // Write data
-           writer.write(r.getRoomNumber());
-           writer.write(",");
-           writer.write(r.getCost()+"");
-           writer.write(",");
-           writer.write(r.getTypeOfRoom());
-           writer.write(",");
-           writer.write(r.getNumOfBeds());
-           writer.write(",");
-           writer.write(r.getQualityLevel());
-           writer.write(",");
-           writer.write(r.getBedType());
-           writer.write(",");
-           if(r.getSmokingStatus()==false){
-               writer.write("N");
-           }
-           else{
-               writer.write("Y");
-           }
+            writer.write(r.getRoomNumber());
+            writer.write(",");
+            writer.write(r.getCost() + "");
+            writer.write(",");
+            writer.write(r.getTypeOfRoom());
+            writer.write(",");
+            writer.write(r.getNumOfBeds());
+            writer.write(",");
+            writer.write(r.getQualityLevel());
+            writer.write(",");
+            writer.write(r.getBedType());
+            writer.write(",");
+            if (!r.getSmokingStatus()) {
+                writer.write("N");
+            } else {
+                writer.write("Y");
+            }
 
             System.out.println("Data has been written to " + filePath);
         } catch (IOException e) {
@@ -176,12 +168,12 @@ public class Guest implements User {
         return 1;
     }
 
-    public void setIdNumber(Integer id){ // For the Guest
-        id = this.idNumber;
+    public Integer getIdNumber() { // For the Guest
+        return this.idNumber;
     }
 
-    public Integer getIdNumber(){ // For the Guest
-        return this.idNumber;
+    public void setIdNumber(Integer id) { // For the Guest
+        id = this.idNumber;
     }
 
     private LocalDate getStartDate() {

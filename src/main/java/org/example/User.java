@@ -6,20 +6,18 @@ public interface User {
 
     //reserves a room and modifies csv accordingly,
     // returns a String with a confirmation/error message
-    public String reserveRoom();
+    String reserveRoom();
 
     //returns the name of the user
-    public String getName();
-
-    //sets the idNumber variable
-    public void setIdNumber(Integer id);
-
+    String getName();
 
     //sets the name variable
-    public void setName(String x);
-
+    void setName(String x);
 
     //returns id number
-    public Integer getIdNumber();
+    Integer getIdNumber();
+
+    //sets the idNumber variable
+    void setIdNumber(Integer id);
 
 }
