@@ -1,6 +1,6 @@
 # CSI 3471: Hotel Bearifornia
 
-Hotel Bearifornia is a stay & hsop reservation system.
+Hotel Bearifornia is a stay & shop reservation system.
 
 ## Description
 
