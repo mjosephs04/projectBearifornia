@@ -1,4 +1,4 @@
-package org.example;
+package bearifornia.hotel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

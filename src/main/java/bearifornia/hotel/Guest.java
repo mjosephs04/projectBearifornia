@@ -1,4 +1,4 @@
-package org.example;
+package bearifornia.hotel;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -6,15 +6,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Guest implements User {
-
     private static final Random random = new Random();
-    // Data Members
     private String name = "";
     private String streetAddress = "";
     private Integer idNumber = 0;
 
-
-    // Constructor and default constructor
     public Guest() {
         this.idNumber = random.nextInt(99999 - 10000 + 1) + 10000;
     }
@@ -30,12 +26,10 @@ public class Guest implements User {
         return "Enter room parameter.";
     }
 
-    // GETTERS
     public String getName() {
         return this.name;
     }
 
-    // SETTERS
     public void setName(String name) {
         this.name = name;
     }
@@ -47,8 +41,6 @@ public class Guest implements User {
     public void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
     }
-
-    // User class interface methods
 
     public String reserveRoom(Room r) throws IOException {
         Integer roomID = generateId();
