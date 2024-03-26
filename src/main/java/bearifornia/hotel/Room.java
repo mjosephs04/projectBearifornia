@@ -1,18 +1,14 @@
 package bearifornia.hotel;
 
-//jan
-
 public class Room {
     private Double cost = 0.00;
     private Integer roomNumber, numOfBeds, qualityLevel = 0;
     private String typeOfRoom, bedType = "";
     private boolean smokingAllowed = false;
 
-    //DEFAULT CONSTRUCTOR
     public Room() {
     }
 
-    //CONSTRUCTOR
     public Room(Double c, Integer roomNum, Integer numBed, Integer quality, String roomType, boolean smoking) {
         this.cost = c;
         this.roomNumber = roomNum;
@@ -22,8 +18,6 @@ public class Room {
         this.smokingAllowed = smoking;
     }
 
-
-    //PRINT INFO
     public void printRoomInfo() {
         System.out.println(roomNumber);
         System.out.println("Room type: " + typeOfRoom);
@@ -37,12 +31,10 @@ public class Room {
         }
     }
 
-    //GETTERS
     public Double getCost() {
         return this.cost;
     }
 
-    //SETTERS
     public void setCost(Double c) {
         this.cost = c;
     }
@@ -94,7 +86,6 @@ public class Room {
     public void setBedType(String s) {
         this.bedType = s;
     }
-
 
     @Override
     public boolean equals(Object obj) {
