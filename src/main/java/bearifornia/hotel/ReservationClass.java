@@ -10,16 +10,16 @@ public class ReservationClass {
     private static LocalDate endDay;
     private static Integer price;
 
+    public ReservationClass(Integer id, String n) {
+        idNumber = id;
+        name = n;
+    }
+
     public ReservationClass(Integer id, String n, LocalDate start, LocalDate end) {
         idNumber = id;
         name = n;
         startDay = start;
         endDay = end;
-    }
-
-    public ReservationClass(Integer id, String n) {
-        idNumber = id;
-        name = n;
     }
 
     public static LocalDate getStartDay() {
