@@ -3,7 +3,6 @@ package com.example.springboot;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +13,16 @@ import java.util.List;
 public class MyController {
 
     @RequestMapping("/runFunction")
-    public List<room> convertCSV() {
+    public List<Room> convertCSV() {
 
-        List<room> listOfRooms = new ArrayList<>();
+        List<Room> listOfRooms = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
                 new FileReader("src/main/resources/RoomsAvailable.csv"))) {
             String line;
             br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
-                room nRoom = new room(Double.parseDouble(row[1]), Integer.parseInt(row[0]), Integer.parseInt(row[3]), Integer.parseInt(row[4]), row[2], Boolean.parseBoolean(row[6]));
+                Room nRoom = new Room(Double.parseDouble(row[1]), Integer.parseInt(row[0]), Integer.parseInt(row[3]), Integer.parseInt(row[4]), row[2], Boolean.parseBoolean(row[6]));
                 listOfRooms.add(nRoom);
             }
         }catch (Exception ex) {
