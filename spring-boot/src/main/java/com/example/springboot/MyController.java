@@ -18,7 +18,7 @@ public class MyController {
 
         List<room> listOfRooms = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
-                new FileReader("./RoomsAvailable.csv"))) {
+                new FileReader("src/main/resources/RoomsAvailable.csv"))) {
             String line;
             br.readLine();
             while ((line = br.readLine()) != null) {
