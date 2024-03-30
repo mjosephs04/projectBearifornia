@@ -1,0 +1,59 @@
+/* Set background color to dark grey */
+body {
+    background-color: #545454;
+    color: white; /* Set text color to white */
+    height: 100vh;
+    overflow: auto;
+}
+
+/* Container styles */
+.container {
+    max-width: 100%; /* Adjust max-width as needed */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: black;
+    height: 60px;
+}
+
+/* Logo styles */
+.logo {
+    position: absolute;
+    left: 0;
+    padding-left: 30px;
+}
+
+.logo img {
+    width: 60px; /* Adjust logo size as needed */
+    height: 60px;
+}
+
+/* Title styles */
+.title {
+    position: absolute;
+    left: 0;
+    padding-left: 110px;
+    padding-top: 13px;
+    font-size: 25px; /* Adjust font size as needed */
+    font-family: Helvetica;
+}
+
+.login-drop{
+    position: absolute;
+    right: 20px;
+}
+
+.home-link{
+    position: absolute;
+    left: 400px;
+    top: 32px;
+    font-family: Helvetica;
+    font-size: 25px;
+
+    &:hover{
+        color: #545454;
+    }
+}
+
+.title-color{
+    color: white;
+}
