@@ -1,6 +1,4 @@
-
 import React from 'react'
-import slider1 from "../../assets/slider-2.jpg";
 import Logo from "../../bear_logo.png";
 import DropdownMenu from "../dropdownMenu/dropdownMenu";
 import './Layout.css'
