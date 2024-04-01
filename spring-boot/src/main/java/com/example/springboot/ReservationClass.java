@@ -1,4 +1,4 @@
-package bearifornia.hotel;
+package com.example.springboot;
 
 import java.time.LocalDate;
 import java.util.Objects;

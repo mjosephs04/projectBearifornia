@@ -1,4 +1,4 @@
-package bearifornia.hotel;
+package com.example.springboot;
 
 public class Payment {
     private final Integer reservationId;

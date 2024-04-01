@@ -1,4 +1,4 @@
-package bearifornia.hotel;
+package com.example.springboot;
 
 public class Bank {
     private static final double FAILURE_RATE = 0.05;

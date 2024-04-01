@@ -1,4 +1,4 @@
-package bearifornia.hotel;
+package com.example.springboot;
 
 public interface User {
     String name = "default";

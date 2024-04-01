@@ -1,4 +1,4 @@
-package bearifornia.hotel;
+package com.example.springboot;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
