@@ -1,0 +1,46 @@
+.listing-name{
+    font-family: Helvetica;
+    font-size: 7vh;
+    font-weight: bolder;
+    color: #003b00;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3.5%;
+    height: 2vh;
+
+}
+
+.listing-description{
+    font-family: Helvetica;
+    font-size: 30px;
+    text-align: center;
+    position: absolute;
+    right: 25%;
+    top: 90%;
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+
+.listing-cost{
+    font-family: Helvetica;
+    font-size: 20px;
+    font-weight: bolder;
+    position: absolute;
+    right: 30%;
+    top: 100%;
+    color: black;
+}
+
+.listing-img{
+    width: 40%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    right: 30%;
+    top: 28%;
+}
