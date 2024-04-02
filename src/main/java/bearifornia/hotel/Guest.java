@@ -45,9 +45,17 @@ public class Guest implements User {
 
     // User class interface methods
 
-    public String reserveRoom(Room reservedRoom) throws IOException {
-        //attempt removing the available room from the RoomsAvailable.csv
-        String removedRoom = removeAvailableRoom(reservedRoom);
+    @Override
+    public String reserveRoom(Room reservedRoom){
+        String removedRoom;
+        try {
+            //attempt removing the available room from the RoomsAvailable.csv
+            removedRoom = removeAvailableRoom(reservedRoom);
+        }
+        catch(IOException x){
+            x.printStackTrace();
+            return "failed to remove room from database of available rooms";
+        }
         if(! removedRoom.equals("failure")){
             String reserveRoom = addReservedRoom(removedRoom);
             if(reserveRoom.equals("success")) {
