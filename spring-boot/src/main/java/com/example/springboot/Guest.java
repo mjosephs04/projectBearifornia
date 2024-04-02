@@ -26,11 +26,6 @@ public class Guest implements User {
         this.streetAddress = streetAddress;
     }
 
-    @Override
-    public String reserveRoom() {
-        return "Enter room parameter.";
-    }
-
     // GETTERS
     public String getName() {
         return this.name;
@@ -51,14 +46,23 @@ public class Guest implements User {
 
     // User class interface methods
 
-    public String reserveRoom(Room reservedRoom) throws IOException {
-        //attempt removing the available room from the RoomsAvailable.csv
-        String removedRoom = removeAvailableRoom(reservedRoom);
-        if(! removedRoom.equals("failure")){
-            addReservedRoom(removedRoom);
-            return "success";
+    @Override
+    public String reserveRoom(Room reservedRoom){
+        String removedRoom;
+        try {
+            //attempt removing the available room from the RoomsAvailable.csv
+            removedRoom = removeAvailableRoom(reservedRoom);
         }
-
+        catch(IOException x){
+            x.printStackTrace();
+            return "failed to remove room from database of available rooms";
+        }
+        if(! removedRoom.equals("failure")){
+            String reserveRoom = addReservedRoom(removedRoom);
+            if(reserveRoom.equals("success")) {
+                return "success";
+            }
+        }
         return "failure";
     }
 
@@ -110,18 +114,16 @@ public class Guest implements User {
             }
             catch(IOException e){
                 e.printStackTrace();
-                return "failure";
+                return "Could not modify and write to the RoomsTaken database";
             }
         }
         else{ //if the room to remove wasn't found in the available Rooms
-            return "failure";
+            return "Room to reserve does not exist";
         }
     }
 
-    //takes a csv formatted line and puts it into the RoomsTaken.csv
-    //returns either fail or success depending on result
-    private String addReservedRoom(String newRoom){
-        InputStream is = this.getClass().getResourceAsStream("/RoomsTaken.csv");
+    public String addAvailableRoom(String newRoom){
+        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
 
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
@@ -131,7 +133,7 @@ public class Guest implements User {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return "fail";
+            return "Failed to read in the currently reserved rooms";
         }
 
         // Add the new line containing the new reservation
@@ -139,15 +141,16 @@ public class Guest implements User {
             lines.add(newRoom);
         }
         else{
-            return "failure";
+            return "Room is already reserved";
         }
 
-        FileWriter fw = null;
+        FileWriter fw;
         try {
             fw = new FileWriter("RoomsTaken.csv");
         }
         catch(IOException x){
             x.printStackTrace();
+            return "Could not write to RoomsTaken database";
         }
 
         // Write the updated content back to the CSV file
@@ -160,7 +163,55 @@ public class Guest implements User {
         }
         catch (IOException e) {
             e.printStackTrace();
-            return "fail";
+            return "Could not write to RoomsTaken database";
+        }
+
+        return "success";    }
+
+    //takes a csv formatted line and puts it into the RoomsTaken.csv
+    //returns either "success" or a fail message depending on result
+    private String addReservedRoom(String newRoom){
+        InputStream is = this.getClass().getResourceAsStream("/RoomsTaken.csv");
+
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Failed to read in the currently reserved rooms";
+        }
+
+        // Add the new line containing the new reservation
+        if(! lines.contains(newRoom)) {
+            lines.add(newRoom);
+        }
+        else{
+            return "Room is already reserved";
+        }
+
+        FileWriter fw;
+        try {
+            fw = new FileWriter("RoomsTaken.csv");
+        }
+        catch(IOException x){
+            x.printStackTrace();
+            return "Could not write to RoomsTaken database";
+        }
+
+        // Write the updated content back to the CSV file
+        try (BufferedWriter writer = new BufferedWriter(fw))
+        {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return "Could not write to RoomsTaken database";
         }
 
         return "success";
