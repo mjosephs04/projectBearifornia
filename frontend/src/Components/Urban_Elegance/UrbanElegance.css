@@ -1,0 +1,46 @@
+.listing-name{
+    font-family: Helvetica;
+    font-size: 7vh;
+    font-weight: bolder;
+    color: #003b00;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3.5%;
+    height: 2vh;
+
+}
+
+.listing-desc{
+    font-family: Helvetica;
+    font-size: 30px;
+    position: absolute;
+    right: 25%;
+    top: 70%;
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    text-align: center;
+}
+
+/*.listing-cost{*/
+/*    font-family: Helvetica;*/
+/*    font-size: 30px;*/
+/*    font-weight: bolder;*/
+/*    position: absolute;*/
+/*    right: 26%;*/
+/*    top: 90%;*/
+/*    color: black;*/
+/*}*/
+
+.listing-img{
+    width: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    right: 20%;
+    top: 25%;
+}
