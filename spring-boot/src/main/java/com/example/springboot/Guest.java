@@ -133,7 +133,7 @@ public class Guest implements User {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return "Failed to read in the currently reserved rooms";
+            return "Failed to read in the currently available rooms";
         }
 
         // Add the new line containing the new reservation
