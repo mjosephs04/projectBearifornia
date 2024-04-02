@@ -54,10 +54,11 @@ public class Guest implements User {
         //attempt removing the available room from the RoomsAvailable.csv
         String removedRoom = removeAvailableRoom(reservedRoom);
         if(! removedRoom.equals("failure")){
-            addReservedRoom(removedRoom);
-            return "success";
+            String reserveRoom = addReservedRoom(removedRoom);
+            if(reserveRoom.equals("success")) {
+                return "success";
+            }
         }
-
         return "failure";
     }
 
@@ -115,6 +116,10 @@ public class Guest implements User {
         else{ //if the room to remove wasn't found in the available Rooms
             return "Room to reserve does not exist";
         }
+    }
+
+    public String addAvailableRoom(Room newRoom){
+        return "test";
     }
 
     //takes a csv formatted line and puts it into the RoomsTaken.csv
