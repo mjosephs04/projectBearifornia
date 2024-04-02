@@ -2,6 +2,7 @@ import React from 'react'
 import Layout from '../Layout/Layout.js'
 import urbanElegance from '../../assets/urban-elegance.jpg'
 import natureRetreat from '../../assets/nature-retreat.jpg'
+import oldVintage from '../../assets/old-vintage.jpg'
 import './Reserve.css'
 import {Link} from "react-router-dom";
 
@@ -21,6 +22,12 @@ const Reserve = () => {
                 <img className='nature-retreat-img' src={natureRetreat} alt="room1"/>
                 <div className='nature-retreat-label'>Nature Retreat - $249/night</div>
                 <button className='nature-retreat-button'>Learn More</button>
+            </Link>
+
+            <Link to='/reserve/old-vintage' className='fixing-color'>
+                <img className='old-vintage-img' src={oldVintage} alt="room1"/>
+                <div className='old-vintage-label'>Old Vintage - $249/night</div>
+                <button className='old-vintage-button'>Learn More</button>
             </Link>
         </div>
     );

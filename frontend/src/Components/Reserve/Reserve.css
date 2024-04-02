@@ -65,3 +65,35 @@
         background-color: #002600;
     }
 }
+
+.old-vintage-img{
+    height: 300px;
+    width: auto;
+    position: absolute;
+    left: 1300px;
+    top: 150px;
+}
+
+.old-vintage-label{
+    position: absolute;
+    font-family: Helvetica;
+    font-weight: normal;
+    font-size: 20px;
+    left: 1300px;
+    top: 465px;
+}
+
+.old-vintage-button{
+    width: 150px;
+    height: 30px;
+    position: absolute;
+    left: 1300px;
+    top: 500px;
+    border: none;
+    background-color: #003b00;
+    color: white;
+
+    &:hover{
+        background-color: #002600;
+    }
+}
