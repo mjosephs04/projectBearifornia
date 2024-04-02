@@ -25,11 +25,6 @@ public class Guest implements User {
         this.streetAddress = streetAddress;
     }
 
-    @Override
-    public String reserveRoom() {
-        return "Enter room parameter.";
-    }
-
     // GETTERS
     public String getName() {
         return this.name;
