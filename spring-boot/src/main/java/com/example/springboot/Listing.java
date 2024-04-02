@@ -8,12 +8,14 @@ public class Listing implements Serializable {
     private String name;
     private Double cost;
     private String description;
+    private String imageURL;
 
     Listing(){
 
     }
 
-    Listing(String name, Double cost, String desc){
+    Listing(String name, Double cost, String desc, String imgUrl){
+        this.imageURL = imgUrl;
         this.name = name;
         this.cost = cost;
         this.description = desc;
