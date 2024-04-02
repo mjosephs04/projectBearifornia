@@ -1,0 +1,67 @@
+.fixing-color{
+    color: white;
+}
+
+.urban-elegance-img{
+    height: 300px;
+    width: auto;
+    position: absolute;
+    left: 100px;
+    top: 150px;
+}
+
+.urban-elegance-label{
+    position: absolute;
+    font-family: Helvetica;
+    font-weight: normal;
+    font-size: 20px;
+    left: 100px;
+    top: 465px;
+}
+
+.urban-learn-more{
+    width: 150px;
+    height: 30px;
+    position: absolute;
+    left: 100px;
+    top: 500px;
+    border: none;
+    background-color: #003b00;
+    color: white;
+
+    &:hover{
+        background-color: #002600;
+    }
+}
+
+.nature-retreat-img{
+    height: 300px;
+    width: auto;
+    position: absolute;
+    left: 600px;
+    top: 150px;
+}
+
+.nature-retreat-label{
+    position: absolute;
+    font-family: Helvetica;
+    font-weight: normal;
+    font-size: 20px;
+    left: 600px;
+    top: 465px;
+}
+
+.nature-retreat-button{
+    width: 150px;
+    height: 30px;
+    position: absolute;
+    left: 600px;
+    top: 500px;
+    border: none;
+    background-color: #003b00;
+    color: white;
+
+    &:hover{
+        background-color: #002600;
+    }
+}
