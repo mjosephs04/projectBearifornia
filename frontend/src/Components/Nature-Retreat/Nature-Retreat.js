@@ -1,7 +1,7 @@
-
 import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
+import './Nature-Retreat.css'
 
 const NatureRetreat = () => {
 
@@ -18,7 +18,6 @@ const NatureRetreat = () => {
                 return response.data;
             })
             .then(data => {
-                console.log(data);
                 setListingData(data);
             })
             .catch(error => {
@@ -36,16 +35,17 @@ const NatureRetreat = () => {
         <div>
             <Layout/>
 
+
             <div className='listing-name'>
                 {listingData.name}
             </div>
 
-            <div className='listing-name'>
+            <div className='listing-description'>
                 {listingData.description}
             </div>
 
-            <div className='listing-name'>
-                {listingData.cost}
+            <div>
+                <img src={listingData.imageURL} className='listing-img'/>
             </div>
 
 
