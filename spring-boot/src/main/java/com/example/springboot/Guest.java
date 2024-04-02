@@ -57,7 +57,7 @@ public class Guest implements User {
             x.printStackTrace();
             return "failed to remove room from database of available rooms";
         }
-        if(! removedRoom.equals("failure")){
+        if(! removedRoom.contains("failure")){
             String reserveRoom = addReservedRoom(removedRoom);
             if(reserveRoom.equals("success")) {
                 return "success";
@@ -114,11 +114,11 @@ public class Guest implements User {
             }
             catch(IOException e){
                 e.printStackTrace();
-                return "Could not modify and write to the RoomsTaken database";
+                return "failure, could not modify and write to the RoomsTaken database";
             }
         }
         else{ //if the room to remove wasn't found in the available Rooms
-            return "Room to reserve does not exist";
+            return "failure , room to reserve does not exist";
         }
     }
 
