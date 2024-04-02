@@ -141,7 +141,7 @@ public class Guest implements User {
             lines.add(newRoom);
         }
         else{
-            return "Room is already reserved";
+            return "Room is already there";
         }
 
         FileWriter fw;
@@ -150,7 +150,7 @@ public class Guest implements User {
         }
         catch(IOException x){
             x.printStackTrace();
-            return "Could not write to RoomsTaken database";
+            return "Could not write to RoomsAvailable database";
         }
 
         // Write the updated content back to the CSV file
@@ -163,7 +163,7 @@ public class Guest implements User {
         }
         catch (IOException e) {
             e.printStackTrace();
-            return "Could not write to RoomsTaken database";
+            return "Could not write to RoomsAvailable database";
         }
 
         return "success";    }
