@@ -72,7 +72,8 @@ public class Clerk implements User{
             return "Could not write to RoomsAvailable database";
         }
 
-        return "success";    }
+        return "success";
+    }
 
 
     @Override

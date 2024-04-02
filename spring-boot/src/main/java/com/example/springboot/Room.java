@@ -21,7 +21,6 @@ public class Room {
         this.smokingAllowed = smoking;
     }
 
-
     //PRINT INFO
     public void printRoomInfo(){
         System.out.println(roomNumber);
