@@ -5,7 +5,7 @@ public interface User {
     // Returns a String with a confirmation/error message
     String reserveRoom(Room x);
 
-    void setType();
+    UserType getType();
 
     String getName();
 

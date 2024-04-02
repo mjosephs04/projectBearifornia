@@ -1,12 +1,29 @@
 package com.example.springboot;
 
+import javax.jws.soap.SOAPBinding;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Clerk implements User{
+
+    private static UserType classification;
     private String name;
     private Integer idNumber;
+
+    public Clerk(){
+        classification = UserType.CLERK;
+    }
+
+    public Clerk(String n, Integer id){
+        this.name = n;
+        this.idNumber = id;
+        classification = UserType.CLERK;
+    }
+
+    public UserType getType(){
+        return classification;
+    }
 
     //takes a csv formatted string with the info for a room and inserts it into the
     // database of available rooms

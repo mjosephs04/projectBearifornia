@@ -8,22 +8,24 @@ import java.util.Random;
 
 public class Guest implements User {
 
+    private static UserType classification;
     private static final Random random = new Random();
     // Data Members
     private String name = "";
-    private String streetAddress = "";
     private Integer idNumber = 0;
+    private String streetAddress;
 
 
     // Constructor and default constructor
     public Guest() {
+        classification = UserType.GUEST;
         this.idNumber = random.nextInt(99999 - 10000 + 1) + 10000;
     }
 
-    public Guest(String name, String streetAddress) {
+    public Guest(String name, Integer id) {
         this(); // This just calls the default constructor to increment the id number;
         this.name = name;
-        this.streetAddress = streetAddress;
+        this.idNumber = id;
     }
 
     // GETTERS
@@ -64,6 +66,11 @@ public class Guest implements User {
             }
         }
         return removedRoom;
+    }
+
+    @Override
+    public UserType getType() {
+        return classification;
     }
 
     //returns the String that was removed from the csv file (commas included)
