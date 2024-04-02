@@ -9,7 +9,7 @@ const Vintage = () => {
 
     // Function to fetch data from the API
     const fetchData = () => {
-        axios.get('http://localhost:8080/rooms/nature-retreat')
+        axios.get('http://localhost:8080/rooms/vintage')
             .then(response => {
                 if (response.status !== 200) {
                     throw new Error('Network response was not ok: ' + response.data);
