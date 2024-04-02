@@ -6,7 +6,7 @@ public interface User {
 
     // Reserves a room and modifies csv accordingly,
     // Returns a String with a confirmation/error message
-    String reserveRoom();
+    String reserveRoom(Room x);
 
     String getName();
 
