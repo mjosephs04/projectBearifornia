@@ -95,7 +95,7 @@ public class ReservationClass {
     //opens csv file and returns a list of all available rooms
     public List<Room> readInAvailableRooms() throws IOException {
         ArrayList<Room> availableRoomList = new ArrayList<>(); //store all the rooms we read in
-        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
+        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
         reader.readLine(); //skip first line of header info
@@ -121,7 +121,7 @@ public class ReservationClass {
 
     public List<String> readInAvailableRoomsLines() throws IOException {
         List<String> availableRoomsLines = new ArrayList<>();
-        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
+        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
         reader.readLine(); //skip first line of header info
@@ -135,6 +135,39 @@ public class ReservationClass {
         return availableRoomsLines;
     }
 
+    //returns either a failure message or "success"
+    public String reserveRoom(Room reservedRoom) {
+        ArrayList<Room> availableRooms = null;
+        try {
+            availableRooms = (ArrayList<Room>) readInAvailableRooms();
+        }catch(IOException e){
+            e.printStackTrace();
+            return "failure";
+        }
+
+        if (availableRooms.contains(reservedRoom)) {
+            StringBuilder csvFormatRoom = new StringBuilder();
+
+            csvFormatRoom.append(reservedRoom.getRoomNumber() + "," +
+                                reservedRoom.getCost() + "," +
+                                reservedRoom.getTypeOfRoom() + "," +
+                                reservedRoom.getNumOfBeds() + "," +
+                                reservedRoom.getQualityLevel() + "," +
+                                reservedRoom.getBedType() + ",") ;
+            if(reservedRoom.getSmokingStatus()){
+                csvFormatRoom.append("Y");
+            }
+            else{
+                csvFormatRoom.append("N");
+            }
+
+            String reserveRoom = addReservedRoom(csvFormatRoom.toString());
+            if (reserveRoom.equals("success")) {
+                return "success";
+            }
+        }
+        return "failure";
+    }
 
     //takes a csv formatted line and puts it into the RoomsTaken.csv
     //returns either success" or a fail message depending on result
