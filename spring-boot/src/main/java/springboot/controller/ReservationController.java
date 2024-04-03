@@ -60,7 +60,10 @@ public class ReservationController {
             bedNum = 3;
         }
         Reservation r = new Reservation();
-        ArrayList<Room> availableRooms = (ArrayList<Room>) r.searchRooms(Boolean.parseBoolean(payload[0]),payload[1],bedNum,payload[2], LocalDate.parse(payload[3]), LocalDate.parse(payload[4]));
+        ArrayList<Room> availableRooms = (ArrayList<Room>) r.searchRooms(
+                            Boolean.parseBoolean(payload[0]),
+                payload[1],bedNum,payload[2],
+                payload[3], payload[4]);
 
         if(availableRooms.isEmpty()){
             return ResponseEntity.badRequest().body(null);

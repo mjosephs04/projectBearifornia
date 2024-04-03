@@ -129,7 +129,8 @@ public class Reservation {
 
 
     // Search for available rooms based on criteria
-    public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, LocalDate startDate, LocalDate endDate) throws IOException {
+    //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
+    public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String startDate, String endDate) throws IOException {
         List<Room> availableRooms = new ArrayList<>();
         List<Room> allRooms = readInAvailableRooms(); // Assuming this method exists to read available rooms
 
