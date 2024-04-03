@@ -46,7 +46,7 @@ public class RoomController {
         return new Listing("Vintage", 349.99, "\n" +
                 "Welcome to our vintage charm-themed hotel room, where nostalgia meets elegance.\n" +
                 "\n" +
-                "Sink into a sumptuous queen-sized bed surrounded by retro decor and antique accents.\n" +
+                "Sink into a sumptuous bed surrounded by retro decor and antique accents.\n" +
                 "\n" +
                 "Large windows invite in natural light, illuminating classic furnishings and timeless details.\n" +
                 "\n" +

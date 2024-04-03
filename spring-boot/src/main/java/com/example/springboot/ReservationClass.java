@@ -30,31 +30,8 @@ public class ReservationClass {
     //returns the String that was removed from the csv file (commas included)
     //or it returns failure
     public String removeAvailableRoom(Room reservedRoom) throws IOException {
-        ArrayList<Room> availableRoomList = new ArrayList<>(); //store all the rooms we read in
-        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-        reader.readLine(); //skip first line of header info
-        String line;
-        //store all the lines in the csv
-        List<String> availableRoomsLines = new ArrayList<>();
-
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            availableRoomsLines.add(line);
-
-            String[] split = line.split(",");
-            Room currentRoom = new Room(Double.parseDouble(split[1]),//cost
-                    Integer.parseInt(split[0]), //roomNumber
-                    Integer.parseInt(split[3]), //number of beds
-                    Integer.parseInt(split[4]), //quality level
-                    split[2], //roomType
-                    split[6].equals("Y") //smoking
-            );
-            currentRoom.setBedType(split[5]); //bedType
-
-            availableRoomList.add(currentRoom);
-        }
+        ArrayList<Room> availableRoomList = (ArrayList<Room>) readInAvailableRooms();
+        ArrayList<String> availableRoomsLines = (ArrayList<String>) readInAvailableRoomsLines();
 
         int indexRemove = availableRoomList.indexOf(reservedRoom);
 
@@ -81,6 +58,51 @@ public class ReservationClass {
         else{ //if the room to remove wasn't found in the available Rooms
             return "failure , room to reserve does not exist";
         }
+    }
+
+
+    //opens csv file and returns a list of all available rooms
+    public List<Room> readInAvailableRooms() throws IOException{
+        ArrayList<Room> availableRoomList = new ArrayList<>(); //store all the rooms we read in
+        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        reader.readLine(); //skip first line of header info
+        String line;
+
+        //read in available rooms from csv and store in list
+        while ((line = reader.readLine()) != null) {
+            String[] split = line.split(",");
+            Room currentRoom = new Room(
+                    Integer.parseInt(split[0]), //roomNumber
+                    Double.parseDouble(split[1]),//cost
+                    split[2], //roomType
+                    Integer.parseInt(split[3]), //number of beds
+                    Integer.parseInt(split[4]), //quality level
+                    split[5], //bedType
+                    split[6].equals("Y") //smoking
+            );
+
+            availableRoomList.add(currentRoom);
+        }
+
+        return availableRoomList;
+    }
+
+    public List<String> readInAvailableRoomsLines() throws IOException{
+        List<String> availableRoomsLines = new ArrayList<>();
+        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        reader.readLine(); //skip first line of header info
+        String line;
+
+        //read in available rooms from csv and store in list
+        while ((line = reader.readLine()) != null) {
+            availableRoomsLines.add(line);
+        }
+
+        return availableRoomsLines;
     }
 
     //returns either a failure message or "success"
