@@ -31,7 +31,7 @@ const LoginPage = (props) =>{
                 console.log(data[1]);
                 // setResponse(response)
                 if(data[1] == "ADMIN"){
-                    navigate('/reserve');
+                    navigate('/clerk-center');
 
                 }else{
 
