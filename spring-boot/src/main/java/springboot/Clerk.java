@@ -27,9 +27,8 @@ public class Clerk implements User {
     //takes a csv formatted string with the info for a room and inserts it into the
     // database of available rooms
     //returns either "success" or a string containing "failure" depending on result
-    public String addAvailableRoom(String newRoom) {
-        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
-
+    public String addAvailableRoom(String newRoom){
+        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String line;
