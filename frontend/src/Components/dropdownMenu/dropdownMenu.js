@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './dropdownMenu.css'
+import {Link} from "react-router-dom"
 
 const DropdownMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -10,13 +11,9 @@ const DropdownMenu = () => {
 
     return (
         <div className="login" onClick={toggleDropdown}>
-            <button className="login-button" >Login</button>
-            {isOpen && (
-                <div className="dropdown-content">
-                    <a href="#">Login for guest</a>
-                    <a href="#">Login for employee</a>
-                </div>
-            )}
+            <Link to='/login-page'>
+                <button className="login-button">Login</button>
+            </Link>
         </div>
     );
 };
