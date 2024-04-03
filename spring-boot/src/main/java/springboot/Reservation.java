@@ -22,15 +22,17 @@ public class Reservation {
         this.name = name;
     }
 
+    public Reservation(){
+        room = null;
+    }
+
+
     public Reservation(Room room, LocalDate start, LocalDate end) {
         this.room = room;
         this.startDay = start;
         this.endDay = end;
     }
 
-    public Reservation() {
-
-    }
 
     //returns the String that was removed from the csv file (commas included)
     //or it returns failure

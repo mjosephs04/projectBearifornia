@@ -7,7 +7,9 @@ import springboot.Room;
 import springboot.Reservation;
 import springboot.service.ReservationService;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,6 +42,34 @@ public class ReservationController {
             return ResponseEntity.ok("Reservation created successfully.");
         } else {
             return ResponseEntity.badRequest().body("Failed to create reservation.");
+        }
+    }
+
+
+    @PostMapping("/checkForRooms")
+    public Room checkAvailability(@RequestBody boolean smoking,
+                                  @RequestBody String bedType,
+                                  @RequestBody String roomType,
+                                  @RequestBody LocalDate startDate,
+                                  @RequestBody LocalDate endDate) throws IOException {
+        int bedNum;
+        if(bedType.equals("Single")){
+            bedNum = 1;
+        }
+        else if(bedType.equals("Double")){
+            bedNum = 2;
+        }
+        else{
+            bedNum = 3;
+        }
+        Reservation r = new Reservation();
+        ArrayList<Room> availableRooms = (ArrayList<Room>) r.searchRooms(smoking,bedType,bedNum,roomType, startDate, endDate);
+
+        if(availableRooms.isEmpty()){
+            return null;
+        }
+        else{
+            return availableRooms.get(0);
         }
     }
 }
