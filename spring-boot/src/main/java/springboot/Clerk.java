@@ -1,4 +1,4 @@
-package com.example.springboot;
+package springboot;
 
 import java.io.*;
 import java.util.ArrayList;
