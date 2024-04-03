@@ -1,0 +1,46 @@
+
+.check-in-date{
+    position: absolute;
+    left: 37.5%;
+    top: 130%;
+    /*margin: auto;*/
+    /*display: block;*/
+}
+
+.check-in-label{
+    font-size: 15px;
+    font-family: Helvetica;
+    position: absolute;
+    left: 30%;
+    top: 128.25%;
+    /*margin: auto;*/
+}
+
+.check-out-label{
+    font-size: 15px;
+    font-family: Helvetica;
+    position: absolute;
+    left: 50%;
+    top: 128.25%;
+    /*margin: auto;*/
+}
+
+.check-out-date{
+    position: absolute;
+    left: 58.2%;
+    top: 130%;
+    /*display: block;*/
+    /*margin: auto;*/
+}
+
+.select-room-label{
+    position: absolute;
+    left: 40%;
+    top: 140%
+}
+
+.room-select-dropdown{
+    position: absolute;
+    left: 50%;
+    top: 140%;
+}
