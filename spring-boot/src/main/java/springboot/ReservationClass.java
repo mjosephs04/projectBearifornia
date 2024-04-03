@@ -138,46 +138,50 @@ public class ReservationClass {
     }
 
     //returns either a failure message or "success"
-    public String reserveRoom(Room reservedRoom) {
-        /*
+    public String createReservation(ReservationClass newReservation) {
+        ArrayList<ReservationClass> existingReservations = null;
         try {
-            ArrayList<ReservationClass> existingReservations = (ArrayList<ReservationClass>) readInAllReservations();
+            existingReservations = (ArrayList<ReservationClass>) readInAllReservations();
         }
         catch(IOException e){
             e.printStackTrace();
             return "failure";
         }
 
-        */
-        ArrayList<Room> availableRooms = null;
-        try {
-            availableRooms = (ArrayList<Room>) readInAvailableRooms();
-        }catch(IOException e){
-            e.printStackTrace();
-            return "failure";
-        }
-
-        if (availableRooms.contains(reservedRoom)) {
+        if(! existingReservations.contains(newReservation)){
             StringBuilder csvFormatRoom = new StringBuilder();
+            Room reservedRoom = newReservation.room;
 
             csvFormatRoom.append(reservedRoom.getRoomNumber() + "," +
-                                reservedRoom.getCost() + "," +
-                                reservedRoom.getTypeOfRoom() + "," +
-                                reservedRoom.getNumOfBeds() + "," +
-                                reservedRoom.getQualityLevel() + "," +
-                                reservedRoom.getBedType() + ",") ;
+                    reservedRoom.getCost() + "," +
+                    reservedRoom.getTypeOfRoom() + "," +
+                    reservedRoom.getNumOfBeds() + "," +
+                    reservedRoom.getQualityLevel() + "," +
+                    reservedRoom.getBedType() + ",") ;
             if(reservedRoom.getSmokingStatus()){
-                csvFormatRoom.append("Y");
+                csvFormatRoom.append("Y" + ",");
             }
             else{
-                csvFormatRoom.append("N");
+                csvFormatRoom.append("N" + ",");
             }
+            // Define the desired date format pattern
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+            // Format the LocalDate object using the formatter
+            String start = newReservation.getStartDay().format(formatter);
+            String end = newReservation.getEndDay().format(formatter);
+
+            csvFormatRoom.append(start + "," + end);
 
             String reserveRoom = addReservedRoom(csvFormatRoom.toString());
             if (reserveRoom.equals("success")) {
                 return "success";
             }
         }
+        else{
+            return "failure";
+        }
+
         return "failure";
     }
 
@@ -248,27 +252,27 @@ public class ReservationClass {
         return Objects.hash(name, idNumber, endDay, startDay);
     }
 
-    public static LocalDate getStartDay() {
+    public LocalDate getStartDay() {
         return startDay;
     }
 
-    public static void setStartDay(LocalDate startDay) {
+    public void setStartDay(LocalDate startDay) {
         ReservationClass.startDay = startDay;
     }
 
-    public static LocalDate getEndDay() {
+    public LocalDate getEndDay() {
         return endDay;
     }
 
-    public static void setEndDay(LocalDate endDay) {
+    public void setEndDay(LocalDate endDay) {
         ReservationClass.endDay = endDay;
     }
 
-    public static Integer getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public static void setPrice(Integer price) {
+    public void setPrice(Integer price) {
         ReservationClass.price = price;
     }
 }
