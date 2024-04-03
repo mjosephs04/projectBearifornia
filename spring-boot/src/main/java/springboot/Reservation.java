@@ -78,7 +78,7 @@ public class Reservation {
                     Integer.parseInt(split[3]), //number of beds
                     Integer.parseInt(split[4]), //quality level
                     split[5], //bedType
-                    split[6].equals("Y") //smoking
+                    Boolean.parseBoolean(split[6]) //smoking
             );
             // Define the date format pattern
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -308,6 +308,20 @@ public class Reservation {
     public void setRoom(Room room) {
         this.room = room;
     }
+
+    public static void main(String[] args) {
+        Reservation test = new Reservation();
+        List<Room> rooms = null;
+        try{
+            rooms = test.searchRooms(false, "Single", 1, "Urban Elegance", "2024-04-20T20:39:06.000Z", "2024-04-22T20:39:06.000Z");
+        }catch(IOException e) {
+            System.out.println("failll");
+        }
+
+        rooms.forEach(room -> System.out.println(room.getRoomNumber()));
+
+    }
+
 }
 
 
