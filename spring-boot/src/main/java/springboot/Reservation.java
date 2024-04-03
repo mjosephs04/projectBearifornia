@@ -1,5 +1,7 @@
 package springboot;
 
+import org.springframework.cglib.core.Local;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -38,7 +40,8 @@ public class Reservation {
     //returns the String that was removed from the csv file (commas included)
     //or it returns failure
     public String removeAvailableRoom(Room reservedRoom) throws IOException {
-        ArrayList<Room> availableRoomList = (ArrayList<Room>) readInAvailableRooms();
+        /*
+        ArrayList<Reservation> availableRoomList = (ArrayList<Reservation>) readInAllReservations();
         ArrayList<String> availableRoomsLines = (ArrayList<String>) readInAvailableRoomsLines();
 
         int indexRemove = availableRoomList.indexOf(reservedRoom);
@@ -63,12 +66,13 @@ public class Reservation {
             }
         } else { //if the room to remove wasn't found in the available Rooms
             return "failure , room to reserve does not exist";
-        }
+        }*/
+        return "failure";
     }
 
-    //opens csv file and returns a list of all available rooms
-    public List<Room> readInAvailableRooms() throws IOException {
-        ArrayList<Room> availableRoomList = new ArrayList<>(); //store all the rooms we read in
+    //opens csv file and returns a list of all existing rooms
+    public List<Room> readInAllRooms() throws IOException {
+        ArrayList<Room> roomList = new ArrayList<>(); //store all the rooms we read in
         BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
 
         reader.readLine(); //skip first line of header info
@@ -86,18 +90,17 @@ public class Reservation {
                     split[6].equals("Y") //smoking
             );
 
-            availableRoomList.add(currentRoom);
+            roomList.add(currentRoom);
         }
 
-        return availableRoomList;
+        return roomList;
     }
 
 
-    //opens csv file and returns a list of all available rooms
+    //opens csv file and returns a list of all existing reservations
     public List<Reservation> readInAllReservations() throws IOException {
         ArrayList<Reservation> reservations = new ArrayList<>(); //store all the rooms we read in
-        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"));
 
         reader.readLine(); //skip first line of header info
         String line;
@@ -131,8 +134,8 @@ public class Reservation {
     // Search for available rooms based on criteria
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
     public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) throws IOException {
-        List<Room> availableRooms = new ArrayList<>();
-        List<Room> allRooms = readInAvailableRooms(); // Assuming this method exists to read available rooms
+        List<Room> rooms = readInAllRooms();
+        List<Reservation> allReservations = readInAllReservations(); // Assuming this method exists to read available rooms
 
         // Parse the string into a ZonedDateTime
         ZonedDateTime startD = ZonedDateTime.parse(start);
@@ -142,35 +145,56 @@ public class Reservation {
         LocalDate startDate = startD.toLocalDate();
         LocalDate endDate = endD.toLocalDate();
 
+        //so now we will check all rooms only rooms that match the desired criteria
+        for(Room curr : rooms){
+            // if room does NOT match criteria, remove it from list
+            if( ! (curr.getSmokingAllowed() == smoking &&
+                    curr.getBedType().equals(bedType) &&
+                    curr.getNumOfBeds() == bedNum &&
+                    curr.getTypeOfRoom().equals(roomType))) {
+                rooms.remove(curr);
+            }
+        }
+
         // Iterate through all rooms
-        for (Room room : allRooms) {
-            // Check if the room matches the criteria
-            if (room.getSmokingAllowed() == smoking &&
-                    room.getTypeOfRoom().equals(bedType) &&
-                    room.getNumOfBeds() == bedNum &&
-                    room.getTypeOfRoom().equals(roomType) &&
-                    isRoomAvailable(room, startDate, endDate)) {
-                availableRooms.add(room);
+        for (Room room : rooms) {
+            //for each room, check if that room has any reservations associated with it
+            for(Reservation res : allReservations){
+                //if it does, remove it from the total list of rooms if it isnt available for
+                //the desired dates
+                if(res.getRoom().equals(room)){
+                    if(! isAvailable(res, startDate, endDate)){
+                        rooms.remove(res.room);
+                    }
+                }
             }
         }
-        return availableRooms;
+        //at the end of this loop, the list rooms only contains rooms available
+        //during the desired timeframe and which match the desired criteria
+
+        return rooms;
     }
 
-    // Check if the room is available for the specified dates
-    private boolean isRoomAvailable(Room room, LocalDate startDate, LocalDate endDate) throws IOException {
-        List<Reservation> allReservations = readInAllReservations(); // Assuming this method exists to read all reservations
+    public boolean isAvailable(Reservation r, LocalDate start, LocalDate end){
+        boolean result = true;
 
-        // Iterate through all reservations
-        for (Reservation reservation : allReservations) {
-            // Check if the room is reserved for any overlapping dates
-            if (reservation.room.equals(room) &&
-                    !(endDate.isBefore(reservation.startDay) || startDate.isAfter(reservation.endDay))) {
-                return false; // Room is not available for the specified dates
+        if(r.startDay.isBefore(start)){
+            if(r.endDay.isAfter(start) || r.endDay.equals(startDay)){
+                result = false;
             }
         }
-        return true; // Room is available for the specified dates
-    }
+        else if(r.startDay.isAfter(start)){
+            if(r.startDay.isBefore(end)){
+                result = false;
+            }
+        }
+        else if(r.startDay.equals(r.endDay)){
+            result = false;
+        }
 
+
+        return result;
+    }
 
     public List<String> readInAvailableRoomsLines() throws IOException {
         List<String> availableRoomsLines = new ArrayList<>();
