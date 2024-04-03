@@ -1,27 +1,26 @@
-package com.example.springboot;
+package springboot;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Clerk implements User{
+public class Clerk implements User {
 
     private static UserType classification;
     private String name;
     private Integer idNumber;
 
-    public Clerk(){
+    public Clerk() {
         classification = UserType.CLERK;
     }
 
-    public Clerk(String n, Integer id){
+    public Clerk(String n, Integer id) {
         this.name = n;
         this.idNumber = id;
         classification = UserType.CLERK;
     }
 
-    public UserType getType(){
+    public UserType getType() {
         return classification;
     }
 
@@ -30,7 +29,6 @@ public class Clerk implements User{
     //returns either "success" or a string containing "failure" depending on result
     public String addAvailableRoom(String newRoom){
         InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
-
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String line;
@@ -43,31 +41,27 @@ public class Clerk implements User{
         }
 
         // Add the new line containing the new reservation
-        if(! lines.contains(newRoom)) {
+        if (!lines.contains(newRoom)) {
             lines.add(newRoom);
-        }
-        else{
+        } else {
             return "Room is already there";
         }
 
         FileWriter fw;
         try {
             fw = new FileWriter("RoomsTaken.csv");
-        }
-        catch(IOException x){
+        } catch (IOException x) {
             x.printStackTrace();
             return "Could not write to RoomsAvailable database";
         }
 
         // Write the updated content back to the CSV file
-        try (BufferedWriter writer = new BufferedWriter(fw))
-        {
+        try (BufferedWriter writer = new BufferedWriter(fw)) {
             for (String line : lines) {
                 writer.write(line);
                 writer.newLine();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return "Could not write to RoomsAvailable database";
         }
@@ -77,27 +71,27 @@ public class Clerk implements User{
 
 
     @Override
-    public String reserveRoom(Room x){
+    public String reserveRoom(Room x) {
         return "yep";
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return name;
     }
 
     @Override
-    public void setName(String x){
+    public void setName(String x) {
         name = x;
     }
 
     @Override
-    public Integer getIdNumber(){
+    public Integer getIdNumber() {
         return idNumber;
     }
 
     @Override
-    public void setIdNumber(Integer id){
+    public void setIdNumber(Integer id) {
         idNumber = id;
     }
 }

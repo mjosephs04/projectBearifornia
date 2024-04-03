@@ -1,9 +1,10 @@
-package com.example.springboot;
+package springboot;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,7 @@ public class MyController {
     public List<Room> convertCSV() {
 
         List<Room> listOfRooms = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(
-                new FileReader("src/main/resources/RoomsAvailable.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/RoomsAvailable.csv"))) {
             String line;
             br.readLine();
             while ((line = br.readLine()) != null) {
@@ -29,7 +29,7 @@ public class MyController {
                         Boolean.parseBoolean(row[6]));
                 listOfRooms.add(nRoom);
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return listOfRooms;

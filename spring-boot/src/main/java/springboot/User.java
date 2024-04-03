@@ -1,4 +1,4 @@
-package com.example.springboot;
+package springboot;
 
 public interface User {
     // Reserves a room and modifies csv accordingly,

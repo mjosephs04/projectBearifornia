@@ -1,4 +1,4 @@
-package com.example.springboot;
+package springboot;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
