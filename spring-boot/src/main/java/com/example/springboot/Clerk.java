@@ -1,6 +1,5 @@
 package com.example.springboot;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
