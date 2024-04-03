@@ -1,4 +1,4 @@
-package com.example.springboot;
+package springboot;
 
 public class Bank {
     private static final double FAILURE_RATE = 0.05;

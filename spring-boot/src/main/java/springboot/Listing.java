@@ -1,7 +1,6 @@
-package com.example.springboot;
+package springboot;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Listing implements Serializable {
 
@@ -10,11 +9,11 @@ public class Listing implements Serializable {
     private String description;
     private String imageURL;
 
-    Listing(){
+    Listing() {
 
     }
 
-    Listing(String name, Double cost, String desc, String imgUrl){
+    Listing(String name, Double cost, String desc, String imgUrl) {
         this.imageURL = imgUrl;
         this.name = name;
         this.cost = cost;

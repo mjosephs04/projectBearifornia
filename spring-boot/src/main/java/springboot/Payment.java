@@ -1,4 +1,4 @@
-package com.example.springboot;
+package springboot;
 
 public class Payment {
     private final Integer reservationId;

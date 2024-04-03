@@ -1,12 +1,11 @@
-package com.example.springboot;
+package springboot;
 
 public interface User {
-    String name = "default";
-    Integer idNumber = -1;
-
     // Reserves a room and modifies csv accordingly,
     // Returns a String with a confirmation/error message
     String reserveRoom(Room x);
+
+    UserType getType();
 
     String getName();
 
