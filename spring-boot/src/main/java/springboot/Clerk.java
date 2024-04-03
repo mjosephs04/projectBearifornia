@@ -27,10 +27,10 @@ public class Clerk implements User {
     //takes a csv formatted string with the info for a room and inserts it into the
     // database of available rooms
     //returns either "success" or a string containing "failure" depending on result
-    public String addAvailableRoom(String newRoom) {
-        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
+    public String addRoom(String newRoom) {
         List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
+        ) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
@@ -40,7 +40,7 @@ public class Clerk implements User {
             return "Failed to read in the currently available rooms";
         }
 
-        // Add the new line containing the new reservation
+        // Add the new line containing the new room
         if (!lines.contains(newRoom)) {
             lines.add(newRoom);
         } else {
@@ -49,7 +49,7 @@ public class Clerk implements User {
 
         FileWriter fw;
         try {
-            fw = new FileWriter("RoomsTaken.csv");
+            fw = new FileWriter("spring-boot/src/main/resources/Rooms.csv");
         } catch (IOException x) {
             x.printStackTrace();
             return "Could not write to RoomsAvailable database";
@@ -63,16 +63,10 @@ public class Clerk implements User {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return "Could not write to RoomsAvailable database";
+            return "Could not write to Rooms database";
         }
 
         return "success";
-    }
-
-
-    @Override
-    public String reserveRoom(Room x) {
-        return "yep";
     }
 
     @Override

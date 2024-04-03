@@ -46,7 +46,6 @@ public class Guest implements User {
     // User class interface methods
 
     //returns either a failure message or "success"
-    @Override
     public String reserveRoom(Room reservedRoom) {
         Reservation reservation = new Reservation(reservedRoom.getRoomNumber(), name);
 
