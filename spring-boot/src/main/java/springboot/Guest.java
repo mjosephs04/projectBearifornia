@@ -50,7 +50,7 @@ public class Guest implements User {
     public String reserveRoom(Room reservedRoom) {
         ReservationClass reservation = new ReservationClass(reservedRoom.getRoomNumber(), name);
 
-        return reservation.reserveRoom(reservedRoom);
+        return reservation.createReservation(reservation);
     }
 
     @Override
