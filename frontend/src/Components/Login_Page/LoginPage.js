@@ -41,7 +41,7 @@ const LoginPage = (props) =>{
             </div>
             <div className={'inputContainer'}>
                 <Link to='/create-account'>
-                    <input className={'inputButton'} type="button"  value={'New Account'}/>
+                    <input className={'inputButton'} type="button2"  value={'New Account'}/>
                 </Link>
             </div>
 

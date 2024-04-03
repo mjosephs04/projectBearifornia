@@ -39,6 +39,30 @@ input[type='button'] {
     margin-right: auto;
 
     &:hover{
-        background-color: #002600;
+        background-color: #006016;
+    }
+}
+
+input[type='button2'] {
+    border: none;
+    background: #ffb81c;
+    color: #ffffff;
+    padding: 12px 24px;
+    margin: 8px;
+    font-size: 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    left: 30%;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    &:hover{
+        background-color: #855f00;
     }
 }
