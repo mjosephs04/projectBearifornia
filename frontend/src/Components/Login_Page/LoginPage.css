@@ -5,11 +5,6 @@
     justify-content: center;
 }
 
-.inputContainer > .errorLabel {
-    color: red;
-    font-size: 12px;
-}
-
 .inputBox {
     height: 48px;
     width: 400px;
@@ -63,4 +58,17 @@ input[type='button2'] {
     &:hover{
         background-color: #855f00;
     }
+}
+
+.login-failed{
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    left: 39%;
+    top: 14.5%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    text-align: center;
 }
