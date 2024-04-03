@@ -31,6 +31,31 @@ const DateSelector = () => {
                     <option>Family</option>
                 </select>
             </div>
+
+            <div className='smoking-picker'>
+                <label>
+                    <input
+                        type="radio"
+                        name="options"
+                        value="option1"
+                        // checked={selectedOption === 'option1'}
+                        // onChange={handleOptionChange}
+                    />
+                    Smoking
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        name="options"
+                        value="option2"
+                        // checked={selectedOption === 'option2'}
+                        // onChange={handleOptionChange}
+                    />
+                    Non-Smoking
+                </label>
+            </div>
+
+
         </div>
     );
 }
