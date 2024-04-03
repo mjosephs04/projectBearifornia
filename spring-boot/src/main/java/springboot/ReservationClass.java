@@ -1,7 +1,10 @@
 package springboot;
 
+import com.sun.javafx.collections.ArrayListenerHelper;
+
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,9 +23,8 @@ public class ReservationClass {
         name = n;
     }
 
-    public ReservationClass(Integer id, String n, LocalDate start, LocalDate end) {
-        idNumber = id;
-        name = n;
+    public ReservationClass(Room r, LocalDate start, LocalDate end){
+        room = r;
         startDay = start;
         endDay = end;
     }
@@ -109,6 +111,42 @@ public class ReservationClass {
         return availableRoomList;
     }
 
+
+    //opens csv file and returns a list of all available rooms
+    public List<ReservationClass> readInAllReservations() throws IOException {
+        ArrayList<ReservationClass> reservations = new ArrayList<>(); //store all the rooms we read in
+        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        reader.readLine(); //skip first line of header info
+        String line;
+
+        //read in available rooms from csv and store in list
+        while ((line = reader.readLine()) != null) {
+            String[] split = line.split(",");
+            Room currentRoom = new Room(Integer.parseInt(split[0]), //roomNumber
+                    Double.parseDouble(split[1]),//cost
+                    split[2], //roomType
+                    Integer.parseInt(split[3]), //number of beds
+                    Integer.parseInt(split[4]), //quality level
+                    split[5], //bedType
+                    split[6].equals("Y") //smoking
+            );
+            // Define the date format pattern
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+            // Parse the string to LocalDate
+            LocalDate startD = LocalDate.parse(split[7], formatter);
+            LocalDate endD = LocalDate.parse(split[8], formatter);
+            ReservationClass currReservation = new ReservationClass(currentRoom, startD, endD);
+
+            reservations.add(currReservation);
+        }
+
+        return reservations;
+    }
+
+
     public List<String> readInAvailableRoomsLines() throws IOException {
         List<String> availableRoomsLines = new ArrayList<>();
         InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
@@ -127,6 +165,16 @@ public class ReservationClass {
 
     //returns either a failure message or "success"
     public String reserveRoom(Room reservedRoom) {
+        /*
+        try {
+            ArrayList<ReservationClass> existingReservations = (ArrayList<ReservationClass>) readInAllReservations();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            return "failure";
+        }
+
+        */
         ArrayList<Room> availableRooms = null;
         try {
             availableRooms = (ArrayList<Room>) readInAvailableRooms();
