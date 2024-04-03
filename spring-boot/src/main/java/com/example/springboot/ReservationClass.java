@@ -107,15 +107,36 @@ public class ReservationClass {
 
     //returns either a failure message or "success"
     public String reserveRoom(Room reservedRoom){
-        String removedRoom;
+        ArrayList<Room> availableRooms = null;
+        try {
+            availableRooms = (ArrayList<Room>) readInAvailableRooms();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            return "failure";
+        }
 
-        if(! removedRoom.contains("failure")){
-            String reserveRoom = addReservedRoom(removedRoom);
-            if(reserveRoom.equals("success")) {
+        if(availableRooms.contains(reservedRoom)) {
+            StringBuilder csvRoomFormat = new StringBuilder();
+            csvRoomFormat.append(reservedRoom.getRoomNumber() + "," + reservedRoom.getCost() + "," +
+                                reservedRoom.getBedType() + "," + reservedRoom.getNumOfBeds() + "," +
+                                reservedRoom.getQualityLevel() + ",");
+
+            if(reservedRoom.getSmokingStatus()){
+                csvRoomFormat.append("Y");
+            }
+            else{
+                csvRoomFormat.append("N");
+            }
+
+            String reserveRoom = addReservedRoom(csvRoomFormat.toString());
+            if (reserveRoom.equals("success")) {
                 return "success";
             }
+            return "failure";
         }
-        return removedRoom;
+
+        return "failure";
     }
 
     //takes a csv formatted line and puts it into the RoomsTaken.csv
