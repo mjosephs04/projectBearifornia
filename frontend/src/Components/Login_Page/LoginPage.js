@@ -3,12 +3,13 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import "./LoginPage.css"
 import {Link} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 const LoginPage = (props) =>{
     const [error, setError] = useState(false)
-
     const [username, setUsername] = useState([])
     const [password, setPassword] = useState([])
     const [response, setResponse] = useState([])
+    const navigate = useNavigate();
 
     const onButtonClick = () => {
         console.log(username);
@@ -29,8 +30,9 @@ const LoginPage = (props) =>{
             }).then(data => {
                 console.log(data[1]);
                 // setResponse(response)
-                if(data[1] === "ADMIN"){
-                    
+                if(data[1] == "ADMIN"){
+                    navigate('/reserve');
+
                 }else{
 
                 }
