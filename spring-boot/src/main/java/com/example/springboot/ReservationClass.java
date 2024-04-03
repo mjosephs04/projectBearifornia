@@ -64,7 +64,7 @@ public class ReservationClass {
     //opens csv file and returns a list of all available rooms
     public List<Room> readInAvailableRooms() throws IOException{
         ArrayList<Room> availableRoomList = new ArrayList<>(); //store all the rooms we read in
-        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
+        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
         reader.readLine(); //skip first line of header info
@@ -91,7 +91,7 @@ public class ReservationClass {
 
     public List<String> readInAvailableRoomsLines() throws IOException{
         List<String> availableRoomsLines = new ArrayList<>();
-        InputStream is = this.getClass().getResourceAsStream("/RoomsAvailable.csv");
+        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
         reader.readLine(); //skip first line of header info
@@ -108,14 +108,7 @@ public class ReservationClass {
     //returns either a failure message or "success"
     public String reserveRoom(Room reservedRoom){
         String removedRoom;
-        try {
-            //attempt removing the available room from the RoomsAvailable.csv
-            removedRoom = removeAvailableRoom(reservedRoom);
-        }
-        catch(IOException x){
-            x.printStackTrace();
-            return "failed to remove room from database of available rooms";
-        }
+
         if(! removedRoom.contains("failure")){
             String reserveRoom = addReservedRoom(removedRoom);
             if(reserveRoom.equals("success")) {
