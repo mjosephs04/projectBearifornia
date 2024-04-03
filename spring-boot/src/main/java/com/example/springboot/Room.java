@@ -12,13 +12,15 @@ public class Room {
     public Room(){}
 
     //CONSTRUCTOR
-    public Room(Double c, Integer roomNum, Integer numBed, Integer quality, String roomType, boolean smoking) {
+    public Room(Integer roomNum, Double c, String roomType, Integer numBed,
+                Integer quality, String bedType, boolean smoking) {
         this.cost = c;
         this.roomNumber = roomNum;
         this.numOfBeds = numBed;
         this.qualityLevel = quality;
         this.typeOfRoom = roomType;
         this.smokingAllowed = smoking;
+        this.bedType = bedType;
     }
 
     //PRINT INFO
