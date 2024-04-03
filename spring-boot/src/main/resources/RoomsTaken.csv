@@ -1,13 +1,13 @@
-roomNumber,cost,roomType,numOfBeds,qualityLevel,bedType,smokingAllowed
-106,437.46,Nature Retreat,1,4,Single,true
-107,236.74,Nature Retreat,2,5,Double,true
-108,653.64,Nature Retreat,2,4,Family,true
-109,706.56,Nature Retreat,3,4,Family,true
-206,437.46,Urban Elegance,1,4,Single,false
-207,236.74,Urban Elegance,2,4,Double,false
-208,653.64,Urban Elegance,2,4,Family,false
-209,706.56,Urban Elegance,3,5,Family,false
-306,437.46,Vintage Charm,1,5,Single,true
-307,236.74,Vintage Charm,2,4,Double,true
-308,653.64,Vintage Charm,2,4,Family,true
-309,706.56,Vintage Charm,3,4,Family,true
+roomNumber,cost,roomType,numOfBeds,qualityLevel,bedType,smokingAllowed, startDate, endDate
+106,437.46,Nature Retreat,1,4,Single,true,05/18/2024,06/16/2024
+107,236.74,Nature Retreat,2,5,Double,true,05/18/2024,06/16/2024
+108,653.64,Nature Retreat,2,4,Family,true,05/18/2024,06/16/2024
+109,706.56,Nature Retreat,3,4,Family,true,05/18/2024,06/16/2024
+206,437.46,Urban Elegance,1,4,Single,false,05/18/2024,06/16/2024
+207,236.74,Urban Elegance,2,4,Double,false,05/18/2024,06/16/2024
+208,653.64,Urban Elegance,2,4,Family,false,05/18/2024,06/16/2024
+209,706.56,Urban Elegance,3,5,Family,false,05/18/2024,06/16/2024
+306,437.46,Vintage Charm,1,5,Single,true,05/18/2024,06/16/2024
+307,236.74,Vintage Charm,2,4,Double,true,05/18/2024,06/16/2024
+308,653.64,Vintage Charm,2,4,Family,true,05/18/2024,06/16/2024
+309,706.56,Vintage Charm,3,4,Family,true,05/18/2024,06/16/2024
