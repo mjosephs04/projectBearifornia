@@ -52,11 +52,9 @@ input[type='button2'] {
     font-size: 24px;
     border-radius: 8px;
     cursor: pointer;
-    outline: none;
-    border: none;
-    border-radius: 5px;
     position: absolute;
-    left: 30%;
+    text-align: center;
+    left: 37%;
 
     display: block;
     margin-left: auto;
