@@ -21,6 +21,10 @@ public class ReservationClass {
         name = n;
     }
 
+    public ReservationClass(){
+        room = null;
+    }
+
     public ReservationClass(Room r, LocalDate start, LocalDate end){
         room = r;
         startDay = start;
