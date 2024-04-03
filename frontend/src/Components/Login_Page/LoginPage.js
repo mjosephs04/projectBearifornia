@@ -15,7 +15,12 @@ const LoginPage = (props) =>{
         console.log(username);
         console.log(password);
 
-        axios.post('http://localhost:8080/api/auth/login', username, password)
+        const payload = [
+            username,
+            password
+        ]
+
+        axios.post('http://localhost:8080/api/auth/login', payload)
             .then(response =>{
                 console.log(response)
             })
