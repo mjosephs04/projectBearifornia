@@ -24,7 +24,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body("Invalid username or password.");
         }
 
-        return ResponseEntity.ok("User authenticated successfully as ");
+        return ResponseEntity.ok(new String[]{"User authenticated successfully as " + data[0] + " " + data[1], userType.toString()});
     }
 
 }
