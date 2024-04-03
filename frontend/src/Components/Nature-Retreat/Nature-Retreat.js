@@ -2,6 +2,7 @@ import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import './Nature-Retreat.css'
+import DateSelector from '../DateSelector/DateSelector'
 
 const NatureRetreat = () => {
 
@@ -48,6 +49,7 @@ const NatureRetreat = () => {
                 <img src={listingData.imageURL} className='listing-img'/>
             </div>
 
+            <DateSelector />
 
         </div>
     );
