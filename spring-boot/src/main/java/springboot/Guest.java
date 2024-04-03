@@ -48,7 +48,7 @@ public class Guest implements User {
     //returns either a failure message or "success"
     @Override
     public String reserveRoom(Room reservedRoom) {
-        ReservationClass reservation = new ReservationClass(reservedRoom.getRoomNumber(), name);
+        Reservation reservation = new Reservation(reservedRoom.getRoomNumber(), name);
 
         return reservation.createReservation(reservation);
     }

@@ -1,7 +1,5 @@
 package springboot;
 
-import springboot.ReservationClass;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,16 +10,16 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Room {
+    private static final Logger logger = Logger.getLogger(Room.class.getName()); // Logger instance
     private Double cost = 0.00;
     private Integer roomNumber, numOfBeds, qualityLevel = 0;
     private String typeOfRoom, bedType = "";
     private boolean smokingAllowed = false;
-
-    private static final Logger logger = Logger.getLogger(Room.class.getName()); // Logger instance
 
     //DEFAULT CONSTRUCTOR
     public Room() {
@@ -38,6 +36,17 @@ public class Room {
         this.bedType = bedType;
     }
 
+    //Parse Dates
+    public static Date parseDate(String dateString) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            return sdf.parse(dateString);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error parsing date: " + dateString, e);
+            return null;
+        }
+    }
+
     //PRINT INFO
     public void printRoomInfo() {
         System.out.println(roomNumber);
@@ -51,18 +60,6 @@ public class Room {
             System.out.println("Smoking allowed.");
         }
     }
-
-    //Parse Dates
-    public static Date parseDate(String dateString) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-            return sdf.parse(dateString);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error parsing date: " + dateString, e);
-            return null;
-        }
-    }
-
 
     //Read in Taken Rooms
     public List<String> readInTakenRoomsLines() throws IOException {
@@ -82,7 +79,7 @@ public class Room {
     }
 
     //Parse Taken Rooms - Takes a room number and gives all dates for that room
-    public List<Date> roomListToDates (int roomNumber) throws IOException {
+    public List<Date> roomListToDates(int roomNumber) throws IOException {
         List<String> takenRoomsLines = readInTakenRoomsLines();
         List<Date> datePairs = new ArrayList<>();
 
@@ -111,7 +108,7 @@ public class Room {
     }
 
     //Check Availability
-    public boolean checkAvailability(ReservationClass potentialReservation) throws IOException {
+    public boolean checkAvailability(Reservation potentialReservation) throws IOException {
         List<Date> datePairs = roomListToDates(potentialReservation.room.getRoomNumber());
         Date s1 = java.sql.Date.valueOf(potentialReservation.getStartDay());
         Date e1 = java.sql.Date.valueOf(potentialReservation.getEndDay());
@@ -120,28 +117,23 @@ public class Room {
 
         // Convert LocalDate to Date
         Date currentTime = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        if(s1.before(currentTime)){
+        if (s1.before(currentTime)) {
             available = false;
         }
-        for (int i = 0; i < datePairs.size(); i+=2 ) {
+        for (int i = 0; i < datePairs.size(); i += 2) {
             Date s2 = datePairs.get(i);
-            Date e2 = datePairs.get(i+1);
-            if(s1.equals(e2)){
+            Date e2 = datePairs.get(i + 1);
+            if (s1.equals(e2)) {
                 available = false;
-            }
-            else if(s1.equals(s2)){
+            } else if (s1.equals(s2)) {
                 available = false;
-            }
-            else if(e1.equals(s2)){
+            } else if (e1.equals(s2)) {
                 available = false;
-            }
-            else if(e1.equals(e2)){
+            } else if (e1.equals(e2)) {
                 available = false;
-            }
-            else if(s1.before(e2) && s1.after(s2)){
+            } else if (s1.before(e2) && s1.after(s2)) {
                 available = false;
-            }
-            else if(e1.before(e2) && e1.after(s2)){
+            } else if (e1.before(e2) && e1.after(s2)) {
                 available = false;
             }
         }
@@ -210,12 +202,14 @@ public class Room {
 
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Room) {
-            return ((Room) obj).getRoomNumber().equals(roomNumber) && ((Room) obj).getNumOfBeds().equals(numOfBeds) && ((Room) obj).getQualityLevel().equals(qualityLevel) && ((Room) obj).getCost().equals(cost) && ((Room) obj).getTypeOfRoom().equals(typeOfRoom) && ((Room) obj).getBedType().equals(bedType);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room room)) return false;
+        return smokingAllowed == room.smokingAllowed && Objects.equals(getCost(), room.getCost()) && Objects.equals(getRoomNumber(), room.getRoomNumber()) && Objects.equals(getNumOfBeds(), room.getNumOfBeds()) && Objects.equals(getQualityLevel(), room.getQualityLevel()) && Objects.equals(getTypeOfRoom(), room.getTypeOfRoom()) && Objects.equals(getBedType(), room.getBedType());
+    }
 
-        } else {
-            return false;
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCost(), getRoomNumber(), getNumOfBeds(), getQualityLevel(), getTypeOfRoom(), getBedType(), smokingAllowed);
     }
 }
