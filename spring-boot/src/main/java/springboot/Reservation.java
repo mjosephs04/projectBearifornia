@@ -69,8 +69,7 @@ public class Reservation {
     //opens csv file and returns a list of all available rooms
     public List<Room> readInAvailableRooms() throws IOException {
         ArrayList<Room> availableRoomList = new ArrayList<>(); //store all the rooms we read in
-        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
 
         reader.readLine(); //skip first line of header info
         String line;
