@@ -3,28 +3,29 @@
 }
 
 .urban-elegance-img{
-    height: 300px;
-    width: auto;
     position: absolute;
-    left: 100px;
-    top: 150px;
+    left: 1%;
+    top: 13.35%;
+    width: 25%; /* Example width */
+    height: 25%; /* Example height */
+    object-fit: cover;
 }
 
 .urban-elegance-label{
     position: absolute;
-    font-family: Helvetica;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
     font-weight: normal;
     font-size: 20px;
-    left: 100px;
-    top: 465px;
+    left: 3.79%;
+    top: 42.234%;
 }
 
 .urban-learn-more{
     width: 150px;
     height: 30px;
     position: absolute;
-    left: 100px;
-    top: 500px;
+    left: 3.79%;
+    top: 48%;
     border: none;
     background-color: #003b00;
     color: white;
@@ -35,28 +36,28 @@
 }
 
 .nature-retreat-img{
-    height: 300px;
-    width: auto;
     position: absolute;
-    left: 600px;
-    top: 150px;
-}
+    left: 32%;
+    top: 13.35%;
+    width: 25%; /* Example width */
+    height: 25%; /* Example height */
+    }
 
 .nature-retreat-label{
     position: absolute;
-    font-family: Helvetica;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
     font-weight: normal;
     font-size: 20px;
-    left: 600px;
-    top: 465px;
+    left: 35.69%;
+    top: 42.234%;
 }
 
 .nature-retreat-button{
     width: 150px;
     height: 30px;
     position: absolute;
-    left: 600px;
-    top: 500px;
+    left: 35.69%;
+    top: 48%;
     border: none;
     background-color: #003b00;
     color: white;
@@ -67,28 +68,28 @@
 }
 
 .old-vintage-img{
-    height: 300px;
-    width: auto;
+    width: 25%; /* Example width */
+    height: 25%; /* Example height */
     position: absolute;
-    left: 1300px;
-    top: 150px;
+    left: 63%;
+    top: 13.35%;
 }
 
 .old-vintage-label{
     position: absolute;
-    font-family: Helvetica;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
     font-weight: normal;
     font-size: 20px;
-    left: 1300px;
-    top: 465px;
+    left: 67.69%;
+    top: 42.234%;
 }
 
 .old-vintage-button{
     width: 150px;
     height: 30px;
     position: absolute;
-    left: 1300px;
-    top: 500px;
+    left: 67.69%;
+    top: 48%;
     border: none;
     background-color: #003b00;
     color: white;
