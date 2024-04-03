@@ -1,7 +1,5 @@
 package springboot;
 
-import org.springframework.cglib.core.Local;
-
 import java.io.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -146,21 +144,17 @@ public class Reservation {
         LocalDate endDate = endD.toLocalDate();
 
         //so now we will check all rooms only rooms that match the desired criteria
-        for(Room curr : rooms){
-            // if room does NOT match criteria, remove it from list
-            if( ! (curr.getSmokingAllowed() == smoking &&
-                    curr.getBedType().equals(bedType) &&
-                    curr.getNumOfBeds() == bedNum &&
-                    curr.getTypeOfRoom().equals(roomType))) {
-                rooms.remove(curr);
-            }
-        }
+        // if room does NOT match criteria, remove it from list
+        rooms.removeIf(curr -> !(curr.getSmokingAllowed() == smoking &&
+                curr.getBedType().equals(bedType) &&
+                curr.getNumOfBeds() == bedNum &&
+                curr.getTypeOfRoom().equals(roomType)));
 
         // Iterate through all rooms
         for (Room room : rooms) {
             //for each room, check if that room has any reservations associated with it
             for(Reservation res : allReservations){
-                //if it does, remove it from the total list of rooms if it isnt available for
+                //if it does, remove it from the total list of rooms if it isn't available for
                 //the desired dates
                 if(res.getRoom().equals(room)){
                     if(! isAvailable(res, startDate, endDate)){
@@ -198,8 +192,7 @@ public class Reservation {
 
     public List<String> readInAvailableRoomsLines() throws IOException {
         List<String> availableRoomsLines = new ArrayList<>();
-        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
 
         reader.readLine(); //skip first line of header info
         String line;
@@ -226,7 +219,13 @@ public class Reservation {
             StringBuilder csvFormatRoom = new StringBuilder();
             Room reservedRoom = newReservation.room;
 
-            csvFormatRoom.append(reservedRoom.getRoomNumber() + "," + reservedRoom.getCost() + "," + reservedRoom.getTypeOfRoom() + "," + reservedRoom.getNumOfBeds() + "," + reservedRoom.getQualityLevel() + "," + reservedRoom.getTypeOfRoom() + ",");
+            //convert room to a csv line in desired format
+            csvFormatRoom.append(reservedRoom.getRoomNumber()).append(",").
+                                append(reservedRoom.getCost()).append(",").
+                                append(reservedRoom.getTypeOfRoom()).append(",").
+                                append(reservedRoom.getNumOfBeds()).append(",").
+                                append(reservedRoom.getQualityLevel()).append(",").
+                                append(reservedRoom.getTypeOfRoom()).append(",");
             if (reservedRoom.getSmokingAllowed()) {
                 csvFormatRoom.append("Y" + ",");
             } else {
@@ -239,7 +238,7 @@ public class Reservation {
             String start = newReservation.getStartDay().format(formatter);
             String end = newReservation.getEndDay().format(formatter);
 
-            csvFormatRoom.append(start + "," + end);
+            csvFormatRoom.append(start).append(",").append(end);
 
             String reserveRoom = addReservedRoom(csvFormatRoom.toString());
             if (reserveRoom.equals("success")) {
@@ -253,12 +252,11 @@ public class Reservation {
     }
 
     //takes a csv formatted line and puts it into the RoomsTaken.csv
-    //returns either success" or a fail message depending on result
+    //returns either "success" or a fail message depending on result
     public String addReservedRoom(String newRoom) {
-        InputStream is = this.getClass().getResourceAsStream("/RoomsTaken.csv");
-
         List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"))
+        ) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
