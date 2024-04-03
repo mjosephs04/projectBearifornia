@@ -2,9 +2,8 @@
 import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import "./LoginPage.css"
-import {Link} from "react-router-dom";
-const LoginPage = (props) =>{
+import "./CreateAccount.css"
+const CreateAccount = (props) =>{
     const [usernameError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
@@ -37,12 +36,7 @@ const LoginPage = (props) =>{
             </div>
             <br/>
             <div className={'inputContainer'}>
-                <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Log in'}/>
-            </div>
-            <div className={'inputContainer'}>
-                <Link to='/create-account'>
-                    <input className={'inputButton'} type="button"  value={'New Account'}/>
-                </Link>
+                <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Create account'}/>
             </div>
 
 
@@ -51,4 +45,4 @@ const LoginPage = (props) =>{
 
 }
 
-export default LoginPage
+export default CreateAccount

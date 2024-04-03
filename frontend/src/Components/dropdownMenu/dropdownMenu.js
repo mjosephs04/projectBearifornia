@@ -11,7 +11,7 @@ const DropdownMenu = () => {
 
     return (
         <div className="login" onClick={toggleDropdown}>
-            <Link to='login-page'>
+            <Link to='/login-page'>
                 <button className="login-button">Login</button>
             </Link>
         </div>

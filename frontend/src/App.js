@@ -6,6 +6,7 @@ import UrbanElegance from './Components/Urban_Elegance/UrbanElegance'
 import NatureRetreat from './Components/Nature-Retreat/Nature-Retreat'
 import Vintage from './Components/Vintage/Vintage'
 import LoginPage from './Components/Login_Page/LoginPage'
+import CreateAccount from './Components/Create_Account/CreateAccount'
 import {Route, Routes} from "react-router-dom";
 const App = () => {
     return (
@@ -17,6 +18,7 @@ const App = () => {
                 <Route exact path='/reserve/nature-retreat' element={<NatureRetreat />}/>
                 <Route exact path='/reserve/old-vintage' element={<Vintage />}/>
                 <Route exact path='/login-page' element={<LoginPage />}/>
+                <Route exact path='/create-account' element={<CreateAccount />}/>
             </Routes>
         </>
     );
