@@ -27,7 +27,13 @@ const LoginPage = (props) =>{
                 }
                 return response.data;
             }).then(data => {
-                setResponse(data)
+                console.log(data[1]);
+                // setResponse(response)
+                if(data[1] === "ADMIN"){
+                    
+                }else{
+
+                }
             }).catch(error => {
                 console.log("Error with authentication" + error);
                 setError(true);

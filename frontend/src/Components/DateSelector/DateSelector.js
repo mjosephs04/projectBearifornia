@@ -26,6 +26,7 @@ const DateSelector = (props) => {
                 console.log(response);
                 return response;
             })
+            //NEEDS CATCH IF ERROR IS RETURNED
     }
 
     return(
