@@ -11,13 +11,23 @@
     height: 2vh;
 }
 
-.inputContainer {
+.inputContainer1 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    top: 50%;
-    left: 3%;
+    top: 62%;
+    left: 109px;
+    position: absolute;
+}
+
+.inputContainer2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    top: 62%;
+    left: 390px;
     position: absolute;
 }
 
@@ -27,7 +37,13 @@
 }
 
 .bedroomButton{
-    width: 10%;
-    top: 30%;
-    position:absolute;
+    display: flex;
+    margin:  15px 10px 5px 20px;
+    width: 242px;
+    height: 242px;
+    left: 7px;
+    top: 40%;
+    border: 3px solid green;
+    float: left;
+    padding: 5px;
 }
