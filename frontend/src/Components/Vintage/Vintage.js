@@ -2,6 +2,7 @@ import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import './Vintage.css'
+import DateSelector from '../DateSelector/DateSelector'
 const Vintage = () => {
 
     // State to store the fetched data
@@ -46,6 +47,8 @@ const Vintage = () => {
             <div className='listing-img'>
                 <img className='listing-img' src={listingData.imageURL}></img>
             </div>
+
+            <DateSelector />
 
         </div>
     );

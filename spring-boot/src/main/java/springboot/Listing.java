@@ -45,6 +45,7 @@ public class Listing implements Serializable {
         this.description = description;
     }
 
+
     public String getImageURL() {
         return imageURL;
     }
