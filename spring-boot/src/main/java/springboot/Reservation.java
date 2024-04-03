@@ -2,6 +2,7 @@ package springboot;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,14 +131,26 @@ public class Reservation {
 
     // Search for available rooms based on criteria
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
-    public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String startDate, String endDate) throws IOException {
+    public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) throws IOException {
         List<Room> availableRooms = new ArrayList<>();
         List<Room> allRooms = readInAvailableRooms(); // Assuming this method exists to read available rooms
+
+        // Parse the string into a ZonedDateTime
+        ZonedDateTime startD = ZonedDateTime.parse(start);
+        ZonedDateTime endD = ZonedDateTime.parse(end);
+
+        // Extract the LocalDate part from the ZonedDateTime
+        LocalDate startDate = startD.toLocalDate();
+        LocalDate endDate = endD.toLocalDate();
 
         // Iterate through all rooms
         for (Room room : allRooms) {
             // Check if the room matches the criteria
-            if (room.getSmokingAllowed() == smoking && room.getTypeOfRoom().equals(bedType) && room.getNumOfBeds() == bedNum && room.getTypeOfRoom().equals(roomType) && isRoomAvailable(room, startDate, endDate)) {
+            if (room.getSmokingAllowed() == smoking &&
+                    room.getTypeOfRoom().equals(bedType) &&
+                    room.getNumOfBeds() == bedNum &&
+                    room.getTypeOfRoom().equals(roomType) &&
+                    isRoomAvailable(room, startDate, endDate)) {
                 availableRooms.add(room);
             }
         }
