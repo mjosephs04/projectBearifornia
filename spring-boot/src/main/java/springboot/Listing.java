@@ -13,7 +13,7 @@ public class Listing implements Serializable {
 
     }
 
-    Listing(String name, Double cost, String desc, String imgUrl) {
+    public Listing(String name, Double cost, String desc, String imgUrl) {
         this.imageURL = imgUrl;
         this.name = name;
         this.cost = cost;
