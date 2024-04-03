@@ -69,12 +69,6 @@ public class Clerk implements User {
         return "success";
     }
 
-
-    @Override
-    public String reserveRoom(Room x) {
-        return "yep";
-    }
-
     @Override
     public String getName() {
         return name;
