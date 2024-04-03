@@ -1,7 +1,8 @@
-package springboot;
+package springboot.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springboot.Room;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,7 +12,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
-public class MyController {
+public class ApplicationController {
     @RequestMapping("/runFunction")
     public List<Room> convertCSV() {
 
