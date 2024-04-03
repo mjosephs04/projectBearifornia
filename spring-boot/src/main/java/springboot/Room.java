@@ -189,12 +189,19 @@ public class Room {
         this.smokingAllowed = smokingAllowed;
     }
 
+    public String getBedType(){
+        return bedType;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Room room)) return false;
-        return smokingAllowed == room.smokingAllowed && Objects.equals(getCost(), room.getCost()) && Objects.equals(getRoomNumber(), room.getRoomNumber()) && Objects.equals(getNumOfBeds(), room.getNumOfBeds()) && Objects.equals(getQualityLevel(), room.getQualityLevel()) && Objects.equals(getTypeOfRoom(), room.getTypeOfRoom()) && Objects.equals(getTypeOfRoom(), room.getTypeOfRoom());
+        return getSmokingAllowed() == room.getSmokingAllowed() &&
+                getRoomNumber().equals(room.getRoomNumber()) &&
+                getNumOfBeds().equals(room.getNumOfBeds()) &&
+                getBedType().equalsIgnoreCase(room.getBedType())&&
+                getTypeOfRoom().equalsIgnoreCase(room.getTypeOfRoom());
     }
 
     @Override

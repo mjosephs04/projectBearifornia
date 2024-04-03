@@ -34,41 +34,9 @@ public class Reservation {
         this.endDay = end;
     }
 
-
-    //returns the String that was removed from the csv file (commas included)
-    //or it returns failure
-    public String removeAvailableRoom(Room reservedRoom) throws IOException {
-        ArrayList<Room> availableRoomList = (ArrayList<Room>) readInAvailableRooms();
-        ArrayList<String> availableRoomsLines = (ArrayList<String>) readInAvailableRoomsLines();
-
-        int indexRemove = availableRoomList.indexOf(reservedRoom);
-
-        // Read and write lines, skipping the one to remove
-        if (indexRemove >= 0 && indexRemove < availableRoomsLines.size()) {
-            String removedLine = availableRoomsLines.get(indexRemove);
-            availableRoomsLines.remove(indexRemove);
-            FileWriter fw = new FileWriter("RoomsTaken.csv");
-            try (BufferedWriter writer = new BufferedWriter(fw)) {
-                for (String l : availableRoomsLines) {
-                    writer.write(l);
-                    writer.newLine();
-                }
-                //overwrite the last line in the csv which is now a duplicate
-                writer.write("");
-                writer.newLine();
-                return removedLine;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "failure, could not modify and write to the RoomsTaken database";
-            }
-        } else { //if the room to remove wasn't found in the available Rooms
-            return "failure , room to reserve does not exist";
-        }
-    }
-
-    //opens csv file and returns a list of all available rooms
-    public List<Room> readInAvailableRooms() throws IOException {
-        ArrayList<Room> availableRoomList = new ArrayList<>(); //store all the rooms we read in
+    //opens csv file and returns a list of all existing rooms
+    public List<Room> readInAllRooms() throws IOException {
+        ArrayList<Room> roomList = new ArrayList<>(); //store all the rooms we read in
         BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
 
         reader.readLine(); //skip first line of header info
@@ -86,18 +54,17 @@ public class Reservation {
                     split[6].equals("Y") //smoking
             );
 
-            availableRoomList.add(currentRoom);
+            roomList.add(currentRoom);
         }
 
-        return availableRoomList;
+        return roomList;
     }
 
 
-    //opens csv file and returns a list of all available rooms
+    //opens csv file and returns a list of all existing reservations
     public List<Reservation> readInAllReservations() throws IOException {
         ArrayList<Reservation> reservations = new ArrayList<>(); //store all the rooms we read in
-        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"));
 
         reader.readLine(); //skip first line of header info
         String line;
@@ -111,7 +78,7 @@ public class Reservation {
                     Integer.parseInt(split[3]), //number of beds
                     Integer.parseInt(split[4]), //quality level
                     split[5], //bedType
-                    split[6].equals("Y") //smoking
+                    Boolean.parseBoolean(split[6]) //smoking
             );
             // Define the date format pattern
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -131,8 +98,8 @@ public class Reservation {
     // Search for available rooms based on criteria
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
     public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) throws IOException {
-        List<Room> availableRooms = new ArrayList<>();
-        List<Room> allRooms = readInAvailableRooms(); // Assuming this method exists to read available rooms
+        List<Room> rooms = readInAllRooms();
+        List<Reservation> allReservations = readInAllReservations(); // Assuming this method exists to read available rooms
 
         // Parse the string into a ZonedDateTime
         ZonedDateTime startD = ZonedDateTime.parse(start);
@@ -142,50 +109,51 @@ public class Reservation {
         LocalDate startDate = startD.toLocalDate();
         LocalDate endDate = endD.toLocalDate();
 
+        //so now we will check all rooms only rooms that match the desired criteria
+        // if room does NOT match criteria, remove it from list
+        rooms.removeIf(curr -> !(curr.getSmokingAllowed() == smoking &&
+                curr.getBedType().equals(bedType) &&
+                curr.getNumOfBeds() == bedNum &&
+                curr.getTypeOfRoom().equals(roomType)));
+
         // Iterate through all rooms
-        for (Room room : allRooms) {
-            // Check if the room matches the criteria
-            if (room.getSmokingAllowed() == smoking &&
-                    room.getTypeOfRoom().equals(bedType) &&
-                    room.getNumOfBeds() == bedNum &&
-                    room.getTypeOfRoom().equals(roomType) &&
-                    isRoomAvailable(room, startDate, endDate)) {
-                availableRooms.add(room);
+        for (Room room : rooms) {
+            //for each room, check if that room has any reservations associated with it
+            for(Reservation res : allReservations){
+                //if it does, remove it from the total list of rooms if it isn't available for
+                //the desired dates
+                if(res.getRoom().equals(room)){
+                    if(! isAvailable(res, startDate, endDate)){
+                        rooms.remove(res.room);
+                    }
+                }
             }
         }
-        return availableRooms;
+        //at the end of this loop, the list rooms only contains rooms available
+        //during the desired timeframe and which match the desired criteria
+
+        return rooms;
     }
 
-    // Check if the room is available for the specified dates
-    private boolean isRoomAvailable(Room room, LocalDate startDate, LocalDate endDate) throws IOException {
-        List<Reservation> allReservations = readInAllReservations(); // Assuming this method exists to read all reservations
+    public boolean isAvailable(Reservation r, LocalDate start, LocalDate end){
+        boolean result = true;
 
-        // Iterate through all reservations
-        for (Reservation reservation : allReservations) {
-            // Check if the room is reserved for any overlapping dates
-            if (reservation.room.equals(room) &&
-                    !(endDate.isBefore(reservation.startDay) || startDate.isAfter(reservation.endDay))) {
-                return false; // Room is not available for the specified dates
+        if(r.startDay.isBefore(start)){
+            if(r.endDay.isAfter(start) || r.endDay.equals(startDay)){
+                result = false;
             }
         }
-        return true; // Room is available for the specified dates
-    }
-
-
-    public List<String> readInAvailableRoomsLines() throws IOException {
-        List<String> availableRoomsLines = new ArrayList<>();
-        InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-        reader.readLine(); //skip first line of header info
-        String line;
-
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            availableRoomsLines.add(line);
+        else if(r.startDay.isAfter(start)){
+            if(r.startDay.isBefore(end)){
+                result = false;
+            }
+        }
+        else if(r.startDay.equals(r.endDay)){
+            result = false;
         }
 
-        return availableRoomsLines;
+
+        return result;
     }
 
     //returns either a failure message or "success"
@@ -202,7 +170,13 @@ public class Reservation {
             StringBuilder csvFormatRoom = new StringBuilder();
             Room reservedRoom = newReservation.room;
 
-            csvFormatRoom.append(reservedRoom.getRoomNumber() + "," + reservedRoom.getCost() + "," + reservedRoom.getTypeOfRoom() + "," + reservedRoom.getNumOfBeds() + "," + reservedRoom.getQualityLevel() + "," + reservedRoom.getTypeOfRoom() + ",");
+            //convert room to a csv line in desired format
+            csvFormatRoom.append(reservedRoom.getRoomNumber()).append(",").
+                                append(reservedRoom.getCost()).append(",").
+                                append(reservedRoom.getTypeOfRoom()).append(",").
+                                append(reservedRoom.getNumOfBeds()).append(",").
+                                append(reservedRoom.getQualityLevel()).append(",").
+                                append(reservedRoom.getTypeOfRoom()).append(",");
             if (reservedRoom.getSmokingAllowed()) {
                 csvFormatRoom.append("Y" + ",");
             } else {
@@ -215,7 +189,7 @@ public class Reservation {
             String start = newReservation.getStartDay().format(formatter);
             String end = newReservation.getEndDay().format(formatter);
 
-            csvFormatRoom.append(start + "," + end);
+            csvFormatRoom.append(start).append(",").append(end);
 
             String reserveRoom = addReservedRoom(csvFormatRoom.toString());
             if (reserveRoom.equals("success")) {
@@ -229,12 +203,11 @@ public class Reservation {
     }
 
     //takes a csv formatted line and puts it into the RoomsTaken.csv
-    //returns either success" or a fail message depending on result
+    //returns either "success" or a fail message depending on result
     public String addReservedRoom(String newRoom) {
-        InputStream is = this.getClass().getResourceAsStream("/RoomsTaken.csv");
-
         List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"))
+        ) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
@@ -253,7 +226,7 @@ public class Reservation {
 
         FileWriter fw;
         try {
-            fw = new FileWriter("RoomsTaken.csv");
+            fw = new FileWriter("spring-boot/src/main/resources/RoomsTaken.csv");
         } catch (IOException x) {
             x.printStackTrace();
             return "Could not write to RoomsTaken database";
@@ -292,7 +265,8 @@ public class Reservation {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Reservation) {
-            return ((Reservation) obj).getIdNumber().equals(idNumber) && ((Reservation) obj).getName().equals(name);
+            return ((Reservation) obj).getIdNumber().equals(idNumber) &&
+                    ((Reservation) obj).getName().equals(name);
         } else {
             return false;
         }
@@ -334,6 +308,20 @@ public class Reservation {
     public void setRoom(Room room) {
         this.room = room;
     }
+
+    public static void main(String[] args) {
+        Reservation test = new Reservation();
+        List<Room> rooms = null;
+        try{
+            rooms = test.searchRooms(false, "Single", 1, "Urban Elegance", "2024-04-20T20:39:06.000Z", "2024-04-22T20:39:06.000Z");
+        }catch(IOException e) {
+            System.out.println("failll");
+        }
+
+        rooms.forEach(room -> System.out.println(room.getRoomNumber()));
+
+    }
+
 }
 
 

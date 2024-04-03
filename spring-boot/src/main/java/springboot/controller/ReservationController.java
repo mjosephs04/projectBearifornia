@@ -10,7 +10,6 @@ import springboot.service.ReservationService;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
