@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class Guest implements User {
 
-    private static UserType classification;
     private static final Random random = new Random();
+    private static UserType classification;
     // Data Members
     private String name = "";
     private Integer idNumber = 0;
@@ -47,7 +47,7 @@ public class Guest implements User {
 
     //returns either a failure message or "success"
     @Override
-    public String reserveRoom(Room reservedRoom){
+    public String reserveRoom(Room reservedRoom) {
         ReservationClass reservation = new ReservationClass(reservedRoom.getRoomNumber(), name);
 
         return reservation.reserveRoom(reservedRoom);

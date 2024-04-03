@@ -1,7 +1,5 @@
 package springboot;
 
 public enum UserType {
-    GUEST,
-    CLERK,
-    ADMIN
+    GUEST, CLERK, ADMIN
 }
