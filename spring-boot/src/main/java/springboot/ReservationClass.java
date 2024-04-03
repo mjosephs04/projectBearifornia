@@ -29,40 +29,6 @@ public class ReservationClass {
         endDay = end;
     }
 
-    //returns either a failure message or "success"
-    public String reserveRoom(Room reservedRoom){
-        ArrayList<Room> availableRooms = null;
-        try {
-            availableRooms = (ArrayList<Room>) readInAvailableRooms();
-        }
-        catch(IOException e){
-            e.printStackTrace();
-            return "failure";
-        }
-
-        if(availableRooms.contains(reservedRoom)) {
-            StringBuilder csvRoomFormat = new StringBuilder();
-            csvRoomFormat.append(reservedRoom.getRoomNumber() + "," + reservedRoom.getCost() + "," +
-                                reservedRoom.getBedType() + "," + reservedRoom.getNumOfBeds() + "," +
-                                reservedRoom.getQualityLevel() + ",");
-
-            if(reservedRoom.getSmokingStatus()){
-                csvRoomFormat.append("Y");
-            }
-            else{
-                csvRoomFormat.append("N");
-            }
-
-            String reserveRoom = addReservedRoom(csvRoomFormat.toString());
-            if (reserveRoom.equals("success")) {
-                return "success";
-            }
-            return "failure";
-        }
-
-        return "failure";
-    }
-
     //returns the String that was removed from the csv file (commas included)
     //or it returns failure
     public String removeAvailableRoom(Room reservedRoom) throws IOException {
