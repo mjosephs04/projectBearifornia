@@ -16,9 +16,9 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody String username, @RequestBody String password) {
+    public ResponseEntity<?> login(@RequestBody String[] data) {
 
-        UserType userType = authenticationService.authenticate(username, password);
+        UserType userType = authenticationService.authenticate(data[0], data[1]);
 
         if (userType == null) {
             return ResponseEntity.badRequest().body("Invalid username or password.");

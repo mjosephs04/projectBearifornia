@@ -14,7 +14,7 @@ public class AuthenticationService {
     public UserType authenticate(String username, String password) {
         String line;
         String splitBy = ",";
-        try (BufferedReader br = new BufferedReader(new FileReader(new ClassPathResource("Users.csv").getFile()))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("spring-boot/src/main/resources/Users.csv"))) {
             while ((line = br.readLine()) != null) { //reads until the end of the stream
                 String[] user = line.split(splitBy); // use comma as separator
                 if (user[0].equals(username) && user[1].equals(password)) {

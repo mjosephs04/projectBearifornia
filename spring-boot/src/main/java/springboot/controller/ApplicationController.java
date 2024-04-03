@@ -17,7 +17,7 @@ public class ApplicationController {
     public List<Room> convertCSV() {
 
         List<Room> listOfRooms = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/RoomsAvailable.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("/Users/markjosephs/IdeaProjects/projectBearifornia/spring-boot/src/main/resources/Users.csv"))) {
             String line;
             br.readLine();
             while ((line = br.readLine()) != null) {
