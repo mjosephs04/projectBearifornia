@@ -121,6 +121,45 @@ public class ReservationClass {
     }
 
 
+
+    // Search for available rooms based on criteria
+    public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, LocalDate startDate, LocalDate endDate) throws IOException {
+        List<Room> availableRooms = new ArrayList<>();
+        List<Room> allRooms = readInAvailableRooms(); // Assuming this method exists to read available rooms
+
+        // Iterate through all rooms
+        for (Room room : allRooms) {
+            // Check if the room matches the criteria
+            if (room.getSmokingStatus() == smoking &&
+                    room.getBedType().equals(bedType) &&
+                    room.getNumOfBeds() == bedNum &&
+                    room.getTypeOfRoom().equals(roomType) &&
+                    isRoomAvailable(room, startDate, endDate)) {
+                availableRooms.add(room);
+            }
+        }
+        return availableRooms;
+    }
+
+    // Check if the room is available for the specified dates
+    private boolean isRoomAvailable(Room room, LocalDate startDate, LocalDate endDate) throws IOException {
+        List<ReservationClass> allReservations = readInAllReservations(); // Assuming this method exists to read all reservations
+
+        // Iterate through all reservations
+        for (ReservationClass reservation : allReservations) {
+            // Check if the room is reserved for any overlapping dates
+            if (reservation.room.equals(room) &&
+                    !(endDate.isBefore(reservation.startDay) || startDate.isAfter(reservation.endDay))) {
+                return false; // Room is not available for the specified dates
+            }
+        }
+        return true; // Room is available for the specified dates
+    }
+
+
+
+
+
     public List<String> readInAvailableRoomsLines() throws IOException {
         List<String> availableRoomsLines = new ArrayList<>();
         InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
