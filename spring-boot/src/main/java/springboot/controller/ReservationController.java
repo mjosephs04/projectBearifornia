@@ -13,27 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/reservations")
 public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Room>> searchAvailableRooms(
-            @RequestParam boolean smoking,
-            @RequestParam String bedType,
-            @RequestParam int numOfBeds,
-            @RequestParam String roomType,
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
-
-        List<Room> rooms = reservationService.searchAvailableRooms(smoking, bedType, numOfBeds, roomType, startDate, endDate);
-        if (rooms.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(rooms);
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<List<Room>> searchAvailableRooms(
+//            @RequestParam String smoking,
+//            @RequestParam String bedType,
+//            @RequestParam String numOfBeds,
+//            @RequestParam String roomType,
+//            @RequestParam String startDate,
+//            @RequestParam String endDate) {
+//
+//        List<Room> rooms = reservationService.searchAvailableRooms(smoking, bedType, numOfBeds, roomType, startDate, endDate);
+//        if (rooms.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(rooms);
+//    }
 
     @PostMapping("/create")
     public ResponseEntity<String> createReservation(@RequestBody Reservation reservation) {
@@ -47,29 +48,25 @@ public class ReservationController {
 
 
     @PostMapping("/checkForRooms")
-    public Room checkAvailability(@RequestBody boolean smoking,
-                                  @RequestBody String bedType,
-                                  @RequestBody String roomType,
-                                  @RequestBody LocalDate startDate,
-                                  @RequestBody LocalDate endDate) throws IOException {
+    public ResponseEntity<Room> checkAvailability(@RequestBody String[] payload) throws IOException {
         int bedNum;
-        if(bedType.equals("Single")){
+        if(payload[1].equals("single")){
             bedNum = 1;
         }
-        else if(bedType.equals("Double")){
+        else if(payload[1].equals("double")){
             bedNum = 2;
         }
         else{
             bedNum = 3;
         }
         Reservation r = new Reservation();
-        ArrayList<Room> availableRooms = (ArrayList<Room>) r.searchRooms(smoking,bedType,bedNum,roomType, startDate, endDate);
+        ArrayList<Room> availableRooms = (ArrayList<Room>) r.searchRooms(Boolean.parseBoolean(payload[0]),payload[1],bedNum,payload[2], LocalDate.parse(payload[3]), LocalDate.parse(payload[4]));
 
         if(availableRooms.isEmpty()){
-            return null;
+            return ResponseEntity.badRequest().body(null);
         }
         else{
-            return availableRooms.get(0);
+            return ResponseEntity.ok(availableRooms.get(0));
         }
     }
 }

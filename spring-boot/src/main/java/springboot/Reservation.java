@@ -136,7 +136,7 @@ public class Reservation {
         // Iterate through all rooms
         for (Room room : allRooms) {
             // Check if the room matches the criteria
-            if (room.getSmokingStatus() == smoking && room.getBedType().equals(bedType) && room.getNumOfBeds() == bedNum && room.getTypeOfRoom().equals(roomType) && isRoomAvailable(room, startDate, endDate)) {
+            if (room.getSmokingAllowed() == smoking && room.getTypeOfRoom().equals(bedType) && room.getNumOfBeds() == bedNum && room.getTypeOfRoom().equals(roomType) && isRoomAvailable(room, startDate, endDate)) {
                 availableRooms.add(room);
             }
         }
@@ -188,8 +188,8 @@ public class Reservation {
             StringBuilder csvFormatRoom = new StringBuilder();
             Room reservedRoom = newReservation.room;
 
-            csvFormatRoom.append(reservedRoom.getRoomNumber() + "," + reservedRoom.getCost() + "," + reservedRoom.getTypeOfRoom() + "," + reservedRoom.getNumOfBeds() + "," + reservedRoom.getQualityLevel() + "," + reservedRoom.getBedType() + ",");
-            if (reservedRoom.getSmokingStatus()) {
+            csvFormatRoom.append(reservedRoom.getRoomNumber() + "," + reservedRoom.getCost() + "," + reservedRoom.getTypeOfRoom() + "," + reservedRoom.getNumOfBeds() + "," + reservedRoom.getQualityLevel() + "," + reservedRoom.getTypeOfRoom() + ",");
+            if (reservedRoom.getSmokingAllowed()) {
                 csvFormatRoom.append("Y" + ",");
             } else {
                 csvFormatRoom.append("N" + ",");

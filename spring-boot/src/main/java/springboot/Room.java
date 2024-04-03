@@ -141,63 +141,52 @@ public class Room {
         return available;
     }
 
-
-    //GETTERS
     public Double getCost() {
-        return this.cost;
+        return cost;
     }
 
-    //SETTERS
-    public void setCost(Double c) {
-        this.cost = c;
+    public void setCost(Double cost) {
+        this.cost = cost;
     }
 
     public Integer getRoomNumber() {
-        return this.roomNumber;
+        return roomNumber;
     }
 
-    public void setRoomNumber(Integer num) {
-        this.roomNumber = num;
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public Integer getNumOfBeds() {
-        return this.numOfBeds;
+        return numOfBeds;
     }
 
-    public void setNumOfBeds(Integer num) {
-        this.numOfBeds = num;
+    public void setNumOfBeds(Integer numOfBeds) {
+        this.numOfBeds = numOfBeds;
     }
 
     public Integer getQualityLevel() {
-        return this.qualityLevel;
+        return qualityLevel;
     }
 
-    public void setQualityLevel(Integer num) {
-        this.qualityLevel = num;
+    public void setQualityLevel(Integer qualityLevel) {
+        this.qualityLevel = qualityLevel;
     }
 
     public String getTypeOfRoom() {
-        return this.typeOfRoom;
+        return typeOfRoom;
     }
 
-    public void setTypeOfRoom(String s) {
-        this.typeOfRoom = s;
+    public void setTypeOfRoom(String typeOfRoom) {
+        this.typeOfRoom = typeOfRoom;
     }
 
-    public boolean getSmokingStatus() {
-        return this.smokingAllowed;
+    public boolean getSmokingAllowed() {
+        return smokingAllowed;
     }
 
-    public void setSmokingStatus(boolean b) {
-        this.smokingAllowed = b;
-    }
-
-    public String getBedType() {
-        return this.bedType;
-    }
-
-    public void setBedType(String s) {
-        this.bedType = s;
+    public void setSmokingAllowed(boolean smokingAllowed) {
+        this.smokingAllowed = smokingAllowed;
     }
 
 
@@ -205,11 +194,11 @@ public class Room {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Room room)) return false;
-        return smokingAllowed == room.smokingAllowed && Objects.equals(getCost(), room.getCost()) && Objects.equals(getRoomNumber(), room.getRoomNumber()) && Objects.equals(getNumOfBeds(), room.getNumOfBeds()) && Objects.equals(getQualityLevel(), room.getQualityLevel()) && Objects.equals(getTypeOfRoom(), room.getTypeOfRoom()) && Objects.equals(getBedType(), room.getBedType());
+        return smokingAllowed == room.smokingAllowed && Objects.equals(getCost(), room.getCost()) && Objects.equals(getRoomNumber(), room.getRoomNumber()) && Objects.equals(getNumOfBeds(), room.getNumOfBeds()) && Objects.equals(getQualityLevel(), room.getQualityLevel()) && Objects.equals(getTypeOfRoom(), room.getTypeOfRoom()) && Objects.equals(getTypeOfRoom(), room.getTypeOfRoom());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCost(), getRoomNumber(), getNumOfBeds(), getQualityLevel(), getTypeOfRoom(), getBedType(), smokingAllowed);
+        return Objects.hash(getCost(), getRoomNumber(), getNumOfBeds(), getQualityLevel(), getTypeOfRoom(), getTypeOfRoom(), smokingAllowed);
     }
 }
