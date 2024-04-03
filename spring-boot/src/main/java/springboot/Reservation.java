@@ -164,7 +164,8 @@ public class Reservation {
         // Iterate through all reservations
         for (Reservation reservation : allReservations) {
             // Check if the room is reserved for any overlapping dates
-            if (reservation.room.equals(room) && !(endDate.isBefore(reservation.startDay) || startDate.isAfter(reservation.endDay))) {
+            if (reservation.room.equals(room) &&
+                    !(endDate.isBefore(reservation.startDay) || startDate.isAfter(reservation.endDay))) {
                 return false; // Room is not available for the specified dates
             }
         }
