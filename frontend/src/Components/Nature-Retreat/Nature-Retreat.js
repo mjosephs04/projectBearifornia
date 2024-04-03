@@ -45,11 +45,11 @@ const NatureRetreat = () => {
                 {listingData.description}
             </div>
 
-            <div>
-                <img src={listingData.imageURL} className='listing-img'/>
+            <div className='listing-img'>
+                <img className='listing-img' src={listingData.imageURL}></img>
             </div>
 
-            <DateSelector />
+            <DateSelector/>
 
         </div>
     );

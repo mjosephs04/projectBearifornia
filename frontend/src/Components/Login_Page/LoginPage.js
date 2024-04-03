@@ -1,4 +1,3 @@
-
 import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
@@ -8,8 +7,19 @@ const LoginPage = (props) =>{
     const [usernameError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
+    const [username, setUsername] = useState([])
+    const [password, setPassword] = useState([])
+    const [response, setResponse] = useState([])
+
     const onButtonClick = () => {
-        //PUT THE LOGIN METHOD HERE MY BOAAAAA
+        console.log(username);
+        console.log(password);
+
+        axios.post('http://localhost:8080/api/auth/login', username, password)
+            .then(response =>{
+                console.log(response)
+            })
+
     }
 
     return (
@@ -22,6 +32,7 @@ const LoginPage = (props) =>{
                     //value={email}
                     placeholder="Enter your username here"
                     className={'inputBox'}
+                    onChange={evt => setUsername(evt.target.value)}
                 />
                 <label className="errorLabel">{usernameError}</label>
             </div>
@@ -32,6 +43,7 @@ const LoginPage = (props) =>{
                     placeholder="Enter your password here"
                     className={'inputBox'}
                     type="password"
+                    onChange={evt => setPassword(evt.target.value)}
                 />
                 <label className="errorLabel">{passwordError}</label>
             </div>

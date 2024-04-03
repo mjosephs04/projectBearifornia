@@ -7,28 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ReservationClass {
+public class Reservation {
 
-    private static Integer idNumber;
-    private static String name;
-    private static LocalDate startDay;
-    private static LocalDate endDay;
-    private static Integer price;
-    public Room room;
+    Room room;
+    private Integer idNumber;
+    private String name;
+    private LocalDate startDay;
+    private LocalDate endDay;
+    private Integer price;
 
-    public ReservationClass(Integer id, String n) {
-        idNumber = id;
-        name = n;
+    // Constructors
+    public Reservation(Integer id, String name) {
+        this.idNumber = id;
+        this.name = name;
     }
 
-    public ReservationClass(){
-        room = null;
+    public Reservation(Room room, LocalDate start, LocalDate end) {
+        this.room = room;
+        this.startDay = start;
+        this.endDay = end;
     }
 
-    public ReservationClass(Room r, LocalDate start, LocalDate end){
-        room = r;
-        startDay = start;
-        endDay = end;
+    public Reservation() {
+
     }
 
     //returns the String that was removed from the csv file (commas included)
@@ -91,8 +92,8 @@ public class ReservationClass {
 
 
     //opens csv file and returns a list of all available rooms
-    public List<ReservationClass> readInAllReservations() throws IOException {
-        ArrayList<ReservationClass> reservations = new ArrayList<>(); //store all the rooms we read in
+    public List<Reservation> readInAllReservations() throws IOException {
+        ArrayList<Reservation> reservations = new ArrayList<>(); //store all the rooms we read in
         InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
@@ -116,14 +117,13 @@ public class ReservationClass {
             // Parse the string to LocalDate
             LocalDate startD = LocalDate.parse(split[7], formatter);
             LocalDate endD = LocalDate.parse(split[8], formatter);
-            ReservationClass currReservation = new ReservationClass(currentRoom, startD, endD);
+            Reservation currReservation = new Reservation(currentRoom, startD, endD);
 
             reservations.add(currReservation);
         }
 
         return reservations;
     }
-
 
 
     // Search for available rooms based on criteria
@@ -134,11 +134,7 @@ public class ReservationClass {
         // Iterate through all rooms
         for (Room room : allRooms) {
             // Check if the room matches the criteria
-            if (room.getSmokingStatus() == smoking &&
-                    room.getBedType().equals(bedType) &&
-                    room.getNumOfBeds() == bedNum &&
-                    room.getTypeOfRoom().equals(roomType) &&
-                    isRoomAvailable(room, startDate, endDate)) {
+            if (room.getSmokingStatus() == smoking && room.getBedType().equals(bedType) && room.getNumOfBeds() == bedNum && room.getTypeOfRoom().equals(roomType) && isRoomAvailable(room, startDate, endDate)) {
                 availableRooms.add(room);
             }
         }
@@ -147,21 +143,17 @@ public class ReservationClass {
 
     // Check if the room is available for the specified dates
     private boolean isRoomAvailable(Room room, LocalDate startDate, LocalDate endDate) throws IOException {
-        List<ReservationClass> allReservations = readInAllReservations(); // Assuming this method exists to read all reservations
+        List<Reservation> allReservations = readInAllReservations(); // Assuming this method exists to read all reservations
 
         // Iterate through all reservations
-        for (ReservationClass reservation : allReservations) {
+        for (Reservation reservation : allReservations) {
             // Check if the room is reserved for any overlapping dates
-            if (reservation.room.equals(room) &&
-                    !(endDate.isBefore(reservation.startDay) || startDate.isAfter(reservation.endDay))) {
+            if (reservation.room.equals(room) && !(endDate.isBefore(reservation.startDay) || startDate.isAfter(reservation.endDay))) {
                 return false; // Room is not available for the specified dates
             }
         }
         return true; // Room is available for the specified dates
     }
-
-
-
 
 
     public List<String> readInAvailableRoomsLines() throws IOException {
@@ -181,30 +173,23 @@ public class ReservationClass {
     }
 
     //returns either a failure message or "success"
-    public String createReservation(ReservationClass newReservation) {
-        ArrayList<ReservationClass> existingReservations = null;
+    public String createReservation(Reservation newReservation) {
+        ArrayList<Reservation> existingReservations = null;
         try {
-            existingReservations = (ArrayList<ReservationClass>) readInAllReservations();
-        }
-        catch(IOException e){
+            existingReservations = (ArrayList<Reservation>) readInAllReservations();
+        } catch (IOException e) {
             e.printStackTrace();
             return "failure";
         }
 
-        if(! existingReservations.contains(newReservation)){
+        if (!existingReservations.contains(newReservation)) {
             StringBuilder csvFormatRoom = new StringBuilder();
             Room reservedRoom = newReservation.room;
 
-            csvFormatRoom.append(reservedRoom.getRoomNumber() + "," +
-                    reservedRoom.getCost() + "," +
-                    reservedRoom.getTypeOfRoom() + "," +
-                    reservedRoom.getNumOfBeds() + "," +
-                    reservedRoom.getQualityLevel() + "," +
-                    reservedRoom.getBedType() + ",") ;
-            if(reservedRoom.getSmokingStatus()){
+            csvFormatRoom.append(reservedRoom.getRoomNumber() + "," + reservedRoom.getCost() + "," + reservedRoom.getTypeOfRoom() + "," + reservedRoom.getNumOfBeds() + "," + reservedRoom.getQualityLevel() + "," + reservedRoom.getBedType() + ",");
+            if (reservedRoom.getSmokingStatus()) {
                 csvFormatRoom.append("Y" + ",");
-            }
-            else{
+            } else {
                 csvFormatRoom.append("N" + ",");
             }
             // Define the desired date format pattern
@@ -220,8 +205,7 @@ public class ReservationClass {
             if (reserveRoom.equals("success")) {
                 return "success";
             }
-        }
-        else{
+        } else {
             return "failure";
         }
 
@@ -277,14 +261,22 @@ public class ReservationClass {
         return idNumber;
     }
 
+    public void setIdNumber(Integer idNumber) {
+        this.idNumber = idNumber;
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ReservationClass) {
-            return ((ReservationClass) obj).getIdNumber().equals(idNumber) && ((ReservationClass) obj).getName().equals(name);
+        if (obj instanceof Reservation) {
+            return ((Reservation) obj).getIdNumber().equals(idNumber) && ((Reservation) obj).getName().equals(name);
         } else {
             return false;
         }
@@ -300,7 +292,7 @@ public class ReservationClass {
     }
 
     public void setStartDay(LocalDate startDay) {
-        ReservationClass.startDay = startDay;
+        this.startDay = startDay;
     }
 
     public LocalDate getEndDay() {
@@ -308,7 +300,7 @@ public class ReservationClass {
     }
 
     public void setEndDay(LocalDate endDay) {
-        ReservationClass.endDay = endDay;
+        this.endDay = endDay;
     }
 
     public Integer getPrice() {
@@ -316,7 +308,15 @@ public class ReservationClass {
     }
 
     public void setPrice(Integer price) {
-        ReservationClass.price = price;
+        this.price = price;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 }
 
