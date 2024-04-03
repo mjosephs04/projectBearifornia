@@ -9,11 +9,11 @@ import java.util.Objects;
 
 public class ReservationClass {
 
-    private static Integer idNumber;
-    private static String name;
-    private static LocalDate startDay;
-    private static LocalDate endDay;
-    private static Integer price;
+    private Integer idNumber;
+    private String name;
+    private LocalDate startDay;
+    private LocalDate endDay;
+    private Integer price;
     public Room room;
 
     public ReservationClass(Integer id, String n) {
@@ -300,7 +300,7 @@ public class ReservationClass {
     }
 
     public void setStartDay(LocalDate startDay) {
-        ReservationClass.startDay = startDay;
+        this.startDay = startDay;
     }
 
     public LocalDate getEndDay() {
@@ -308,7 +308,7 @@ public class ReservationClass {
     }
 
     public void setEndDay(LocalDate endDay) {
-        ReservationClass.endDay = endDay;
+        this.endDay = endDay;
     }
 
     public Integer getPrice() {
@@ -316,7 +316,7 @@ public class ReservationClass {
     }
 
     public void setPrice(Integer price) {
-        ReservationClass.price = price;
+        this.price = price;
     }
 }
 
