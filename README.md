@@ -1,24 +1,29 @@
-# CSI 3471: Hotel Bearifornia
+# CSI 3471: Project Bearifornia
 
 Hotel Bearifornia is a stay & shop reservation system.
+
+## Team Roles
+Team **Hotel Bearifornia**
+
+Member | Role |
+--- | --- |
+Catherine Arlinghaus | Requirements Engineer |
+Jacob Celis | Project Librarian |
+Jan Jasa | Quality Assurance |
+Mark Josephs | Design Engineer |
+Oliver Liu | Project Manager
+Willie Brown | Design Engineer |
 
 ## Description
 
 Maven-based Java SE system with a Swing UI providing input/output functionality, tested with JUnit.
 
-## Usage
+## Installation
 
 ```
 git clone https://github.com/mjosephs04/projectBearifornia.git
 ```
 
-Navigate to ```src/main/java/bearifornia/hotel```.
+Navigate to ```spring-boot/```, and open the ```pom.xml``` file as a project. When prompted, agree to import Maven dependencies.
 
-## Roles
-```
-Requirements Engineer: Catherine Arlinghaus
-Project Librarian: Jacob Celis
-Quality Assurance Engineer: Jan Jasa
-Design Engineers: Mark Josephs & Willie Brown
-Project Manager: Oliver Liu
-```
+Run from ```spring-boot/src/main/java/springboot/Application```.
