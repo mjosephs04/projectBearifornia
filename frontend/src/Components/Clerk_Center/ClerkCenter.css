@@ -1,0 +1,33 @@
+.pageTitle{
+    font-family: Helvetica;
+    font-size: 7vh;
+    font-weight: bolder;
+    color: #003b00;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3.5%;
+    height: 2vh;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    top: 50%;
+    left: 3%;
+    position: absolute;
+}
+
+.inputContainer > .errorLabel {
+    color: red;
+    font-size: 12px;
+}
+
+.bedroomButton{
+    width: 10%;
+    top: 30%;
+    position:absolute;
+}
