@@ -13,15 +13,15 @@ public class ReservationService {
 
     private final Reservation reservationHelper = new Reservation(); // Utilize Reservation class
 
-    public List<Room> searchAvailableRooms(boolean smoking, String bedType, int numOfBeds, String roomType, LocalDate startDate, LocalDate endDate) {
-        try {
-            // Leverage the searchRooms method from Reservation class
-            return reservationHelper.searchRooms(smoking, bedType, numOfBeds, roomType, startDate, endDate);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return List.of(); // Return an empty list in case of exceptions
-        }
-    }
+//    public List<Room> searchAvailableRooms(boolean smoking, String bedType, int numOfBeds, String roomType, LocalDate startDate, LocalDate endDate) {
+//        try {
+//            // Leverage the searchRooms method from Reservation class
+//            return reservationHelper.searchRooms(smoking, bedType, numOfBeds, roomType, startDate, endDate);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return List.of(); // Return an empty list in case of exceptions
+//        }
+//    }
 
     // Method to handle creating a new reservation
     public String createReservation(Reservation newReservation) {

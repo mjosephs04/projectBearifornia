@@ -48,7 +48,7 @@ const Vintage = () => {
                 <img className='listing-img' src={listingData.imageURL}></img>
             </div>
 
-            <DateSelector />
+            <DateSelector parameter='vintage' />
 
         </div>
     );

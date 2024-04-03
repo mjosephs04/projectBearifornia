@@ -49,7 +49,7 @@ const NatureRetreat = () => {
                 <img className='listing-img' src={listingData.imageURL}></img>
             </div>
 
-            <DateSelector/>
+            <DateSelector parameter='nature-retreat' />
 
         </div>
     );
