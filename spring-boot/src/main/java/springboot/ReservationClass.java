@@ -27,28 +27,38 @@ public class ReservationClass {
         endDay = end;
     }
 
-    public static LocalDate getStartDay() {
-        return startDay;
-    }
+    //returns either a failure message or "success"
+    public String reserveRoom(Room reservedRoom){
+        ArrayList<Room> availableRooms = null;
+        try {
+            availableRooms = (ArrayList<Room>) readInAvailableRooms();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            return "failure";
+        }
 
-    public static void setStartDay(LocalDate startDay) {
-        ReservationClass.startDay = startDay;
-    }
+        if(availableRooms.contains(reservedRoom)) {
+            StringBuilder csvRoomFormat = new StringBuilder();
+            csvRoomFormat.append(reservedRoom.getRoomNumber() + "," + reservedRoom.getCost() + "," +
+                                reservedRoom.getBedType() + "," + reservedRoom.getNumOfBeds() + "," +
+                                reservedRoom.getQualityLevel() + ",");
 
-    public static LocalDate getEndDay() {
-        return endDay;
-    }
+            if(reservedRoom.getSmokingStatus()){
+                csvRoomFormat.append("Y");
+            }
+            else{
+                csvRoomFormat.append("N");
+            }
 
-    public static void setEndDay(LocalDate endDay) {
-        ReservationClass.endDay = endDay;
-    }
+            String reserveRoom = addReservedRoom(csvRoomFormat.toString());
+            if (reserveRoom.equals("success")) {
+                return "success";
+            }
+            return "failure";
+        }
 
-    public static Integer getPrice() {
-        return price;
-    }
-
-    public static void setPrice(Integer price) {
-        ReservationClass.price = price;
+        return "failure";
     }
 
     //returns the String that was removed from the csv file (commas included)
@@ -125,24 +135,6 @@ public class ReservationClass {
         return availableRoomsLines;
     }
 
-    //returns either a failure message or "success"
-    public String reserveRoom(Room reservedRoom) {
-        String removedRoom;
-        try {
-            //attempt removing the available room from the RoomsAvailable.csv
-            removedRoom = removeAvailableRoom(reservedRoom);
-        } catch (IOException x) {
-            x.printStackTrace();
-            return "failed to remove room from database of available rooms";
-        }
-        if (!removedRoom.contains("failure")) {
-            String reserveRoom = addReservedRoom(removedRoom);
-            if (reserveRoom.equals("success")) {
-                return "success";
-            }
-        }
-        return removedRoom;
-    }
 
     //takes a csv formatted line and puts it into the RoomsTaken.csv
     //returns either success" or a fail message depending on result
@@ -209,6 +201,30 @@ public class ReservationClass {
     @Override
     public int hashCode() {
         return Objects.hash(name, idNumber, endDay, startDay);
+    }
+
+    public static LocalDate getStartDay() {
+        return startDay;
+    }
+
+    public static void setStartDay(LocalDate startDay) {
+        ReservationClass.startDay = startDay;
+    }
+
+    public static LocalDate getEndDay() {
+        return endDay;
+    }
+
+    public static void setEndDay(LocalDate endDay) {
+        ReservationClass.endDay = endDay;
+    }
+
+    public static Integer getPrice() {
+        return price;
+    }
+
+    public static void setPrice(Integer price) {
+        ReservationClass.price = price;
     }
 }
 
