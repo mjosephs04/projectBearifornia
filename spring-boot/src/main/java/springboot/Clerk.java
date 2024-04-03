@@ -29,7 +29,6 @@ public class Clerk implements User {
     //returns either "success" or a string containing "failure" depending on result
     public String addAvailableRoom(String newRoom) {
         InputStream is = this.getClass().getResourceAsStream("/Rooms.csv");
-
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String line;

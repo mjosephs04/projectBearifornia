@@ -21,7 +21,12 @@ public class MyController {
             br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
-                Room nRoom = new Room(Double.parseDouble(row[1]), Integer.parseInt(row[0]), Integer.parseInt(row[3]), Integer.parseInt(row[4]), row[2], Boolean.parseBoolean(row[6]));
+                Room nRoom = new Room(Integer.parseInt(row[0]),
+                        Double.parseDouble(row[1]),
+                        row[2], Integer.parseInt(row[3]),
+                        Integer.parseInt(row[4]),
+                        row[5],
+                        Boolean.parseBoolean(row[6]));
                 listOfRooms.add(nRoom);
             }
         } catch (Exception ex) {
