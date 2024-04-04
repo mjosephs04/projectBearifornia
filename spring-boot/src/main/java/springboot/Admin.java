@@ -39,6 +39,7 @@ public class Admin implements User{
         idNumber = id;
     }
 
+    //returns either "success" or a fail message
     public String addUser(String username, String password, UserType type) {
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Users.csv"));
