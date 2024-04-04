@@ -18,7 +18,7 @@ const AddRoom = (props) =>{
 
     const onButtonClick = () => {
         // ADDING LINKING WITH BACKEND
-        // After a button is clicked there is a way to clear the text in the fields
+        // After a button is clicked theres a way to clear the text in the fields
         // This is what I found
 
         function ClearTextFieldExample() {
