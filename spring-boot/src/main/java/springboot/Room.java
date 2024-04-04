@@ -47,17 +47,6 @@ public class Room {
         this.bedType = room.getBedType();
     }
 
-    //Parse Dates
-    public static Date parseDate(String dateString) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-            return sdf.parse(dateString);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error parsing date: " + dateString, e);
-            return null;
-        }
-    }
-
     //PRINT INFO
     public void printRoomInfo() {
         System.out.println(roomNumber);
