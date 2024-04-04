@@ -16,6 +16,10 @@ const DateSelector = (props) => {
     const [roomAvailable, setRoomAvailable] = useState(false);
     const [roomCost, setRoomCost] = useState(0.0);
 
+    const onButtonClick = () => {
+        //do something
+    };
+
     const checkAvailability = () => {
         const payload = [
             smoking,
@@ -55,7 +59,8 @@ const DateSelector = (props) => {
 
             <div>
                 <label className='select-room-label'>Select Room Type:</label>
-                <select className="room-select-dropdown" value={selectedRoom} onChange={change => setSelectedRoom(change.target.value)}>
+                <select className="room-select-dropdown" value={selectedRoom}
+                        onChange={change => setSelectedRoom(change.target.value)}>
                     <option value='single'>Single</option>
                     <option value='double'>Double</option>
                     <option value='family'>Family</option>
@@ -105,6 +110,22 @@ const DateSelector = (props) => {
                 </div>
             )}
 
+            <br/>
+            <div className='inputContainer'>
+
+                <input
+                    // //value={email}
+                    placeholder="Enter your name here"
+                    className={'inputBox'}
+                    // onChange={evt => setUsername(evt.target.value)}
+                />
+            </div>
+            <br/>
+            <div className={'inputContainer'}>
+                <Link to='/confirmation'>
+                    <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Reserve Now'}/>
+                </Link>
+            </div>
         </div>
     );
 }
