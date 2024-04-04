@@ -323,13 +323,14 @@ public class Reservation {
     public void setRoom(Room room) {
         this.room = room;
     }
+
+    /*
     public static void main(String[] args) {
         Reservation test = new Reservation();
         List<Room> rooms = null;
             test.addReservedRoom("hello,test");
 
-
-    }
+    }*/
 
 }
 
