@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springboot.RoomDto;
 import springboot.service.AddRoomService;
 
 import java.io.IOException;
@@ -23,12 +22,14 @@ public class AddRoomController {
     }
 
     @PostMapping("/addRoom")
-    public ResponseEntity<String> addRoom(@RequestBody RoomDto roomDto) {
+    public ResponseEntity<String> addRoom(@RequestBody String[] roomDetails) {
         try {
-            addRoomService.addRoom(roomDto);
+            addRoomService.addRoom(roomDetails);
             return ResponseEntity.ok("Room successfully added to CSV.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
         } catch (IOException e) {
-            return ResponseEntity.badRequest().body("Failed to add room: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Failed to add room: " + e.getMessage());
         }
     }
 }
