@@ -8,6 +8,7 @@ import Vintage from './Components/Vintage/Vintage'
 import LoginPage from './Components/Login_Page/LoginPage'
 import CreateAccount from './Components/Create_Account/CreateAccount'
 import ClerkCenter from './Components/Clerk_Center/ClerkCenter'
+import AddRoom from './Components/AddRoom/AddRoom'
 import {Route, Routes} from "react-router-dom";
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route exact path='/login-page' element={<LoginPage />}/>
                 <Route exact path='/create-account' element={<CreateAccount />}/>
                 <Route exact path='/clerk-center' element={<ClerkCenter />}/>
+                <Route exact path='/add-room' element={<AddRoom />}/>
             </Routes>
         </>
     );
