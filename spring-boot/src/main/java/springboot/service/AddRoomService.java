@@ -19,7 +19,7 @@ public class AddRoomService {
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
             String line = String.join(",", roomDetails); // Join all details separated by commas
-            out.println("\n" + line);
+            out.println(line);
         } catch (IOException e) {
             throw new IOException("Failed to add room to CSV", e);
         }
