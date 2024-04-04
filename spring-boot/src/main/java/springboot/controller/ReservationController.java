@@ -9,6 +9,7 @@ import springboot.service.ReservationService;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 @RestController
@@ -69,6 +70,40 @@ public class ReservationController {
         }
         else{
             return ResponseEntity.ok(availableRooms.get(0));
+        }
+    }
+
+    public ResponseEntity<Double> calculateCost(@RequestBody
+                                 String checkIn,
+                                 @RequestBody String checkOut,
+                                 @RequestBody Integer roomNumber){
+        Room use = new Room();
+        Room room = null;
+        Double cost = 0.0;
+
+        // Parse the string into a ZonedDateTime
+        ZonedDateTime startD = ZonedDateTime.parse(checkIn);
+        ZonedDateTime endD = ZonedDateTime.parse(checkOut);
+
+        // Extract the LocalDate part from the ZonedDateTime
+        LocalDate startDate = startD.toLocalDate();
+        LocalDate endDate = endD.toLocalDate();
+
+        try {
+            room = use.findRoom(roomNumber);
+        }
+        catch(IOException e){
+            return ResponseEntity.badRequest().body(cost);
+        }
+        if(room != null){
+            Reservation r = new Reservation(room, startDate, endDate);
+            cost = r.calculateCost(r);
+        }
+        if (cost <= 0.0){
+            return ResponseEntity.badRequest().body(cost);
+        }
+        else{
+            return ResponseEntity.ok(cost);
         }
     }
 }
