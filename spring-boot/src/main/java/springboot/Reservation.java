@@ -51,7 +51,7 @@ public class Reservation {
                     Integer.parseInt(split[3]), //number of beds
                     Integer.parseInt(split[4]), //quality level
                     split[5], //bedType
-                    split[6].equals("Y") //smoking
+                    Boolean.parseBoolean(split[6]) //smoking
             );
 
             roomList.add(currentRoom);
@@ -112,9 +112,9 @@ public class Reservation {
         //so now we will check all rooms only rooms that match the desired criteria
         // if room does NOT match criteria, remove it from list
         rooms.removeIf(curr -> !(curr.getSmokingAllowed() == smoking &&
-                curr.getBedType().equals(bedType) &&
+                curr.getBedType().equalsIgnoreCase(bedType) &&
                 curr.getNumOfBeds() == bedNum &&
-                curr.getTypeOfRoom().equals(roomType)));
+                curr.getTypeOfRoom().equalsIgnoreCase(roomType)));
 
         // Iterate through all rooms
         for (Room room : rooms) {
@@ -313,11 +313,11 @@ public class Reservation {
         Reservation test = new Reservation();
         List<Room> rooms = null;
         try{
-            rooms = test.searchRooms(false, "Single", 1, "Urban Elegance", "2024-04-20T20:39:06.000Z", "2024-04-22T20:39:06.000Z");
+            rooms = test.searchRooms(true, "Single", 1, "Nature Retreat", "2024-04-08T20:39:06.000Z", "2024-04-15T20:39:06.000Z");
         }catch(IOException e) {
             System.out.println("failll");
         }
-
+//101,437.46,Nature Retreat,1,4,Single,true
         rooms.forEach(room -> System.out.println(room.getRoomNumber()));
 
     }
