@@ -9,6 +9,7 @@ import LoginPage from './Components/Login_Page/LoginPage'
 import CreateAccount from './Components/Create_Account/CreateAccount'
 import ClerkCenter from './Components/Clerk_Center/ClerkCenter'
 import AddRoom from './Components/AddRoom/AddRoom'
+import ReservationLanding from './Components/ReservationLanding/ReservationLanding'
 import {Route, Routes} from "react-router-dom";
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                 <Route exact path='/create-account' element={<CreateAccount />}/>
                 <Route exact path='/clerk-center' element={<ClerkCenter />}/>
                 <Route exact path='/add-room' element={<AddRoom />}/>
+                <Route exact path='/reservation' element={<ReservationLanding />}/>
             </Routes>
         </>
     );
