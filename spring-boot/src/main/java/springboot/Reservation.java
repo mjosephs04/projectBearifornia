@@ -175,6 +175,36 @@ public class Reservation {
     }
 
     //returns either a failure message or "success"
+    public String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
+        Room use = new Room();
+        Room r = null;
+        try {
+            r = use.findRoom(roomNumber);
+        }
+        catch(IOException e){
+            return "fail";
+        }
+        // Parse the string into a ZonedDateTime
+        ZonedDateTime startD = ZonedDateTime.parse(checkIn);
+        ZonedDateTime endD = ZonedDateTime.parse(checkOut);
+
+        // Extract the LocalDate part from the ZonedDateTime
+        LocalDate startDate = startD.toLocalDate();
+        LocalDate endDate = endD.toLocalDate();
+
+        Reservation newReservation = new Reservation(r, startDate, endDate);
+
+        String s = createReservation(newReservation);
+        if(s.equalsIgnoreCase("success")) {
+            return "success";
+        }
+        else{
+            return "fail";
+        }
+    }
+
+
+    //returns either a failure message or "success"
     public String createReservation(Reservation newReservation) {
         ArrayList<Reservation> existingReservations = null;
         try {

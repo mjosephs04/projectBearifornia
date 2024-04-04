@@ -27,4 +27,8 @@ public class ReservationService {
     public String createReservation(Reservation newReservation) {
         return reservationHelper.createReservation(newReservation);
     }
+
+    public String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
+        return createReservation(checkIn, checkOut, roomNumber, name);
+    }
 }
