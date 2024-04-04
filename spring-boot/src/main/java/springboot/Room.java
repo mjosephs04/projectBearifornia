@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -115,6 +116,25 @@ public class Room {
             }
         }
         return datePairs;
+    }
+
+    // Search for available rooms based on criteria
+    //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
+    public Room findRoom(int roomNumber) throws IOException {
+        Reservation r = new Reservation();
+        List<Room> rooms = r.readInAllRooms();
+        //so now we will check all rooms only rooms that match the desired criteria
+        // if room does NOT match criteria, remove it from list
+        rooms.removeIf(curr -> curr.getRoomNumber() != roomNumber);
+
+        //at the end of this loop, the list rooms should only contain the desired room
+
+        if(rooms.size() == 1){
+            return rooms.get(0);
+        }
+        else{
+            return null;
+        }
     }
 
     //Check Availability

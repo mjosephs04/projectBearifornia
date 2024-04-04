@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +33,23 @@ public class Reservation {
         this.room = new Room(room);
         this.startDay = start;
         this.endDay = end;
+    }
+
+    public Double calculateCost(Reservation r){
+        Double cost = 0.0;
+        Room room = r.getRoom();
+        Integer days = (int)ChronoUnit.DAYS.between(r.getStartDay(), r.getEndDay());
+        Integer beds = room.getNumOfBeds();
+
+
+        cost = switch (room.getTypeOfRoom().toLowerCase()) {
+            case "urban elegance" -> beds * days * 53.2;
+            case "vintage charm" -> beds * days * 60.0;
+            case "nature retreat" -> beds * days * 40.0;
+            default -> days * 35.0;
+        };
+
+        return cost;
     }
 
     //opens csv file and returns a list of all existing rooms
@@ -178,9 +196,9 @@ public class Reservation {
                                 append(reservedRoom.getQualityLevel()).append(",").
                                 append(reservedRoom.getTypeOfRoom()).append(",");
             if (reservedRoom.getSmokingAllowed()) {
-                csvFormatRoom.append("Y" + ",");
+                csvFormatRoom.append("true" + ",");
             } else {
-                csvFormatRoom.append("N" + ",");
+                csvFormatRoom.append("false" + ",");
             }
             // Define the desired date format pattern
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
