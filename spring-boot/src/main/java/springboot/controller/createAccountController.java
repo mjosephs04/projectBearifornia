@@ -31,7 +31,7 @@ public class createAccountController {
             return ResponseEntity.ok("Created account.");
         }
         else{
-            return ResponseEntity.badRequest().body("Failed to create account.");
+            return ResponseEntity.badRequest().body("Failed to create account." + message);
         }
     }
 }
