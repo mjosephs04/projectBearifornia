@@ -23,6 +23,8 @@ public class AddRoomController {
 
     @PostMapping("/addRoom")
     public ResponseEntity<String> addRoom(@RequestBody String[] roomDetails) {
+        String x;
+
         try {
             addRoomService.addRoom(roomDetails);
             return ResponseEntity.ok("Room successfully added to CSV.");
