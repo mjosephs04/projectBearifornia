@@ -19,7 +19,7 @@ public class AddRoomService {
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
             String line = String.join(",", roomDetails); // Join all details separated by commas
-            out.println(line);
+            out.println("\n" + line);
         } catch (IOException e) {
             throw new IOException("Failed to add room to CSV", e);
         }
@@ -69,5 +69,24 @@ public class AddRoomService {
 
         return "success";
     }
+/*
+    public static void main(String[] args) {
+        AddRoomService x = new AddRoomService();
+        String[] testRoomString = new String[7];
+        testRoomString[0] = "room";
+        testRoomString[1] = "next";
+        testRoomString[2] = "3";
+        testRoomString[3] = "3";
+        testRoomString[4] = "3";
+        testRoomString[5] = "3";
+        testRoomString[6] = "3";
+
+    try {
+        x.addRoom(testRoomString);
+    }
+    catch(IOException e){
+
+    }
+    }*/
 }
 
