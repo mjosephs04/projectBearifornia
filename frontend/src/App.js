@@ -7,6 +7,7 @@ import NatureRetreat from './Components/Nature-Retreat/Nature-Retreat'
 import Vintage from './Components/Vintage/Vintage'
 import LoginPage from './Components/Login_Page/LoginPage'
 import CreateAccount from './Components/Create_Account/CreateAccount'
+import ClerkCenter from './Components/Clerk_Center/ClerkCenter'
 import {Route, Routes} from "react-router-dom";
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                 <Route exact path='/reserve/old-vintage' element={<Vintage />}/>
                 <Route exact path='/login-page' element={<LoginPage />}/>
                 <Route exact path='/create-account' element={<CreateAccount />}/>
+                <Route exact path='/clerk-center' element={<ClerkCenter />}/>
             </Routes>
         </>
     );
