@@ -15,6 +15,7 @@ const DateSelector = (props) => {
     const [responseAPI, setResponse] = useState([]);
     const [roomAvailable, setRoomAvailable] = useState(false);
     const [roomCost, setRoomCost] = useState(0.0);
+    const [roomNumber, setRoomNumber] = useState(-1);
 
     const onButtonClick = () => {
         //do something
@@ -33,6 +34,7 @@ const DateSelector = (props) => {
                 setResponse(response);
                 if(response.status == 200){
                     setRoomCost(response.data.cost);
+                    setRoomNumber(response.data.roomNumber);
                     setRoomAvailable(true);
                 }
                 return response.data;
@@ -42,6 +44,19 @@ const DateSelector = (props) => {
                 }else{
                     console.log("Network Error: " + error);
                 }
+            })
+    }
+
+    const ReserveRoom = () => {
+        const payload = [
+            checkInDate,
+            checkOutDate,
+            roomNumber
+        ]
+
+        axios.post('http://localhost:8080', payload)
+            .then(reponse =>{
+                   
             })
     }
 
@@ -103,29 +118,28 @@ const DateSelector = (props) => {
                     <h1 className='room-available-label'>Room Available, Cost: </h1>
                     <h1 className='room-cost'>${roomCost}</h1>
 
-                    <Link to='/reservation'>
-                        <button className='reserve-room-button'>Reserve Room</button>
-                    </Link>
+                    <br/><br/><br/><br/><br/>
+                    <div className='inputContainer'>
+
+                        <input
+                            // //value={email}
+                            placeholder="Enter your name here"
+                            className={'inputBox'}
+                            // onChange={evt => setUsername(evt.target.value)}
+                        />
+                    </div>
+                    <br/>
+                    <div className={'inputContainer'}>
+                        <Link to='/confirmation'>
+                            <input className={'inputButton'} type="button" onClick={ReserveRoom}
+                                   value={'Reserve Now'}/>
+                        </Link>
+                    </div>
 
                 </div>
+
             )}
 
-            <br/>
-            <div className='inputContainer'>
-
-                <input
-                    // //value={email}
-                    placeholder="Enter your name here"
-                    className={'inputBox'}
-                    // onChange={evt => setUsername(evt.target.value)}
-                />
-            </div>
-            <br/>
-            <div className={'inputContainer'}>
-                <Link to='/confirmation'>
-                    <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Reserve Now'}/>
-                </Link>
-            </div>
         </div>
     );
 }
