@@ -39,29 +39,15 @@ public class Reservation {
         Double cost = 0.0;
         Room room = r.getRoom();
         Integer days = (int)ChronoUnit.DAYS.between(r.getStartDay(), r.getEndDay());
-
-        Integer type;
-        switch(room.getNumOfBeds()){
-            case 1:
-            case 2:
-            case 3:
-        }
+        Integer beds = room.getNumOfBeds();
 
 
-        switch(room.getTypeOfRoom().toLowerCase()){
-            case "urban elegance":
-                break;
-            case "vintage charm":
-
-                break;
-            case "nature retreat":
-
-                break;
-            default:
-
-                break;
-
-        }
+        cost = switch (room.getTypeOfRoom().toLowerCase()) {
+            case "urban elegance" -> beds * days * 53.2;
+            case "vintage charm" -> beds * days * 60.0;
+            case "nature retreat" -> beds * days * 40.0;
+            default -> days * 35.0;
+        };
 
         return cost;
     }
