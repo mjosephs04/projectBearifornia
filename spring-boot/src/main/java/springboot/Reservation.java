@@ -51,7 +51,7 @@ public class Reservation {
                     Integer.parseInt(split[3]), //number of beds
                     Integer.parseInt(split[4]), //quality level
                     split[5], //bedType
-                    split[6].equals("Y") //smoking
+                    Boolean.parseBoolean(split[6]) //smoking
             );
 
             roomList.add(currentRoom);
