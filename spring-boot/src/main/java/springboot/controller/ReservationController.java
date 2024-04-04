@@ -73,12 +73,13 @@ public class ReservationController {
         }
     }
 
-    public Double calculateCost(@RequestBody
+    public ResponseEntity<Double> calculateCost(@RequestBody
                                  String checkIn,
                                  @RequestBody String checkOut,
                                  @RequestBody Integer roomNumber){
         Room use = new Room();
         Room room = null;
+        Double cost = 0.0;
 
         // Parse the string into a ZonedDateTime
         ZonedDateTime startD = ZonedDateTime.parse(checkIn);
@@ -92,14 +93,17 @@ public class ReservationController {
             room = use.findRoom(roomNumber);
         }
         catch(IOException e){
-
+            return ResponseEntity.badRequest().body(cost);
         }
         if(room != null){
             Reservation r = new Reservation(room, startDate, endDate);
-            return r.calculateCost(r);
+            cost = r.calculateCost(r);
+        }
+        if (cost <= 0.0){
+            return ResponseEntity.badRequest().body(cost);
         }
         else{
-            return -1.0;
+            return ResponseEntity.ok(cost);
         }
     }
 }
