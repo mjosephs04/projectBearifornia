@@ -66,3 +66,19 @@
     left: 40%;
     top: 152%;
 }
+
+.cost-label{
+    position: absolute;
+    font-size: 30px;
+    left: 28%;
+}
+
+.room-cost{
+    position: absolute;
+    left: 60%;
+    top: 163.25%;
+}
+
+.reserve-now-button{
+
+}

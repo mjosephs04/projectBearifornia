@@ -3,6 +3,7 @@ import axios from 'axios'
 import './DateSelector.css'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import {Link} from 'react-router-dom'
 
 const DateSelector = (props) => {
     const date = new Date();
@@ -12,9 +13,10 @@ const DateSelector = (props) => {
     const [smoking, setSmoking] = useState(false);
     const [roomUnavailable, setRoomUnavailable] = useState(false);
     const [responseAPI, setResponse] = useState([]);
+    const [roomCost, setRoomCost] = useState(0.0);
+    const [showCost, setShowCost] = useState(false);
 
     const checkAvailability = () => {
-        console.log(props.parameter)
         const payload = [
             smoking,
             selectedRoom,
@@ -22,17 +24,16 @@ const DateSelector = (props) => {
             checkInDate,
             checkOutDate
         ]
-        console.log(payload);
         axios.post('http://localhost:8080/api/reservations/checkForRooms', payload)
             .then(response =>{
-                console.log(response);
                 setResponse(response);
                 if(response.status == 200){
-                    //transfer to landing page
+                    //show cost
+                    setRoomCost(response.data.cost);
+                    setShowCost(true);
                 }
+                console.log(response);
                 return response.data;
-            }).then(data => {
-                console.log(data);
             }).catch(error => {
                 if(error.response.status === 400){
                     setRoomUnavailable(true);
@@ -88,9 +89,22 @@ const DateSelector = (props) => {
                 <button onClick={checkAvailability}>Check Availability</button>
             </div>
 
+
             {roomUnavailable && (
                 <div>
                     <h1 className='room-unavailable-error'>Room is Unavailable</h1>
+                </div>
+            )}
+
+            {showCost && (
+                <div>
+                    <h1 className='cost-label'>Room Available, Cost per night: </h1>
+                    <h1 className='room-cost'>${roomCost}</h1>
+
+                    <Link to='/reservation'>
+                        <button className='reserve-now-button'>Reserve Now</button>
+                    </Link>
+
                 </div>
             )}
 
