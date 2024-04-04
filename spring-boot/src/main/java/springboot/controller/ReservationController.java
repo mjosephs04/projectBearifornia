@@ -37,8 +37,10 @@ public class ReservationController {
 //    }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createReservation(@RequestBody Reservation reservation) {
-        String result = reservationService.createReservation(reservation);
+    public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
+        //String checkIn, String checkOut, int roomNumber, String name
+
+        String result = reservationService.createReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3]);
         if ("success".equals(result)) {
             return ResponseEntity.ok("Reservation created successfully.");
         } else {
@@ -95,10 +97,12 @@ public class ReservationController {
         catch(IOException e){
             return ResponseEntity.badRequest().body(cost);
         }
+
         if(room != null){
             Reservation r = new Reservation(room, startDate, endDate);
             cost = r.calculateCost(r);
         }
+
         if (cost <= 0.0){
             return ResponseEntity.badRequest().body(cost);
         }
