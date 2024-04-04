@@ -58,3 +58,11 @@
     justify-content: flex-end;
     height: 140vh;
 }
+
+.room-unavailable-error{
+    font-size: 20px;
+    color: red;
+    position: absolute;
+    left: 40%;
+    top: 152%;
+}

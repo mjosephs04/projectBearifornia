@@ -65,7 +65,7 @@ public class ReservationController {
                 payload[3], payload[4]);
 
         if(availableRooms.isEmpty()){
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(new Room());
         }
         else{
             return ResponseEntity.ok(availableRooms.get(0));
