@@ -2,10 +2,7 @@ package springboot.controller;
 
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springboot.Admin;
 import springboot.UserType;
 
@@ -15,13 +12,13 @@ import springboot.UserType;
 public class createAccountController {
 
     @PostMapping("/createAccount")
-    public ResponseEntity<String> createAccount(String username, String password){
+    public ResponseEntity<String> createAccount(@RequestBody String[] payload){
         boolean result = false;
         UserType type = UserType.GUEST;
         String message;
 
         Admin admin = new Admin("default", 1001);
-        message = admin.addUser(username, password, type);
+        message = admin.addUser(payload[0], payload[1], type);
 
         if(message.equalsIgnoreCase("success")){
             result = true;

@@ -1,14 +1,30 @@
-
 import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import "./CreateAccount.css"
 const CreateAccount = (props) =>{
-    const [usernameError, setEmailError] = useState('')
-    const [passwordError, setPasswordError] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
 
     const onButtonClick = () => {
-        //PUT THE LOGIN METHOD HERE MY BOAAAAA
+        const payload = [
+            username,
+            password
+        ]
+        console.log(username);
+        console.log(password);
+        console.log(payload);
+
+        axios.post('http://localhost:8080/api/register/createAccount', payload)
+            .then(response => {
+                console.log(response);
+                if (response.status !== 200) {
+                    throw new Error('Network response was not ok: ' + response.data);
+                }
+                return response.data;
+            }).catch(error => {
+                console.log("Error with authentication" + error);
+            });
     }
 
     return (
@@ -21,8 +37,8 @@ const CreateAccount = (props) =>{
                     //value={email}
                     placeholder="Enter your username here"
                     className={'inputBox'}
+                    onChange={input => setUsername(input.target.value)}
                 />
-                <label className="errorLabel">{usernameError}</label>
             </div>
             <br/>
             <div className='inputContainer'>
@@ -31,8 +47,8 @@ const CreateAccount = (props) =>{
                     placeholder="Enter your password here"
                     className={'inputBox'}
                     type="password"
+                    onChange={input => setPassword(input.target.value)}
                 />
-                <label className="errorLabel">{passwordError}</label>
             </div>
             <br/>
             <div className={'inputContainer'}>
