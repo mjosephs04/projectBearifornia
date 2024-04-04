@@ -216,7 +216,7 @@ public class Reservation {
 
         if (!existingReservations.contains(newReservation)) {
             StringBuilder csvFormatRoom = new StringBuilder();
-            Room reservedRoom = newReservation.room;
+            Room reservedRoom = newReservation.getRoom();
 
             //convert room to a csv line in desired format
             csvFormatRoom.append(reservedRoom.getRoomNumber()).append(",").
@@ -224,12 +224,9 @@ public class Reservation {
                                 append(reservedRoom.getTypeOfRoom()).append(",").
                                 append(reservedRoom.getNumOfBeds()).append(",").
                                 append(reservedRoom.getQualityLevel()).append(",").
-                                append(reservedRoom.getTypeOfRoom()).append(",");
-            if (reservedRoom.getSmokingAllowed()) {
-                csvFormatRoom.append("true" + ",");
-            } else {
-                csvFormatRoom.append("false" + ",");
-            }
+                                append(reservedRoom.getTypeOfRoom()).append(",").
+                                append(reservedRoom.getSmokingAllowed());
+
             // Define the desired date format pattern
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
@@ -253,45 +250,14 @@ public class Reservation {
     //takes a csv formatted line and puts it into the RoomsTaken.csv
     //returns either "success" or a fail message depending on result
     public String addReservedRoom(String newRoom) {
-        List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"))
-        ) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
+        try (FileWriter fw = new FileWriter("spring-boot/src/main/resources/RoomsTaken.csv", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(newRoom);
+            return "success";
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Failed to read in the currently reserved rooms";
+            return "failure to add new reservation";
         }
-
-        // Add the new line containing the new reservation
-        if (!lines.contains(newRoom)) {
-            lines.add(newRoom);
-        } else {
-            return "Room is already reserved";
-        }
-
-        FileWriter fw;
-        try {
-            fw = new FileWriter("spring-boot/src/main/resources/RoomsTaken.csv");
-        } catch (IOException x) {
-            x.printStackTrace();
-            return "Could not write to RoomsTaken database";
-        }
-
-        // Write the updated content back to the CSV file
-        try (BufferedWriter writer = new BufferedWriter(fw)) {
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Could not write to RoomsTaken database";
-        }
-
-        return "success";
     }
 
     public Integer getIdNumber() {
@@ -357,18 +323,13 @@ public class Reservation {
     public void setRoom(Room room) {
         this.room = room;
     }
-//    public static void main(String[] args) {
-//        Reservation test = new Reservation();
-//        List<Room> rooms = null;
-//        try{
-//            rooms = test.searchRooms(false, "Single", 1, "Urban Elegance", "2024-04-20T20:39:06.000Z", "2024-04-22T20:39:06.000Z");
-//        }catch(IOException e) {
-//            System.out.println("failll");
-//        }
-//
-//        rooms.forEach(room -> System.out.println(room.getRoomNumber()));
-//
-//    }
+    public static void main(String[] args) {
+        Reservation test = new Reservation();
+        List<Room> rooms = null;
+            test.addReservedRoom("hello,test");
+
+
+    }
 
 }
 
