@@ -29,6 +29,6 @@ public class ReservationService {
     }
 
     public String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        return createReservation(checkIn, checkOut, roomNumber, name);
+        return reservationHelper.createReservation(checkIn, checkOut, roomNumber, name);
     }
 }

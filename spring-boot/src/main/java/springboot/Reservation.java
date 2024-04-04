@@ -313,8 +313,8 @@ public class Reservation {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Reservation) {
-            return ((Reservation) obj).getIdNumber().equals(idNumber) &&
-                    ((Reservation) obj).getName().equals(name);
+            return ((Reservation) obj).getStartDay().equals(startDay) &&
+                    ((Reservation) obj).getRoom().equals(room);
         } else {
             return false;
         }

@@ -16,6 +16,7 @@ const DateSelector = (props) => {
     const [roomAvailable, setRoomAvailable] = useState(false);
     const [roomCost, setRoomCost] = useState(0.0);
     const [roomNumber, setRoomNumber] = useState(-1);
+    const [name, setName] = useState('');
 
     const onButtonClick = () => {
         //do something
@@ -51,12 +52,13 @@ const DateSelector = (props) => {
         const payload = [
             checkInDate,
             checkOutDate,
-            roomNumber
+            roomNumber,
+            name
         ]
 
-        axios.post('http://localhost:8080', payload)
-            .then(reponse =>{
-                   
+        axios.post('http://localhost:8080/api/reservations/create', payload)
+            .then(response =>{
+                console.log(response);
             })
     }
 
@@ -125,7 +127,7 @@ const DateSelector = (props) => {
                             // //value={email}
                             placeholder="Enter your name here"
                             className={'inputBox'}
-                            // onChange={evt => setUsername(evt.target.value)}
+                            onChange={evt => setName(evt.target.value)}
                         />
                     </div>
                     <br/>
