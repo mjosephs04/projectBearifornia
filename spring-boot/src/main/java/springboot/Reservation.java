@@ -29,7 +29,7 @@ public class Reservation {
 
 
     public Reservation(Room room, LocalDate start, LocalDate end) {
-        this.room = room;
+        this.room = new Room(room);
         this.startDay = start;
         this.endDay = end;
     }
@@ -112,9 +112,9 @@ public class Reservation {
         //so now we will check all rooms only rooms that match the desired criteria
         // if room does NOT match criteria, remove it from list
         rooms.removeIf(curr -> !(curr.getSmokingAllowed() == smoking &&
-                curr.getBedType().equals(bedType) &&
+                curr.getBedType().equalsIgnoreCase(bedType) &&
                 curr.getNumOfBeds() == bedNum &&
-                curr.getTypeOfRoom().equals(roomType)));
+                curr.getTypeOfRoom().equalsIgnoreCase(roomType)));
 
         // Iterate through all rooms
         for (Room room : rooms) {
@@ -309,18 +309,18 @@ public class Reservation {
         this.room = room;
     }
 
-    public static void main(String[] args) {
-        Reservation test = new Reservation();
-        List<Room> rooms = null;
-        try{
-            rooms = test.searchRooms(false, "Single", 1, "Urban Elegance", "2024-04-20T20:39:06.000Z", "2024-04-22T20:39:06.000Z");
-        }catch(IOException e) {
-            System.out.println("failll");
-        }
-
-        rooms.forEach(room -> System.out.println(room.getRoomNumber()));
-
-    }
+//    public static void main(String[] args) {
+//        Reservation test = new Reservation();
+//        List<Room> rooms = null;
+//        try{
+//            rooms = test.searchRooms(false, "Single", 1, "Urban Elegance", "2024-04-20T20:39:06.000Z", "2024-04-22T20:39:06.000Z");
+//        }catch(IOException e) {
+//            System.out.println("failll");
+//        }
+//
+//        rooms.forEach(room -> System.out.println(room.getRoomNumber()));
+//
+//    }
 
 }
 

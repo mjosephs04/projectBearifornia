@@ -36,6 +36,16 @@ public class Room {
         this.bedType = bedType;
     }
 
+    public Room(Room room){
+        this.cost = room.getCost();
+        this.roomNumber = room.getRoomNumber();
+        this.numOfBeds = room.getNumOfBeds();
+        this.qualityLevel = room.getQualityLevel();
+        this.typeOfRoom = room.getTypeOfRoom();
+        this.smokingAllowed = room.getSmokingAllowed();
+        this.bedType = room.getBedType();
+    }
+
     //Parse Dates
     public static Date parseDate(String dateString) {
         try {

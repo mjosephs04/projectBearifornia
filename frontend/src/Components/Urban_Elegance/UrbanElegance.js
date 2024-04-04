@@ -49,7 +49,7 @@ const UrbanElegance = () =>{
                 <img className='listing-img' src={listingData.imageURL}></img>
             </div>
 
-            <DateSelector parameter='urban-elegance'  />
+            <DateSelector parameter='Urban Elegance'  />
         </div>
     );
 
