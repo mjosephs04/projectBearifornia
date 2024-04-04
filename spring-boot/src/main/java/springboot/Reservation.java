@@ -29,7 +29,7 @@ public class Reservation {
 
 
     public Reservation(Room room, LocalDate start, LocalDate end) {
-        this.room = room;
+        this.room = new Room(room);
         this.startDay = start;
         this.endDay = end;
     }
@@ -308,19 +308,18 @@ public class Reservation {
     public void setRoom(Room room) {
         this.room = room;
     }
-
-    public static void main(String[] args) {
-        Reservation test = new Reservation();
-        List<Room> rooms = null;
-        try{
-            rooms = test.searchRooms(true, "Single", 1, "Nature Retreat", "2024-04-08T20:39:06.000Z", "2024-04-15T20:39:06.000Z");
-        }catch(IOException e) {
-            System.out.println("failll");
-        }
-//101,437.46,Nature Retreat,1,4,Single,true
-        rooms.forEach(room -> System.out.println(room.getRoomNumber()));
-
-    }
+//    public static void main(String[] args) {
+//        Reservation test = new Reservation();
+//        List<Room> rooms = null;
+//        try{
+//            rooms = test.searchRooms(false, "Single", 1, "Urban Elegance", "2024-04-20T20:39:06.000Z", "2024-04-22T20:39:06.000Z");
+//        }catch(IOException e) {
+//            System.out.println("failll");
+//        }
+//
+//        rooms.forEach(room -> System.out.println(room.getRoomNumber()));
+//
+//    }
 
 }
 
