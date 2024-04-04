@@ -66,3 +66,24 @@
     left: 40%;
     top: 152%;
 }
+
+.room-available-label{
+    position: absolute;
+    left: 30%;
+    font-size: 30px;
+    top: 162%
+}
+
+.room-cost{
+    position: absolute;
+    left: 51.5%;
+    font-size: 30px;
+    top: 162%
+}
+
+.reserve-room-button{
+    position: absolute;
+    left: 46.25%;
+    top: 172%;
+
+}
