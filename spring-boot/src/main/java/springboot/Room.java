@@ -71,53 +71,6 @@ public class Room {
             System.out.println("Smoking allowed.");
         }
     }
-
-    //Read in Taken Rooms
-    public List<String> readInTakenRoomsLines() throws IOException {
-        List<String> takenRoomsLines = new ArrayList<>();
-        InputStream is = this.getClass().getResourceAsStream("/RoomsTaken.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-        reader.readLine(); //skip first line of header info
-        String line;
-
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            takenRoomsLines.add(line);
-        }
-
-        return takenRoomsLines;
-    }
-
-    //Parse Taken Rooms - Takes a room number and gives all dates for that room
-    public List<Date> roomListToDates(int roomNumber) throws IOException {
-        List<String> takenRoomsLines = readInTakenRoomsLines();
-        List<Date> datePairs = new ArrayList<>();
-
-        //For every potential Reservation
-        for (String line : takenRoomsLines) {
-            String[] split = line.split(",");
-
-            // Parse the room number
-            int room = Integer.parseInt(split[0].trim());
-
-            // Check if the room number matches
-            if (room == roomNumber) {
-                String startDateStr = split[1].trim(); // Assuming the start date is the second element
-                String endDateStr = split[2].trim(); // Assuming the end date is the third element
-
-                // Parse startDateStr and endDateStr into Date objects.
-                Date startDate = parseDate(startDateStr);
-                Date endDate = parseDate(endDateStr);
-
-                // Add the pair of dates to the list
-                datePairs.add(startDate);
-                datePairs.add(endDate);
-            }
-        }
-        return datePairs;
-    }
-
     // Search for available rooms based on criteria
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
     public Room findRoom(int roomNumber) throws IOException {
@@ -135,40 +88,6 @@ public class Room {
         else{
             return null;
         }
-    }
-
-    //Check Availability
-    public boolean checkAvailability(Reservation potentialReservation) throws IOException {
-        List<Date> datePairs = roomListToDates(potentialReservation.room.getRoomNumber());
-        Date s1 = java.sql.Date.valueOf(potentialReservation.getStartDay());
-        Date e1 = java.sql.Date.valueOf(potentialReservation.getEndDay());
-        LocalDate currentDate = LocalDate.now();
-        boolean available = true;
-
-        // Convert LocalDate to Date
-        Date currentTime = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        if (s1.before(currentTime)) {
-            available = false;
-        }
-        for (int i = 0; i < datePairs.size(); i += 2) {
-            Date s2 = datePairs.get(i);
-            Date e2 = datePairs.get(i + 1);
-            if (s1.equals(e2)) {
-                available = false;
-            } else if (s1.equals(s2)) {
-                available = false;
-            } else if (e1.equals(s2)) {
-                available = false;
-            } else if (e1.equals(e2)) {
-                available = false;
-            } else if (s1.before(e2) && s1.after(s2)) {
-                available = false;
-            } else if (e1.before(e2) && e1.after(s2)) {
-                available = false;
-            }
-        }
-
-        return available;
     }
 
     public Double getCost() {
