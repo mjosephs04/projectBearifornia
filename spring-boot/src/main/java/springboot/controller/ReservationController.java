@@ -93,7 +93,7 @@ public class ReservationController {
             room = use.findRoom(roomNumber);
         }
         catch(IOException e){
-
+            return ResponseEntity.badRequest().body(cost);
         }
         if(room != null){
             Reservation r = new Reservation(room, startDate, endDate);
