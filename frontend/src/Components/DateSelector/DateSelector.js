@@ -10,6 +10,8 @@ const DateSelector = (props) => {
     const [checkOutDate, setCheckOutDate] = useState('');
     const [selectedRoom, setSelectedRoom] = useState('single');
     const [smoking, setSmoking] = useState(false);
+    const [roomUnavailable, setRoomUnavailable] = useState(false);
+    const [responseAPI, setResponse] = useState([]);
 
     const checkAvailability = () => {
         console.log(props.parameter)
@@ -24,9 +26,20 @@ const DateSelector = (props) => {
         axios.post('http://localhost:8080/api/reservations/checkForRooms', payload)
             .then(response =>{
                 console.log(response);
-                return response;
+                setResponse(response);
+                if(response.status == 200){
+                    //transfer to landing page
+                }
+                return response.data;
+            }).then(data => {
+                console.log(data);
+            }).catch(error => {
+                if(error.response.status === 400){
+                    setRoomUnavailable(true);
+                }else{
+                    console.log("Network Error: " + error);
+                }
             })
-            //NEEDS CATCH IF ERROR IS RETURNED
     }
 
     return(
@@ -75,6 +88,11 @@ const DateSelector = (props) => {
                 <button onClick={checkAvailability}>Check Availability</button>
             </div>
 
+            {roomUnavailable && (
+                <div>
+                    <h1 className='room-unavailable-error'>Room is Unavailable</h1>
+                </div>
+            )}
 
         </div>
     );
