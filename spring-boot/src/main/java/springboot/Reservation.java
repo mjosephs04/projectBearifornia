@@ -314,6 +314,7 @@ public class Reservation {
     public boolean equals(Object obj) {
         if (obj instanceof Reservation) {
             return ((Reservation) obj).getStartDay().equals(startDay) &&
+                    ((Reservation) obj).getEndDay().equals(endDay) &&
                     ((Reservation) obj).getRoom().equals(room);
         } else {
             return false;
@@ -322,7 +323,7 @@ public class Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, idNumber, endDay, startDay);
+        return Objects.hash(room, endDay, startDay);
     }
 
     public LocalDate getStartDay() {
