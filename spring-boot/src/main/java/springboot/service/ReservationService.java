@@ -10,9 +10,6 @@ import java.util.List;
 
 @Service
 public class ReservationService {
-
-    private final Reservation reservationHelper = new Reservation(); // Utilize Reservation class
-
 //    public List<Room> searchAvailableRooms(boolean smoking, String bedType, int numOfBeds, String roomType, LocalDate startDate, LocalDate endDate) {
 //        try {
 //            // Leverage the searchRooms method from Reservation class
@@ -29,6 +26,6 @@ public class ReservationService {
     }
 
     public String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        return reservationHelper.createReservation(checkIn, checkOut, roomNumber, name);
+        return Reservation.createReservation(checkIn, checkOut, roomNumber, name);
     }
 }

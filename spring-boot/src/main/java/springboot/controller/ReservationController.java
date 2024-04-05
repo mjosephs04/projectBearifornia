@@ -22,8 +22,6 @@ public class ReservationController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
-        //String checkIn, String checkOut, int roomNumber, String name
-
         String result = reservationService.createReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3]);
         if ("success".equals(result)) {
             return ResponseEntity.ok("Reservation created successfully.");
