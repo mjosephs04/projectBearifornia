@@ -15,7 +15,7 @@ public class ReservationGUI {
         Object[][] data = {{"101", "Occupied"}, {"102", "Vacant"}, {"103", "Occupied"}};
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         model.setRowCount(0); // remove table
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("src/main/resources/RoomsAvailable.csv")))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/RoomsAvailable.csv"))) {
             String line;
             br.readLine();
             while ((line = br.readLine()) != null) {

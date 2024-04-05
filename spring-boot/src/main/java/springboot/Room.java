@@ -1,22 +1,15 @@
 package springboot;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Room {
-    private static final Logger logger = Logger.getLogger(Room.class.getName()); // Logger instance
     private Double cost = 0.00;
     private Integer roomNumber, numOfBeds, qualityLevel = 0;
     private String typeOfRoom, bedType = "";
@@ -47,17 +40,6 @@ public class Room {
         this.bedType = room.getBedType();
     }
 
-    //Parse Dates
-    public static Date parseDate(String dateString) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-            return sdf.parse(dateString);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error parsing date: " + dateString, e);
-            return null;
-        }
-    }
-
     //PRINT INFO
     public void printRoomInfo() {
         System.out.println(roomNumber);
@@ -72,57 +54,52 @@ public class Room {
         }
     }
 
-    //Read in Taken Rooms
-    public List<String> readInTakenRoomsLines() throws IOException {
-        List<String> takenRoomsLines = new ArrayList<>();
-        InputStream is = this.getClass().getResourceAsStream("/RoomsTaken.csv");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-        reader.readLine(); //skip first line of header info
-        String line;
+    // Search for available rooms based on criteria
+    //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
+    public static List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) throws IOException {
+        List<Room> rooms = readInAllRooms();
+        List<Reservation> allReservations = Reservation.readInAllReservations(); // Assuming this method exists to read available rooms
 
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            takenRoomsLines.add(line);
-        }
+        // Parse the string into a ZonedDateTime
+        ZonedDateTime startD = ZonedDateTime.parse(start);
+        ZonedDateTime endD = ZonedDateTime.parse(end);
 
-        return takenRoomsLines;
-    }
+        // Extract the LocalDate part from the ZonedDateTime
+        LocalDate startDate = startD.toLocalDate();
+        LocalDate endDate = endD.toLocalDate();
 
-    //Parse Taken Rooms - Takes a room number and gives all dates for that room
-    public List<Date> roomListToDates(int roomNumber) throws IOException {
-        List<String> takenRoomsLines = readInTakenRoomsLines();
-        List<Date> datePairs = new ArrayList<>();
+        //so now we will check all rooms only rooms that match the desired criteria
+        // if room does NOT match criteria, remove it from list
+        rooms.removeIf(curr -> !(curr.getSmokingAllowed() == smoking &&
+                curr.getBedType().equalsIgnoreCase(bedType) &&
+                curr.getNumOfBeds() == bedNum &&
+                curr.getTypeOfRoom().equalsIgnoreCase(roomType)));
 
-        //For every potential Reservation
-        for (String line : takenRoomsLines) {
-            String[] split = line.split(",");
-
-            // Parse the room number
-            int room = Integer.parseInt(split[0].trim());
-
-            // Check if the room number matches
-            if (room == roomNumber) {
-                String startDateStr = split[1].trim(); // Assuming the start date is the second element
-                String endDateStr = split[2].trim(); // Assuming the end date is the third element
-
-                // Parse startDateStr and endDateStr into Date objects.
-                Date startDate = parseDate(startDateStr);
-                Date endDate = parseDate(endDateStr);
-
-                // Add the pair of dates to the list
-                datePairs.add(startDate);
-                datePairs.add(endDate);
+        // Iterate through all rooms
+        for (Room room : rooms) {
+            //for each room, check if that room has any reservations associated with it
+            for(Reservation res : allReservations){
+                //if it does, remove it from the total list of rooms if it isn't available for
+                //the desired dates
+                if(res.getRoom().equals(room)){
+                    if(! res.isAvailable(startDate, endDate)){
+                        rooms.remove(res.room);
+                    }
+                }
             }
         }
-        return datePairs;
+        //at the end of this loop, the list rooms only contains rooms available
+        //during the desired timeframe and which match the desired criteria
+
+        return rooms;
     }
 
     // Search for available rooms based on criteria
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
-    public Room findRoom(int roomNumber) throws IOException {
-        Reservation r = new Reservation();
-        List<Room> rooms = r.readInAllRooms();
+    public static Room findRoom(int roomNumber) throws IOException {
+        List<Room> rooms = readInAllRooms();
+
         //so now we will check all rooms only rooms that match the desired criteria
         // if room does NOT match criteria, remove it from list
         rooms.removeIf(curr -> curr.getRoomNumber() != roomNumber);
@@ -135,40 +112,6 @@ public class Room {
         else{
             return null;
         }
-    }
-
-    //Check Availability
-    public boolean checkAvailability(Reservation potentialReservation) throws IOException {
-        List<Date> datePairs = roomListToDates(potentialReservation.room.getRoomNumber());
-        Date s1 = java.sql.Date.valueOf(potentialReservation.getStartDay());
-        Date e1 = java.sql.Date.valueOf(potentialReservation.getEndDay());
-        LocalDate currentDate = LocalDate.now();
-        boolean available = true;
-
-        // Convert LocalDate to Date
-        Date currentTime = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        if (s1.before(currentTime)) {
-            available = false;
-        }
-        for (int i = 0; i < datePairs.size(); i += 2) {
-            Date s2 = datePairs.get(i);
-            Date e2 = datePairs.get(i + 1);
-            if (s1.equals(e2)) {
-                available = false;
-            } else if (s1.equals(s2)) {
-                available = false;
-            } else if (e1.equals(s2)) {
-                available = false;
-            } else if (e1.equals(e2)) {
-                available = false;
-            } else if (s1.before(e2) && s1.after(s2)) {
-                available = false;
-            } else if (e1.before(e2) && e1.after(s2)) {
-                available = false;
-            }
-        }
-
-        return available;
     }
 
     public Double getCost() {
@@ -221,6 +164,32 @@ public class Room {
 
     public String getBedType(){
         return bedType;
+    }
+
+    //opens csv file and returns a list of all existing rooms
+    public static List<Room> readInAllRooms() throws IOException {
+        ArrayList<Room> roomList = new ArrayList<>(); //store all the rooms we read in
+        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
+
+        reader.readLine(); //skip first line of header info
+        String line;
+
+        //read in available rooms from csv and store in list
+        while ((line = reader.readLine()) != null) {
+            String[] split = line.split(",");
+            Room currentRoom = new Room(Integer.parseInt(split[0]), //roomNumber
+                    Double.parseDouble(split[1]),//cost
+                    split[2], //roomType
+                    Integer.parseInt(split[3]), //number of beds
+                    Integer.parseInt(split[4]), //quality level
+                    split[5], //bedType
+                    Boolean.parseBoolean(split[6]) //smoking
+            );
+
+            roomList.add(currentRoom);
+        }
+
+        return roomList;
     }
 
     @Override

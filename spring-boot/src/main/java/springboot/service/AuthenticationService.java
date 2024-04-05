@@ -1,6 +1,5 @@
 package springboot.service;
 
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import springboot.UserType;
 

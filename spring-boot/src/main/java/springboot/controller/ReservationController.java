@@ -20,26 +20,8 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-//    @GetMapping("/search")
-//    public ResponseEntity<List<Room>> searchAvailableRooms(
-//            @RequestParam String smoking,
-//            @RequestParam String bedType,
-//            @RequestParam String numOfBeds,
-//            @RequestParam String roomType,
-//            @RequestParam String startDate,
-//            @RequestParam String endDate) {
-//
-//        List<Room> rooms = reservationService.searchAvailableRooms(smoking, bedType, numOfBeds, roomType, startDate, endDate);
-//        if (rooms.isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        }
-//        return ResponseEntity.ok(rooms);
-//    }
-
     @PostMapping("/create")
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
-        //String checkIn, String checkOut, int roomNumber, String name
-
         String result = reservationService.createReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3]);
         if ("success".equals(result)) {
             return ResponseEntity.ok("Reservation created successfully.");
@@ -61,11 +43,10 @@ public class ReservationController {
         else{
             bedNum = 3;
         }
-        Reservation r = new Reservation();
-        ArrayList<Room> availableRooms = (ArrayList<Room>) r.searchRooms(
-                            Boolean.parseBoolean(payload[0]),
-                payload[1],bedNum,payload[2],
-                payload[3], payload[4]);
+        ArrayList<Room> availableRooms = (ArrayList<Room>) Room.searchRooms(
+                                                        Boolean.parseBoolean(payload[0]),
+                                                        payload[1],bedNum,payload[2],
+                                                        payload[3], payload[4]);
 
         if(availableRooms.isEmpty()){
             return ResponseEntity.badRequest().body(new Room());
@@ -79,8 +60,7 @@ public class ReservationController {
                                  String checkIn,
                                  @RequestBody String checkOut,
                                  @RequestBody Integer roomNumber){
-        Room use = new Room();
-        Room room = null;
+        Room room;
         Double cost = 0.0;
 
         // Parse the string into a ZonedDateTime
@@ -92,7 +72,7 @@ public class ReservationController {
         LocalDate endDate = endD.toLocalDate();
 
         try {
-            room = use.findRoom(roomNumber);
+            room = Room.findRoom(roomNumber);
         }
         catch(IOException e){
             return ResponseEntity.badRequest().body(cost);
@@ -100,7 +80,7 @@ public class ReservationController {
 
         if(room != null){
             Reservation r = new Reservation(room, startDate, endDate);
-            cost = r.calculateCost(r);
+            cost = r.calculateCost();
         }
 
         if (cost <= 0.0){

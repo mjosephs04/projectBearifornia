@@ -24,10 +24,6 @@ public class Reservation {
         this.name = name;
     }
 
-    public Reservation(){
-        room = null;
-    }
-
 
     public Reservation(Room room, LocalDate start, LocalDate end) {
         this.room = new Room(room);
@@ -35,10 +31,9 @@ public class Reservation {
         this.endDay = end;
     }
 
-    public Double calculateCost(Reservation r){
+    public Double calculateCost(){
         Double cost = 0.0;
-        Room room = r.getRoom();
-        Integer days = (int)ChronoUnit.DAYS.between(r.getStartDay(), r.getEndDay());
+        Integer days = (int)ChronoUnit.DAYS.between(getStartDay(), getEndDay());
         Integer beds = room.getNumOfBeds();
 
 
@@ -52,35 +47,9 @@ public class Reservation {
         return cost;
     }
 
-    //opens csv file and returns a list of all existing rooms
-    public List<Room> readInAllRooms() throws IOException {
-        ArrayList<Room> roomList = new ArrayList<>(); //store all the rooms we read in
-        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
-
-        reader.readLine(); //skip first line of header info
-        String line;
-
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            String[] split = line.split(",");
-            Room currentRoom = new Room(Integer.parseInt(split[0]), //roomNumber
-                    Double.parseDouble(split[1]),//cost
-                    split[2], //roomType
-                    Integer.parseInt(split[3]), //number of beds
-                    Integer.parseInt(split[4]), //quality level
-                    split[5], //bedType
-                    Boolean.parseBoolean(split[6]) //smoking
-            );
-
-            roomList.add(currentRoom);
-        }
-
-        return roomList;
-    }
-
 
     //opens csv file and returns a list of all existing reservations
-    public List<Reservation> readInAllReservations() throws IOException {
+    public static List<Reservation> readInAllReservations() throws IOException {
         ArrayList<Reservation> reservations = new ArrayList<>(); //store all the rooms we read in
         BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"));
 
@@ -113,60 +82,20 @@ public class Reservation {
     }
 
 
-    // Search for available rooms based on criteria
-    //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
-    public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) throws IOException {
-        List<Room> rooms = readInAllRooms();
-        List<Reservation> allReservations = readInAllReservations(); // Assuming this method exists to read available rooms
-
-        // Parse the string into a ZonedDateTime
-        ZonedDateTime startD = ZonedDateTime.parse(start);
-        ZonedDateTime endD = ZonedDateTime.parse(end);
-
-        // Extract the LocalDate part from the ZonedDateTime
-        LocalDate startDate = startD.toLocalDate();
-        LocalDate endDate = endD.toLocalDate();
-
-        //so now we will check all rooms only rooms that match the desired criteria
-        // if room does NOT match criteria, remove it from list
-        rooms.removeIf(curr -> !(curr.getSmokingAllowed() == smoking &&
-                curr.getBedType().equalsIgnoreCase(bedType) &&
-                curr.getNumOfBeds() == bedNum &&
-                curr.getTypeOfRoom().equalsIgnoreCase(roomType)));
-
-        // Iterate through all rooms
-        for (Room room : rooms) {
-            //for each room, check if that room has any reservations associated with it
-            for(Reservation res : allReservations){
-                //if it does, remove it from the total list of rooms if it isn't available for
-                //the desired dates
-                if(res.getRoom().equals(room)){
-                    if(! isAvailable(res, startDate, endDate)){
-                        rooms.remove(res.room);
-                    }
-                }
-            }
-        }
-        //at the end of this loop, the list rooms only contains rooms available
-        //during the desired timeframe and which match the desired criteria
-
-        return rooms;
-    }
-
-    public boolean isAvailable(Reservation r, LocalDate start, LocalDate end){
+    public boolean isAvailable(LocalDate start, LocalDate end){
         boolean result = true;
 
-        if(r.startDay.isBefore(start)){
-            if(r.endDay.isAfter(start) || r.endDay.equals(startDay)){
+        if(startDay.isBefore(start)){
+            if(endDay.isAfter(start) || endDay.equals(startDay)){
                 result = false;
             }
         }
-        else if(r.startDay.isAfter(start)){
-            if(r.startDay.isBefore(end)){
+        else if(startDay.isAfter(start)){
+            if(startDay.isBefore(end)){
                 result = false;
             }
         }
-        else if(r.startDay.equals(r.endDay)){
+        else if(startDay.equals(endDay)){
             result = false;
         }
 
@@ -175,11 +104,10 @@ public class Reservation {
     }
 
     //returns either a failure message or "success"
-    public String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        Room use = new Room();
+    public static String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
         Room r = null;
         try {
-            r = use.findRoom(roomNumber);
+            r = Room.findRoom(roomNumber);
         }
         catch(IOException e){
             return "fail";
@@ -205,7 +133,7 @@ public class Reservation {
 
 
     //returns either a failure message or "success"
-    public String createReservation(Reservation newReservation) {
+    public static String createReservation(Reservation r) {
         ArrayList<Reservation> existingReservations = null;
         try {
             existingReservations = (ArrayList<Reservation>) readInAllReservations();
@@ -214,9 +142,9 @@ public class Reservation {
             return "failure";
         }
 
-        if (!existingReservations.contains(newReservation)) {
+        if (!existingReservations.contains(r)) {
             StringBuilder csvFormatRoom = new StringBuilder();
-            Room reservedRoom = newReservation.room;
+            Room reservedRoom = r.getRoom();
 
             //convert room to a csv line in desired format
             csvFormatRoom.append(reservedRoom.getRoomNumber()).append(",").
@@ -224,18 +152,15 @@ public class Reservation {
                                 append(reservedRoom.getTypeOfRoom()).append(",").
                                 append(reservedRoom.getNumOfBeds()).append(",").
                                 append(reservedRoom.getQualityLevel()).append(",").
-                                append(reservedRoom.getTypeOfRoom()).append(",");
-            if (reservedRoom.getSmokingAllowed()) {
-                csvFormatRoom.append("true" + ",");
-            } else {
-                csvFormatRoom.append("false" + ",");
-            }
+                                append(reservedRoom.getTypeOfRoom()).append(",").
+                                append(reservedRoom.getSmokingAllowed());
+
             // Define the desired date format pattern
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
             // Format the LocalDate object using the formatter
-            String start = newReservation.getStartDay().format(formatter);
-            String end = newReservation.getEndDay().format(formatter);
+            String start = r.getStartDay().format(formatter);
+            String end = r.getEndDay().format(formatter);
 
             csvFormatRoom.append(start).append(",").append(end);
 
@@ -252,46 +177,15 @@ public class Reservation {
 
     //takes a csv formatted line and puts it into the RoomsTaken.csv
     //returns either "success" or a fail message depending on result
-    public String addReservedRoom(String newRoom) {
-        List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"))
-        ) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
+    public static String addReservedRoom(String newRoom) {
+        try (FileWriter fw = new FileWriter("spring-boot/src/main/resources/RoomsTaken.csv", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(newRoom);
+            return "success";
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Failed to read in the currently reserved rooms";
+            return "failure to add new reservation";
         }
-
-        // Add the new line containing the new reservation
-        if (!lines.contains(newRoom)) {
-            lines.add(newRoom);
-        } else {
-            return "Room is already reserved";
-        }
-
-        FileWriter fw;
-        try {
-            fw = new FileWriter("spring-boot/src/main/resources/RoomsTaken.csv");
-        } catch (IOException x) {
-            x.printStackTrace();
-            return "Could not write to RoomsTaken database";
-        }
-
-        // Write the updated content back to the CSV file
-        try (BufferedWriter writer = new BufferedWriter(fw)) {
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Could not write to RoomsTaken database";
-        }
-
-        return "success";
     }
 
     public Integer getIdNumber() {
@@ -314,6 +208,7 @@ public class Reservation {
     public boolean equals(Object obj) {
         if (obj instanceof Reservation) {
             return ((Reservation) obj).getStartDay().equals(startDay) &&
+                    ((Reservation) obj).getEndDay().equals(endDay) &&
                     ((Reservation) obj).getRoom().equals(room);
         } else {
             return false;
@@ -322,7 +217,7 @@ public class Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, idNumber, endDay, startDay);
+        return Objects.hash(room, endDay, startDay);
     }
 
     public LocalDate getStartDay() {
@@ -356,18 +251,14 @@ public class Reservation {
     public void setRoom(Room room) {
         this.room = room;
     }
-//    public static void main(String[] args) {
-//        Reservation test = new Reservation();
-//        List<Room> rooms = null;
-//        try{
-//            rooms = test.searchRooms(false, "Single", 1, "Urban Elegance", "2024-04-20T20:39:06.000Z", "2024-04-22T20:39:06.000Z");
-//        }catch(IOException e) {
-//            System.out.println("failll");
-//        }
-//
-//        rooms.forEach(room -> System.out.println(room.getRoomNumber()));
-//
-//    }
+
+    /*
+    public static void main(String[] args) {
+        Reservation test = new Reservation();
+        List<Room> rooms = null;
+            test.addReservedRoom("hello,test");
+
+    }*/
 
 }
 

@@ -1,9 +1,5 @@
 package springboot;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Clerk implements User {
 
     private static UserType classification;
