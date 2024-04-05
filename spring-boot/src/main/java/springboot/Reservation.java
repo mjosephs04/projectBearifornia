@@ -35,10 +35,9 @@ public class Reservation {
         this.endDay = end;
     }
 
-    public Double calculateCost(Reservation r){
+    public Double calculateCost(){
         Double cost = 0.0;
-        Room room = r.getRoom();
-        Integer days = (int)ChronoUnit.DAYS.between(r.getStartDay(), r.getEndDay());
+        Integer days = (int)ChronoUnit.DAYS.between(getStartDay(), getEndDay());
         Integer beds = room.getNumOfBeds();
 
 
@@ -50,32 +49,6 @@ public class Reservation {
         };
 
         return cost;
-    }
-
-    //opens csv file and returns a list of all existing rooms
-    public List<Room> readInAllRooms() throws IOException {
-        ArrayList<Room> roomList = new ArrayList<>(); //store all the rooms we read in
-        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
-
-        reader.readLine(); //skip first line of header info
-        String line;
-
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            String[] split = line.split(",");
-            Room currentRoom = new Room(Integer.parseInt(split[0]), //roomNumber
-                    Double.parseDouble(split[1]),//cost
-                    split[2], //roomType
-                    Integer.parseInt(split[3]), //number of beds
-                    Integer.parseInt(split[4]), //quality level
-                    split[5], //bedType
-                    Boolean.parseBoolean(split[6]) //smoking
-            );
-
-            roomList.add(currentRoom);
-        }
-
-        return roomList;
     }
 
 
@@ -116,7 +89,7 @@ public class Reservation {
     // Search for available rooms based on criteria
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
     public List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) throws IOException {
-        List<Room> rooms = readInAllRooms();
+        List<Room> rooms = room.readInAllRooms();
         List<Reservation> allReservations = readInAllReservations(); // Assuming this method exists to read available rooms
 
         // Parse the string into a ZonedDateTime
@@ -141,7 +114,7 @@ public class Reservation {
                 //if it does, remove it from the total list of rooms if it isn't available for
                 //the desired dates
                 if(res.getRoom().equals(room)){
-                    if(! isAvailable(res, startDate, endDate)){
+                    if(! res.isAvailable(startDate, endDate)){
                         rooms.remove(res.room);
                     }
                 }
@@ -153,20 +126,20 @@ public class Reservation {
         return rooms;
     }
 
-    public boolean isAvailable(Reservation r, LocalDate start, LocalDate end){
+    public boolean isAvailable(LocalDate start, LocalDate end){
         boolean result = true;
 
-        if(r.startDay.isBefore(start)){
-            if(r.endDay.isAfter(start) || r.endDay.equals(startDay)){
+        if(startDay.isBefore(start)){
+            if(endDay.isAfter(start) || endDay.equals(startDay)){
                 result = false;
             }
         }
-        else if(r.startDay.isAfter(start)){
-            if(r.startDay.isBefore(end)){
+        else if(startDay.isAfter(start)){
+            if(startDay.isBefore(end)){
                 result = false;
             }
         }
-        else if(r.startDay.equals(r.endDay)){
+        else if(startDay.equals(endDay)){
             result = false;
         }
 

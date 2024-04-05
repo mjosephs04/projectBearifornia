@@ -84,7 +84,7 @@ public class ReservationController {
 
         if(room != null){
             Reservation r = new Reservation(room, startDate, endDate);
-            cost = r.calculateCost(r);
+            cost = r.calculateCost();
         }
 
         if (cost <= 0.0){

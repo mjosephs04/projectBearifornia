@@ -1,6 +1,9 @@
 package springboot;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,7 +55,7 @@ public class Room {
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
     public Room findRoom(int roomNumber) throws IOException {
         Reservation r = new Reservation();
-        List<Room> rooms = r.readInAllRooms();
+        List<Room> rooms = readInAllRooms();
         //so now we will check all rooms only rooms that match the desired criteria
         // if room does NOT match criteria, remove it from list
         rooms.removeIf(curr -> curr.getRoomNumber() != roomNumber);
@@ -117,6 +120,32 @@ public class Room {
 
     public String getBedType(){
         return bedType;
+    }
+
+    //opens csv file and returns a list of all existing rooms
+    public List<Room> readInAllRooms() throws IOException {
+        ArrayList<Room> roomList = new ArrayList<>(); //store all the rooms we read in
+        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
+
+        reader.readLine(); //skip first line of header info
+        String line;
+
+        //read in available rooms from csv and store in list
+        while ((line = reader.readLine()) != null) {
+            String[] split = line.split(",");
+            Room currentRoom = new Room(Integer.parseInt(split[0]), //roomNumber
+                    Double.parseDouble(split[1]),//cost
+                    split[2], //roomType
+                    Integer.parseInt(split[3]), //number of beds
+                    Integer.parseInt(split[4]), //quality level
+                    split[5], //bedType
+                    Boolean.parseBoolean(split[6]) //smoking
+            );
+
+            roomList.add(currentRoom);
+        }
+
+        return roomList;
     }
 
     @Override
