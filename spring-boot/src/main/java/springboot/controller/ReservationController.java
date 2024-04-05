@@ -20,22 +20,6 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-//    @GetMapping("/search")
-//    public ResponseEntity<List<Room>> searchAvailableRooms(
-//            @RequestParam String smoking,
-//            @RequestParam String bedType,
-//            @RequestParam String numOfBeds,
-//            @RequestParam String roomType,
-//            @RequestParam String startDate,
-//            @RequestParam String endDate) {
-//
-//        List<Room> rooms = reservationService.searchAvailableRooms(smoking, bedType, numOfBeds, roomType, startDate, endDate);
-//        if (rooms.isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        }
-//        return ResponseEntity.ok(rooms);
-//    }
-
     @PostMapping("/create")
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
         //String checkIn, String checkOut, int roomNumber, String name
@@ -80,7 +64,7 @@ public class ReservationController {
                                  @RequestBody String checkOut,
                                  @RequestBody Integer roomNumber){
         Room use = new Room();
-        Room room = null;
+        Room room;
         Double cost = 0.0;
 
         // Parse the string into a ZonedDateTime

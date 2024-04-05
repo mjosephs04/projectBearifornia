@@ -25,7 +25,7 @@ public class ReservationService {
 
     // Method to handle creating a new reservation
     public String createReservation(Reservation newReservation) {
-        return reservationHelper.createReservation(newReservation);
+        return newReservation.createReservation();
     }
 
     public String createReservation(String checkIn, String checkOut, int roomNumber, String name) {

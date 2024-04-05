@@ -194,7 +194,7 @@ public class Reservation {
 
         Reservation newReservation = new Reservation(r, startDate, endDate);
 
-        String s = createReservation(newReservation);
+        String s = newReservation.createReservation();
         if(s.equalsIgnoreCase("success")) {
             return "success";
         }
@@ -205,7 +205,7 @@ public class Reservation {
 
 
     //returns either a failure message or "success"
-    public String createReservation(Reservation newReservation) {
+    public String createReservation() {
         ArrayList<Reservation> existingReservations = null;
         try {
             existingReservations = (ArrayList<Reservation>) readInAllReservations();
@@ -214,9 +214,9 @@ public class Reservation {
             return "failure";
         }
 
-        if (!existingReservations.contains(newReservation)) {
+        if (!existingReservations.contains(this)) {
             StringBuilder csvFormatRoom = new StringBuilder();
-            Room reservedRoom = newReservation.getRoom();
+            Room reservedRoom = getRoom();
 
             //convert room to a csv line in desired format
             csvFormatRoom.append(reservedRoom.getRoomNumber()).append(",").
@@ -231,8 +231,8 @@ public class Reservation {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
             // Format the LocalDate object using the formatter
-            String start = newReservation.getStartDay().format(formatter);
-            String end = newReservation.getEndDay().format(formatter);
+            String start = getStartDay().format(formatter);
+            String end = getEndDay().format(formatter);
 
             csvFormatRoom.append(start).append(",").append(end);
 
