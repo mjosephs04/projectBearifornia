@@ -24,10 +24,6 @@ public class Reservation {
         this.name = name;
     }
 
-    public Reservation(){
-        room = null;
-    }
-
 
     public Reservation(Room room, LocalDate start, LocalDate end) {
         this.room = new Room(room);

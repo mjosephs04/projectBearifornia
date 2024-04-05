@@ -43,11 +43,10 @@ public class ReservationController {
         else{
             bedNum = 3;
         }
-        Reservation r = new Reservation();
         ArrayList<Room> availableRooms = (ArrayList<Room>) Room.searchRooms(
-                            Boolean.parseBoolean(payload[0]),
-                payload[1],bedNum,payload[2],
-                payload[3], payload[4]);
+                                                        Boolean.parseBoolean(payload[0]),
+                                                        payload[1],bedNum,payload[2],
+                                                        payload[3], payload[4]);
 
         if(availableRooms.isEmpty()){
             return ResponseEntity.badRequest().body(new Room());
@@ -61,7 +60,6 @@ public class ReservationController {
                                  String checkIn,
                                  @RequestBody String checkOut,
                                  @RequestBody Integer roomNumber){
-        Room use = new Room();
         Room room;
         Double cost = 0.0;
 
@@ -74,7 +72,7 @@ public class ReservationController {
         LocalDate endDate = endD.toLocalDate();
 
         try {
-            room = use.findRoom(roomNumber);
+            room = Room.findRoom(roomNumber);
         }
         catch(IOException e){
             return ResponseEntity.badRequest().body(cost);
