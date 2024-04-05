@@ -46,7 +46,7 @@ public class ReservationController {
             bedNum = 3;
         }
         Reservation r = new Reservation();
-        ArrayList<Room> availableRooms = (ArrayList<Room>) r.searchRooms(
+        ArrayList<Room> availableRooms = (ArrayList<Room>) Room.searchRooms(
                             Boolean.parseBoolean(payload[0]),
                 payload[1],bedNum,payload[2],
                 payload[3], payload[4]);
