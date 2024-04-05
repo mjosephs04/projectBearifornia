@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Room {
-    private static final Logger logger = Logger.getLogger(Room.class.getName()); // Logger instance
     private Double cost = 0.00;
     private Integer roomNumber, numOfBeds, qualityLevel = 0;
     private String typeOfRoom, bedType = "";

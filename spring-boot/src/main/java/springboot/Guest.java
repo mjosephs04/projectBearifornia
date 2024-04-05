@@ -64,13 +64,4 @@ public class Guest implements User {
     public void setIdNumber(Integer id) { // For the Guest
         id = this.idNumber;
     }
-
-    private LocalDate getStartDate() {
-        return LocalDate.now();
-    }
-
-    private LocalDate getEndDate() {
-        return LocalDate.now().plusDays(1);
-    }
-
 }
