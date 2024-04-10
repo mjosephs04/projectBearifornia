@@ -32,17 +32,20 @@ public class Reservation {
     }
 
     public Double calculateCost(){
-        Double cost = 0.0;
+        Double cost = -1.0;
         Integer days = (int)ChronoUnit.DAYS.between(getStartDay(), getEndDay());
         Integer beds = room.getNumOfBeds();
 
-
-        cost = switch (room.getTypeOfRoom().toLowerCase()) {
+        /*cost = switch (room.getTypeOfRoom().toLowerCase()) {
             case "urban elegance" -> beds * days * 53.2;
             case "vintage charm" -> beds * days * 60.0;
             case "nature retreat" -> beds * days * 40.0;
             default -> days * 35.0;
-        };
+        };*/
+
+        if(days > 0){
+            cost = room.getCost() * days;
+        }
 
         return cost;
     }
@@ -252,11 +255,8 @@ public class Reservation {
         this.room = room;
     }
 
-    /*
+/*
     public static void main(String[] args) {
-        Reservation test = new Reservation();
-        List<Room> rooms = null;
-            test.addReservedRoom("hello,test");
 
     }*/
 
