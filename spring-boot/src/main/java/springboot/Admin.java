@@ -8,11 +8,12 @@ public class Admin implements User{
     private static UserType classification = UserType.ADMIN;
     private String name;
     private Integer idNumber;
+    private String username;
+    private String password;
 
 
-    public Admin(String name, Integer id){
+    public Admin(String name){
         this.name = name;
-        this.idNumber = id;
     }
     @Override
     public UserType getType() {
@@ -27,16 +28,6 @@ public class Admin implements User{
     @Override
     public void setName(String x) {
         name = x;
-    }
-
-    @Override
-    public Integer getIdNumber() {
-        return idNumber;
-    }
-
-    @Override
-    public void setIdNumber(Integer id) {
-        idNumber = id;
     }
 
     //returns either "success" or a fail message

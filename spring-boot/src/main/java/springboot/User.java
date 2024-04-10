@@ -8,8 +8,4 @@ public interface User {
     String getName();
 
     void setName(String x);
-
-    Integer getIdNumber();
-
-    void setIdNumber(Integer id);
 }

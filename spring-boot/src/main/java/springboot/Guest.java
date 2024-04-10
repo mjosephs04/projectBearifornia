@@ -1,7 +1,14 @@
 package springboot;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
 
 public class Guest implements User {
 
@@ -9,20 +16,18 @@ public class Guest implements User {
     private static UserType classification;
     // Data Members
     private String name = "";
-    private Integer idNumber = 0;
+    private String username;
+    private String password;
     private String streetAddress;
 
+    public List<Reservation> reservationList;
 
-    // Constructor and default constructor
-    public Guest() {
+    public Guest(String name, String username, String password) {
+        reservationList = new ArrayList<>();
         classification = UserType.GUEST;
-        this.idNumber = random.nextInt(99999 - 10000 + 1) + 10000;
-    }
-
-    public Guest(String name, Integer id) {
-        this(); // This just calls the default constructor to increment the id number;
         this.name = name;
-        this.idNumber = id;
+        this.username = username;
+        this.password = password;
     }
 
     // GETTERS
@@ -46,22 +51,33 @@ public class Guest implements User {
     // User class interface methods
 
     //returns either a failure message or "success"
-    public String reserveRoom(Room reservedRoom) {
-        Reservation reservation = new Reservation(reservedRoom.getRoomNumber(), name);
+    public String reserveRoom(Room reservedRoom, LocalDate start, LocalDate end) {
+        Reservation reservation = new Reservation(reservedRoom, start, end);
+        reservationList.add(reservation);
 
         return Reservation.createReservation(reservation);
+    }
+
+    public static List<Guest> readInAllGuests() throws IOException {
+        ArrayList<Guest> guests = new ArrayList<>(); //store all the rooms we read in
+        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"));
+
+        reader.readLine(); //skip first line of header info
+        String line;
+
+        //name,username,password,userType
+        //read in available rooms from csv and store in list
+        while ((line = reader.readLine()) != null) {
+            String[] split = line.split(",");
+            Guest curr = new Guest(split[0], split[1], split[2]);
+            guests.add(curr);
+        }
+
+        return guests;
     }
 
     @Override
     public UserType getType() {
         return classification;
-    }
-
-    public Integer getIdNumber() { // For the Guest
-        return this.idNumber;
-    }
-
-    public void setIdNumber(Integer id) { // For the Guest
-        id = this.idNumber;
     }
 }

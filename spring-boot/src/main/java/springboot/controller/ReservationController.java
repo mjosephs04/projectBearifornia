@@ -20,9 +20,13 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
+    //CREATE RESERVATION -- payload should contain this info IN THIS ORDER!!!
+    //checkIn, checkOut, roomNumber, name
+    // adds reservation to database if it does not already exist
     @PostMapping("/create")
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
         String result = reservationService.createReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3]);
+
         if ("success".equals(result)) {
             return ResponseEntity.ok("Reservation created successfully.");
         } else {

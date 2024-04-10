@@ -4,15 +4,15 @@ public class Clerk implements User {
 
     private static UserType classification;
     private String name;
-    private Integer idNumber;
+    private String username;
+    private String password;
 
     public Clerk() {
         classification = UserType.CLERK;
     }
 
-    public Clerk(String n, Integer id) {
+    public Clerk(String n) {
         this.name = n;
-        this.idNumber = id;
         classification = UserType.CLERK;
     }
 
@@ -28,15 +28,5 @@ public class Clerk implements User {
     @Override
     public void setName(String x) {
         name = x;
-    }
-
-    @Override
-    public Integer getIdNumber() {
-        return idNumber;
-    }
-
-    @Override
-    public void setIdNumber(Integer id) {
-        idNumber = id;
     }
 }

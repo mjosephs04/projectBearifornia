@@ -17,7 +17,7 @@ public class createAccountController {
         UserType type = UserType.GUEST;
         String message;
 
-        Admin admin = new Admin("default", 1001);
+        Admin admin = new Admin("default");
         message = admin.addUser(payload[0], payload[1], type);
 
         if(message.equalsIgnoreCase("success")){

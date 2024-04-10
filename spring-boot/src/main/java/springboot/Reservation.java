@@ -24,7 +24,6 @@ public class Reservation {
         this.name = name;
     }
 
-
     public Reservation(Room room, LocalDate start, LocalDate end) {
         this.room = new Room(room);
         this.startDay = start;
@@ -32,16 +31,8 @@ public class Reservation {
     }
 
     public Double calculateCost(){
-        Double cost = -1.0;
+        double cost = -1.0;
         Integer days = (int)ChronoUnit.DAYS.between(getStartDay(), getEndDay());
-        Integer beds = room.getNumOfBeds();
-
-        /*cost = switch (room.getTypeOfRoom().toLowerCase()) {
-            case "urban elegance" -> beds * days * 53.2;
-            case "vintage charm" -> beds * days * 60.0;
-            case "nature retreat" -> beds * days * 40.0;
-            default -> days * 35.0;
-        };*/
 
         if(days > 0){
             cost = room.getCost() * days;
@@ -49,7 +40,6 @@ public class Reservation {
 
         return cost;
     }
-
 
     //opens csv file and returns a list of all existing reservations
     public static List<Reservation> readInAllReservations() throws IOException {
@@ -83,7 +73,6 @@ public class Reservation {
 
         return reservations;
     }
-
 
     public boolean isAvailable(LocalDate start, LocalDate end){
         boolean result = true;
@@ -124,6 +113,7 @@ public class Reservation {
         LocalDate endDate = endD.toLocalDate();
 
         Reservation newReservation = new Reservation(r, startDate, endDate);
+        newReservation.setName(name);
 
         String s = createReservation(newReservation);
         if(s.equalsIgnoreCase("success")) {
