@@ -19,8 +19,19 @@ public class UserFunctions {
         //read in available rooms from csv and store in list
         while ((line = reader.readLine()) != null) {
             String[] split = line.split(",");
-            Guest curr = new Guest(split[0], split[1], split[2]);
-            users.add(curr);
+            if(split[3].equalsIgnoreCase("admin")){
+                Admin curr = new Admin(split[0], split[1], split[2]);
+                users.add(curr);
+            }
+            else if(split[3].equalsIgnoreCase("guest")){
+                Guest curr = new Guest(split[0], split[1], split[2]);
+                users.add(curr);
+            }
+            else{
+                Clerk curr = new Clerk(split[0], split[1], split[2]);
+                users.add(curr);
+            }
+
         }
 
         return users;
