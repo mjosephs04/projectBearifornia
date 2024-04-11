@@ -9,7 +9,6 @@ public interface User {
 
     void setName(String x);
 
-    Integer getIdNumber();
+    String getUsername();
 
-    void setIdNumber(Integer id);
 }
