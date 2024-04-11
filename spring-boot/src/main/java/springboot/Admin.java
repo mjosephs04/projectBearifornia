@@ -7,13 +7,18 @@ import java.util.List;
 public class Admin implements User{
     private static UserType classification = UserType.ADMIN;
     private String name;
-    private Integer idNumber;
     private String username;
     private String password;
 
 
     public Admin(String name){
         this.name = name;
+    }
+
+    public Admin(String name, String username, String password){
+        this.name = name;
+        this.username = username;
+        this.password = password;
     }
     @Override
     public UserType getType() {
@@ -73,5 +78,14 @@ public class Admin implements User{
         }
 
         return "success";
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -30,6 +30,7 @@ public class Reservation {
         this.endDay = end;
     }
 
+    //returns -1 if the start and end dates of the reservation are not valid
     public Double calculateCost(){
         double cost = -1.0;
         Integer days = (int)ChronoUnit.DAYS.between(getStartDay(), getEndDay());
@@ -95,7 +96,14 @@ public class Reservation {
         return result;
     }
 
+    public static LocalDate convertStringToDate(String x){
+        // Extract the LocalDate part from the ZonedDateTime
+        return ZonedDateTime.parse(x).toLocalDate();
+    }
+
     //returns either a failure message or "success"
+    //the strings will be zoned dates
+    //calls createReservation(reservation) which then adds it to csv
     public static String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
         Room r = null;
         try {
@@ -104,13 +112,9 @@ public class Reservation {
         catch(IOException e){
             return "fail";
         }
-        // Parse the string into a ZonedDateTime
-        ZonedDateTime startD = ZonedDateTime.parse(checkIn);
-        ZonedDateTime endD = ZonedDateTime.parse(checkOut);
 
-        // Extract the LocalDate part from the ZonedDateTime
-        LocalDate startDate = startD.toLocalDate();
-        LocalDate endDate = endD.toLocalDate();
+        LocalDate startDate = convertStringToDate(checkIn);
+        LocalDate endDate = convertStringToDate(checkOut);
 
         Reservation newReservation = new Reservation(r, startDate, endDate);
         newReservation.setName(name);
@@ -126,6 +130,7 @@ public class Reservation {
 
 
     //returns either a failure message or "success"
+    //calls addReservedRoom to add it to csv
     public static String createReservation(Reservation r) {
         ArrayList<Reservation> existingReservations = null;
         try {

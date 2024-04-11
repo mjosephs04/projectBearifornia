@@ -1,10 +1,6 @@
 package springboot;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +8,6 @@ import java.util.Random;
 
 public class Guest implements User {
 
-    private static final Random random = new Random();
     private static UserType classification;
     // Data Members
     private String name = "";
@@ -58,26 +53,23 @@ public class Guest implements User {
         return Reservation.createReservation(reservation);
     }
 
-    public static List<Guest> readInAllGuests() throws IOException {
-        ArrayList<Guest> guests = new ArrayList<>(); //store all the rooms we read in
-        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"));
-
-        reader.readLine(); //skip first line of header info
-        String line;
-
-        //name,username,password,userType
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            String[] split = line.split(",");
-            Guest curr = new Guest(split[0], split[1], split[2]);
-            guests.add(curr);
-        }
-
-        return guests;
+    public String reserveRoom(Room reservedRoom, String start, String end) {
+        return reserveRoom(reservedRoom,
+                            Reservation.convertStringToDate(start),
+                            Reservation.convertStringToDate(end));
     }
 
-    @Override
+
+        @Override
     public UserType getType() {
         return classification;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

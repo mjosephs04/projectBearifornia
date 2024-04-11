@@ -8,4 +8,7 @@ public interface User {
     String getName();
 
     void setName(String x);
+
+    String getUsername();
+
 }
