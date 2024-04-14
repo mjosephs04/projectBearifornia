@@ -51,4 +51,5 @@ buildNumber.properties
 target/*
 *.DS_Store
 
-frontend/node_modules/.cache*
+*.cache/
+/frontend/node_modules/.cache/default-development/
