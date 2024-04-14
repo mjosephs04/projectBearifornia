@@ -51,4 +51,4 @@ buildNumber.properties
 target/*
 *.DS_Store
 
-frontend/node_modules/*
+frontend/node_modules/.cache*
