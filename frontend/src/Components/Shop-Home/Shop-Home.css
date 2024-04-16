@@ -1,0 +1,28 @@
+
+
+.home-slide{
+    animation: fadeIn 10s;
+    width: 100vw;
+
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0; /* Start with 0 opacity */
+    }
+    100% {
+        opacity: 1; /* End with full opacity */
+    }
+}
+
+.shop-now-button{
+    width: 250px;
+    height: 60px;
+    color: white;
+    background-color: darkgreen;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    font-size: 30px;
+    font-family: Helvetica;
+}

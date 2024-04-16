@@ -12,6 +12,7 @@ import AddRoom from './Components/AddRoom/AddRoom'
 import ReservationLanding from './Components/ReservationLanding/ReservationLanding'
 import {Route, Routes} from "react-router-dom";
 import ConfirmationLanding from "./Components/ConfirmationLanding/ConfirmationLanding";
+import ShopHome from './Components/Shop-Home/Shop-Home'
 const App = () => {
     return (
         <>
@@ -27,6 +28,7 @@ const App = () => {
                 <Route exact path='/add-room' element={<AddRoom />}/>
                 <Route exact path='/reservation' element={<ReservationLanding />}/>
                 <Route exact path='/confirmation' element={<ConfirmationLanding />}/>
+                <Route exact path='/shop' element={<ShopHome />}/>
             </Routes>
         </>
     );
