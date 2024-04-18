@@ -79,7 +79,7 @@ const ProductDetails = (props) =>{
             <Link to='/shop-catalog'>
                 <button className='Back-Button'>Go Back</button>
             </Link>
-            
+
             <div className="name-container">
                 <p>Name of Product: API call to get product name</p>
 
