@@ -102,6 +102,43 @@
 }
 
 
+.product {
+    position: absolute;
+    right: 20%;
+    bottom: 21.75%;
+    left: 3%;
+    width: 150px;
+    height: 60px;
+    display: inline-block;
+    background-color: #003b00;
+    text-align: center; /* Aligns text and children elements to the center */
+    box-sizing: border-box; /* Includes padding and border in the element's width */
+}
+
+.controls {
+    margin: 5px 0;
+}
+
+button {
+    margin: 0 5px;
+}
+
+.quantity {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.add-to-cart {
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+}
+
+
+
+
+
+
 
 
 

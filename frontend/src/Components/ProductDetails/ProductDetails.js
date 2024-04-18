@@ -15,6 +15,11 @@ const ProductDetails = (props) =>{
     // State to store the fetched data
     const [productListingData, setproductListingData] = useState([]);
 
+    const [quantity, setQuantity] = useState(1);
+
+    const increment = () => setQuantity(quantity + 1);
+    const decrement = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
+
 
     const fetchData = () => {
         axios.get('http://localhost:8080/rooms/nature-retreat') // Have to change the axios.get ask Mark about this
@@ -50,20 +55,31 @@ const ProductDetails = (props) =>{
         <div class="Container1">
             <Layout/>
 
+            <div className="product">
+                {/*<h2>{product.name} - ${product.price.toFixed(2)}</h2>*/}
+                <div className="controls">
+                    <button onClick={decrement}>-</button>
+                    <span className="quantity">{quantity}</span>
+                    <button onClick={increment}>+</button>
+                </div>
+                {/*<button onClick={() => addToCart(product, quantity)} className="add-to-cart">Add to Cart</button>*/}
+                <button>Add to Cart</button>
+            </div>
+
             <div className="image-container">
                 <img src={playstationIMG}></img>
 
                 {/*This is what will grab the data from the backend*/}
                 {/*<img src={productListingData.imageURL}></img>*/}
 
-                <button>Add To Cart</button>
+                {/*<button>Add To Cart</button>*/}
             </div>
 
 
             <Link to='/shop-catalog'>
                 <button className='Back-Button'>Go Back</button>
             </Link>
-
+            
             <div className="name-container">
                 <p>Name of Product: API call to get product name</p>
 
