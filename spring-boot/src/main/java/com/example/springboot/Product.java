@@ -1,3 +1,5 @@
+package com.example.springboot;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,12 +11,14 @@ public class Product {
     private String productName;
     private int productStock;
     private String productDescription;
+    private double productPrice; // Added price attribute
 
-    public Product(String productId, String productName, int productStock, String productDescription) {
+    public Product(String productId, String productName, int productStock, String productDescription, double productPrice) {
         this.productId = productId;
         this.productName = productName;
         this.productStock = productStock;
         this.productDescription = productDescription;
+        this.productPrice = productPrice;
     }
 
     public static List<Product> readProductsFromCSV(String filename) throws IOException {
@@ -27,7 +31,8 @@ public class Product {
                 String productName = data[1].trim();
                 int productStock = Integer.parseInt(data[2].trim());
                 String productDescription = data[3].trim();
-                Product product = new Product(productId, productName, productStock, productDescription);
+                double productPrice = Double.parseDouble(data[4].trim()); // Parse price
+                Product product = new Product(productId, productName, productStock, productDescription, productPrice);
                 products.add(product);
             }
         }
@@ -66,6 +71,14 @@ public class Product {
         this.productDescription = productDescription;
     }
 
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -73,6 +86,7 @@ public class Product {
                 ", productName='" + productName + '\'' +
                 ", productStock=" + productStock +
                 ", productDescription='" + productDescription + '\'' +
+                ", productPrice=" + productPrice +
                 '}';
     }
 }
