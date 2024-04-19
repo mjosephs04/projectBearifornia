@@ -25,22 +25,12 @@
     padding: 10px;
 }
 
-.listing-cost{
-    font-family: Helvetica;
-    font-size: 20px;
-    font-weight: bolder;
-    position: absolute;
-    right: 30%;
-    top: 100%;
-    color: black;
-}
-
 .listing-img{
-    width: 40%;
+    width: 60%;
     display: block;
     margin-left: auto;
     margin-right: auto;
     position: absolute;
-    right: 30%;
-    top: 28%;
+    right: 20%;
+    top: 25%;
 }

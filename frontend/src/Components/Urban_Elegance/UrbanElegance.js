@@ -1,8 +1,9 @@
-
 import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import "./UrbanElegance.css"
+import DateSelector from '../DateSelector/DateSelector'
+
 const UrbanElegance = () =>{
 
     // State to store the fetched data
@@ -44,15 +45,11 @@ const UrbanElegance = () =>{
                 {listingData.description}
             </div>
 
-            {/*<div className='listing-cost'>*/}
-            {/*    {listingData.cost}*/}
-            {/*</div>*/}
-
             <div className='listing-img'>
                 <img className='listing-img' src={listingData.imageURL}></img>
             </div>
 
-
+            <DateSelector parameter='Urban Elegance'  />
         </div>
     );
 

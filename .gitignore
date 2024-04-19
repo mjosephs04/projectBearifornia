@@ -48,5 +48,9 @@ buildNumber.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,java
 
-/target/
-/src/main/.DS_Store
+target/*
+*.DS_Store
+
+frontend/node_modules
+frontend/node_modules/.cache/default-development/*
+/frontend/node_modules/.cache/default-development/*
