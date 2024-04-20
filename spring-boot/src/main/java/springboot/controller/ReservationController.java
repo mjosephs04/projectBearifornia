@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -100,6 +101,8 @@ public class ReservationController {
         }
     }
 
+
+    @PostMapping("/checkCost") //do i need to add this?
     //checkIn and checkOut must be in zonedDate format
     //**this function returns either
     public ResponseEntity<Double> calculateCost(@RequestBody
@@ -139,5 +142,56 @@ public class ReservationController {
         else{
             return ResponseEntity.ok(cost);
         }
+    }
+
+    //returns the current users reservations
+    @PostMapping("/showMyReservations")
+    public ResponseEntity<List<Reservation>> showMyReservations(String username){
+        User user;
+        try {
+            user = UserFunctions.findUser(username);
+            if(!(user instanceof Guest)){
+                throw new IOException();
+            }
+        }catch(IOException e){ //throws an exception if the username is not associated with a guest account,
+                                //or if the username is not associated with an account at all
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        //otherwise, if the username is associated with a guest account, returns all reservations
+        return ResponseEntity.ok(((Guest)user).reservationList);
+    }
+
+
+    //pass the username of the admin/user trying to display all guests.
+    //this function will check that the username really is associated with an
+    //admin account and then will return all guests accordingly.
+    @PostMapping("/getAllGuests")
+    public ResponseEntity<List<User>> getAllGuests(String adminUsername){
+        User user;
+        try {
+            user = UserFunctions.findUser(adminUsername);
+            if(!(user instanceof Admin)){
+                throw new IOException();
+            }
+        }catch(IOException e){
+            //returns a bad request if the username is not associated with a guest account,
+            //or if the username is not associated with an account at all
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        List<User> list;
+        try {
+            list = UserFunctions.readInAllUsers();
+        }
+        catch(IOException e){
+            //returns a bad request if we could not read in all users
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        //get only the guests from the list
+        list.removeIf(curr -> (curr instanceof Guest));
+
+        return ResponseEntity.ok(list);
     }
 }
