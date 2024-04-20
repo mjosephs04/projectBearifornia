@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -100,6 +101,8 @@ public class ReservationController {
         }
     }
 
+
+    @PostMapping("/checkCost") //do i need to add this?
     //checkIn and checkOut must be in zonedDate format
     //**this function returns either
     public ResponseEntity<Double> calculateCost(@RequestBody
@@ -139,5 +142,17 @@ public class ReservationController {
         else{
             return ResponseEntity.ok(cost);
         }
+    }
+
+    //returns the current users reservations
+    @PostMapping("/showMyReservations")
+    public ResponseEntity<List<Reservation>> showMyReservations(String username){
+        Guest user;
+        try {
+            user = (Guest)UserFunctions.findUser(username);
+        }catch(IOException e){
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(user.reservationList);
     }
 }
