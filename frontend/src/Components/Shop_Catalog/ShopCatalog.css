@@ -1,0 +1,64 @@
+.listing-name{
+    font-family: Helvetica;
+    font-size: 7vh;
+    font-weight: bolder;
+    color: #003b00;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3.5%;
+    height: 2vh;
+
+}
+
+.listing-desc{
+    font-family: Helvetica;
+    font-size: 30px;
+    position: absolute;
+    right: 25%;
+    top: 70%;
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    text-align: center;
+}
+
+/*.listing-cost{*/
+/*    font-family: Helvetica;*/
+/*    font-size: 30px;*/
+/*    font-weight: bolder;*/
+/*    position: absolute;*/
+/*    right: 26%;*/
+/*    top: 90%;*/
+/*    color: black;*/
+/*}*/
+
+
+.image-container {
+    width: 200px; /* Adjust the width as needed */
+    text-align: center; /* Center the text below the image */
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-weight: normal;
+    margin: 50px; /* Margin around each image container */
+    float: left;
+}
+
+.image-container img {
+    width: 100%; /* Make the image fill the container */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+.image-container button{
+    width: 150px;
+    height: 30px;
+    border: none;
+    background-color: #003b00;
+    color: white;
+
+    &:hover{
+        background-color: #002600;
+    }
+}
+
