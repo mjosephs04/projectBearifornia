@@ -40,7 +40,7 @@ public class Cart {
     private double calculateTotalAmount() {
         double totalAmount = 0.0;
         for (Product item : items) {
-            totalAmount += item.getProductStock(); // Assuming each product costs the same as its stock
+            totalAmount += item.getProductPrice() ; // Assuming each product costs the same as its stock
         }
         return totalAmount;
     }
