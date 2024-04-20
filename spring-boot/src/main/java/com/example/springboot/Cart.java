@@ -23,6 +23,7 @@ public class Cart {
         return product.getProductStock() > 0;
     }
 
+    /*
     public void checkout(Payment payment) {
         if (!items.isEmpty()) {
             double totalAmount = calculateTotalAmount();
@@ -34,6 +35,7 @@ public class Cart {
             System.out.println("Cart is empty. Nothing to checkout.");
         }
     }
+    */
 
     private double calculateTotalAmount() {
         double totalAmount = 0.0;
