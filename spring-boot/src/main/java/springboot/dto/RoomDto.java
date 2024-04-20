@@ -1,4 +1,4 @@
-package springboot;
+package springboot.dto;
 
 public class RoomDto {
     private Integer roomNumber;
