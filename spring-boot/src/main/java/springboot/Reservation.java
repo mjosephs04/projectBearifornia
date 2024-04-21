@@ -17,17 +17,22 @@ public class Reservation {
     private LocalDate startDay;
     private LocalDate endDay;
     private Integer price;
-
-    // Constructors
-    public Reservation(Integer id, String name) {
-        this.idNumber = id;
-        this.name = name;
-    }
+    private String email;
+    private String address;
 
     public Reservation(Room room, LocalDate start, LocalDate end) {
         this.room = new Room(room);
         this.startDay = start;
         this.endDay = end;
+    }
+
+    public Reservation(Room room, LocalDate start, LocalDate end, String n, String e, String a) {
+        this.room = new Room(room);
+        this.startDay = start;
+        this.endDay = end;
+        this.name = n;
+        email = e;
+        address = a;
     }
 
     //returns -1 if the start and end dates of the reservation are not valid
@@ -248,6 +253,22 @@ public class Reservation {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 /*

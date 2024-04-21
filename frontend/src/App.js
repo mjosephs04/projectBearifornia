@@ -10,10 +10,9 @@ import CreateAccount from './Components/Create_Account/CreateAccount'
 import ClerkCenter from './Components/Clerk_Center/ClerkCenter'
 import AddRoom from './Components/AddRoom/AddRoom'
 import ReservationLanding from './Components/ReservationLanding/ReservationLanding'
-import ShopCatalog from './Components/Shop_Catalog/ShopCatalog'
-import ProductDetails from './Components/ProductDetails/ProductDetails'
 import {Route, Routes} from "react-router-dom";
-// import ConfirmationLanding from "./Components/ConfirmationLanding/ConfirmationLanding";
+import ConfirmationLanding from "./Components/ConfirmationLanding/ConfirmationLanding";
+import ShopHome from './Components/Shop-Home/Shop-Home'
 const App = () => {
     return (
         <>
@@ -28,9 +27,8 @@ const App = () => {
                 <Route exact path='/clerk-center' element={<ClerkCenter />}/>
                 <Route exact path='/add-room' element={<AddRoom />}/>
                 <Route exact path='/reservation' element={<ReservationLanding />}/>
-                <Route exact path='/shop-catalog' element={<ShopCatalog />}/>
-                <Route exact path='/product-details' element={<ProductDetails/>}/>
-                {/*<Route exact path='/confirmation' element={<ConfirmationLanding />}/>*/}
+                <Route exact path='/confirmation' element={<ConfirmationLanding />}/>
+                <Route exact path='/shop' element={<ShopHome />}/>
             </Routes>
         </>
     );

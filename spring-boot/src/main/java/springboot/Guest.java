@@ -14,6 +14,7 @@ public class Guest implements User {
     private String username;
     private String password;
     private String streetAddress;
+    private String email;
 
     public List<Reservation> reservationList;
 
@@ -23,6 +24,16 @@ public class Guest implements User {
         this.name = name;
         this.username = username;
         this.password = password;
+    }
+
+    public Guest(String name, String e, String address, String username, String password) {
+        reservationList = new ArrayList<>();
+        classification = UserType.GUEST;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        email = e;
+        streetAddress = address;
     }
 
     // GETTERS
@@ -71,5 +82,21 @@ public class Guest implements User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    protected String getPassword() {
+        return password;
     }
 }

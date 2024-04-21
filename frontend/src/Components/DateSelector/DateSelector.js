@@ -36,6 +36,7 @@ const DateSelector = (props) => {
                 if(response.status == 200){
                     setRoomCost(response.data.cost);
                     setRoomNumber(response.data.roomNumber);
+                    setRoomUnavailable(false)
                     setRoomAvailable(true);
                 }
                 return response.data;
