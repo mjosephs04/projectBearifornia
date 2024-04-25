@@ -23,6 +23,7 @@ const View_Cart = () =>{
                     <div className="image-container">
                         <img src={goldChainIMG} alt="Image 1"/>
                         <p>Tupac's Gold Chain og</p>
+                        <p class="quantity">fdsaio</p>
                     </div>
                 </div>
 
