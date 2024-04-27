@@ -83,7 +83,7 @@ const ClerkReset = (props) =>{
             </div>
 
             {error && (
-                <h1 className='login-failed'>Login Failed: Username or Password was incorrect</h1>
+                <h1 className='login-failed_01'>Login Failed: Username or Password was incorrect</h1>
             )}
 
 
