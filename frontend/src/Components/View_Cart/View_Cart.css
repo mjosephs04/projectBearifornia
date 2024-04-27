@@ -24,7 +24,7 @@
     padding: 10px;
     text-align: center;
 }
-.image-container {
+.image-containerCart {
     width: 200px; /* Adjust the width as needed */
     text-align: center; /* Center the text below the image */
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -33,12 +33,12 @@
     float: left;
 }
 
-.image-container img {
+.image-containerCart img {
     width: 100%; /* Make the image fill the container */
     height: auto; /* Maintain the aspect ratio */
 }
 
-.image-container button{
+.image-containerCart button{
     width: 150px;
     height: 30px;
     border: none;
@@ -73,7 +73,7 @@ TESTING PAST HERE
     padding: 100px 30px;
     height: 120px;
     display: flex;
-    margin-right: 0px;
+    margin-right: 2px;
     text-align: right;
 }
 
@@ -94,5 +94,19 @@ TESTING PAST HERE
     max-width: 400px;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
 
+.addToBillButton{
+    width: 150px;
+    height: 30px;
+    border: none;
+    background-color: #003b00;
+    color: white;
+
+    &:hover{
+        background-color: #002600;
+    }
 }
