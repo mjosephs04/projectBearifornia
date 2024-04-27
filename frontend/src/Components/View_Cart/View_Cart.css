@@ -65,11 +65,15 @@ TESTING PAST HERE
     margin: 0 auto;
 }
 
+.flexbox{
+    display: flex;
+}
+
 .item {
     padding: 100px 30px;
     height: 120px;
     display: flex;
-    margin-right: 50px;
+    margin-right: 0px;
     text-align: right;
 }
 
@@ -83,3 +87,12 @@ TESTING PAST HERE
 
  */
 
+.receipt{
+    /*background-color: #f9f9f9;*/
+    border: 1px solid #ccc;
+    padding: 20px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
