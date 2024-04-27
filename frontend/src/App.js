@@ -13,6 +13,11 @@ import ReservationLanding from './Components/ReservationLanding/ReservationLandi
 import {Route, Routes} from "react-router-dom";
 import ConfirmationLanding from "./Components/ConfirmationLanding/ConfirmationLanding";
 import ShopHome from './Components/Shop-Home/Shop-Home'
+import ProductDetails from './Components/ProductDetails/ProductDetails'
+import AdminCenter from './Components/Admin_Center/AdminCenter'
+import ClerkReset from './Components/Clerk_ResetPass/ClerkReset'
+
+
 const App = () => {
     return (
         <>
@@ -29,6 +34,9 @@ const App = () => {
                 <Route exact path='/reservation' element={<ReservationLanding />}/>
                 <Route exact path='/confirmation' element={<ConfirmationLanding />}/>
                 <Route exact path='/shop' element={<ShopHome />}/>
+                <Route exact path='/product-details' element={<ProductDetails/>}/>
+                <Route exact path='/admin-center' element={<AdminCenter/>}/>
+                <Route exact path='/admin-center/reset-password' element={<ClerkReset/>}/>
             </Routes>
         </>
     );
