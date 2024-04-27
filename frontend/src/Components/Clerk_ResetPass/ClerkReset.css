@@ -60,7 +60,7 @@ input[type='button2'] {
     }
 }
 
-.login-failed{
+.login-failed_01{
     color: red;
     font-size: 12px;
     position: absolute;
