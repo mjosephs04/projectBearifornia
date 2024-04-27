@@ -16,6 +16,7 @@ import ShopHome from './Components/Shop-Home/Shop-Home'
 import ShopCatalog from "./Components/Shop_Catalog/ShopCatalog";
 import ViewCart from './Components/View_Cart/View_Cart'
 import ProductDetails from './Components/ProductDetails/ProductDetails'
+import ModifyInfo from './Components/Clerk_Modify_Info/ModifyInfo'
 const App = () => {
     return (
         <>
@@ -35,6 +36,7 @@ const App = () => {
                 <Route exact path='/catalog' element={<ShopCatalog />}/>
                 <Route exact path='/view-cart' element={<ViewCart />}/>
                 <Route exact path='/product-details' element={<ProductDetails/>}/>
+                <Route exact path='/modify-info' element={<ModifyInfo/>}/>
             </Routes>
         </>
     );
