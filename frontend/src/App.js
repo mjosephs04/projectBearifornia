@@ -17,6 +17,8 @@ import ShopCatalog from "./Components/Shop_Catalog/ShopCatalog";
 import ViewCart from './Components/View_Cart/View_Cart'
 import ProductDetails from './Components/ProductDetails/ProductDetails'
 import ModifyInfo from './Components/Clerk_Modify_Info/ModifyInfo'
+import AdminCenter from "./Components/Admin_Center/AdminCenter";
+import AdminReset from "./Components/Admin_Reset_User/AdminReset";
 const App = () => {
     return (
         <>
@@ -37,6 +39,9 @@ const App = () => {
                 <Route exact path='/view-cart' element={<ViewCart />}/>
                 <Route exact path='/product-details' element={<ProductDetails/>}/>
                 <Route exact path='/modify-info' element={<ModifyInfo/>}/>
+                <Route exact path='/admin-center' element={<AdminCenter/>}/>
+                <Route exact path='/admin-center/reset-password' element={<AdminReset/>}/>
+
             </Routes>
         </>
     );

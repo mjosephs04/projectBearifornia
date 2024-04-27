@@ -1,10 +1,10 @@
 import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import "./ClerkReset.css"
+import "./AdminReset.css"
 import {Link} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-const ClerkReset = (props) =>{
+const AdminReset = (props) =>{
     const [error, setError] = useState(false)
     const [username, setUsername] = useState([])
     const [password, setPassword] = useState([])
@@ -83,7 +83,7 @@ const ClerkReset = (props) =>{
             </div>
 
             {error && (
-                <h1 className='login-failed_01'>Login Failed: Username or Password was incorrect</h1>
+                <h1 className='login-failed'>Login Failed: Username or Password was incorrect</h1>
             )}
 
 
@@ -93,4 +93,4 @@ const ClerkReset = (props) =>{
 
 }
 
-export default ClerkReset
+export default AdminReset
