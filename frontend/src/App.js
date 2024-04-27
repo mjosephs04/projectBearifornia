@@ -13,6 +13,9 @@ import ReservationLanding from './Components/ReservationLanding/ReservationLandi
 import {Route, Routes} from "react-router-dom";
 import ConfirmationLanding from "./Components/ConfirmationLanding/ConfirmationLanding";
 import ShopHome from './Components/Shop-Home/Shop-Home'
+import ShopCatalog from "./Components/Shop_Catalog/ShopCatalog";
+import ViewCart from './Components/View_Cart/View_Cart'
+import ProductDetails from './Components/ProductDetails/ProductDetails'
 const App = () => {
     return (
         <>
@@ -29,6 +32,9 @@ const App = () => {
                 <Route exact path='/reservation' element={<ReservationLanding />}/>
                 <Route exact path='/confirmation' element={<ConfirmationLanding />}/>
                 <Route exact path='/shop' element={<ShopHome />}/>
+                <Route exact path='/catalog' element={<ShopCatalog />}/>
+                <Route exact path='/view-cart' element={<ViewCart />}/>
+                <Route exact path='/product-details' element={<ProductDetails/>}/>
             </Routes>
         </>
     );

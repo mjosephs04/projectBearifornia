@@ -1,0 +1,112 @@
+.listing-name{
+    font-family: Helvetica;
+    font-size: 7vh;
+    font-weight: bolder;
+    color: #003b00;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3.5%;
+    height: 2vh;
+
+}
+
+.listing-desc{
+    font-family: Helvetica;
+    font-size: 30px;
+    position: absolute;
+    right: 25%;
+    top: 70%;
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    text-align: center;
+}
+.image-containerCart {
+    width: 200px; /* Adjust the width as needed */
+    text-align: center; /* Center the text below the image */
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    font-weight: normal;
+    margin: 50px; /* Margin around each image container */
+    float: left;
+}
+
+.image-containerCart img {
+    width: 100%; /* Make the image fill the container */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+.image-containerCart button{
+    width: 150px;
+    height: 30px;
+    border: none;
+    background-color: #003b00;
+    color: white;
+
+    &:hover{
+        background-color: #002600;
+    }
+}
+/*
+TESTING PAST HERE
+ */
+
+.box {
+    width: 1800px;
+    height: 1000px;
+    min-height: 100px;
+    overflow: auto;
+    border: 10px solid #ffb81c;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.flexbox{
+    display: flex;
+}
+
+.item {
+    padding: 100px 30px;
+    height: 120px;
+    display: flex;
+    margin-right: 2px;
+    text-align: right;
+}
+
+.quantity{
+    margin: 5px 20px 5px 0;
+    line-height: 1.4em;
+}
+
+/*
+
+
+ */
+
+.receipt{
+    /*background-color: #f9f9f9;*/
+    border: 1px solid #ccc;
+    padding: 20px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.addToBillButton{
+    width: 150px;
+    height: 30px;
+    border: none;
+    background-color: #003b00;
+    color: white;
+
+    &:hover{
+        background-color: #002600;
+    }
+}
