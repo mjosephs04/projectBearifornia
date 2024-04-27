@@ -5,6 +5,7 @@ import axios from 'axios'
 import "./ClerkCenter.css"
 import bedroomButton from "../../assets/76244.png";
 import checkinoutButton from "../../assets/95145-200.png"
+import modifyInfoButton from "../../assets/bookmark.png"
 import {Link} from "react-router-dom";
 const ClerkCenter = (props) =>{
     const [usernameError, setEmailError] = useState('')
@@ -27,6 +28,9 @@ const ClerkCenter = (props) =>{
             <div className='inputContainer2'>
                 <p>Check In/Out</p>
             </div>
+            <div className='inputContainer3'>
+                <p>Modify Information</p>
+            </div>
             <div className='button'>
                 <Link to='/add-room'>
                     <img className='bedroomButton' src={bedroomButton}/>
@@ -34,6 +38,11 @@ const ClerkCenter = (props) =>{
             </div>
             <div className='button'>
                 <img className='bedroomButton' src={checkinoutButton}/>
+            </div>
+            <div className='button'>
+                <Link to='/modify-info'>
+                    <img className='bedroomButton' src={modifyInfoButton}/>
+                </Link>
             </div>
         </div>
     );

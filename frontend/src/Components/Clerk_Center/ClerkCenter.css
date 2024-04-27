@@ -1,6 +1,6 @@
 .pageTitle{
     font-family: Helvetica;
-    font-size: 7vh;
+    font-size: 5vh;
     font-weight: bolder;
     color: #003b00;
 
@@ -16,7 +16,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    top: 62%;
+    top: 40%;
     left: 109px;
     position: absolute;
 }
@@ -26,8 +26,18 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    top: 62%;
+    top: 40%;
     left: 390px;
+    position: absolute;
+}
+
+.inputContainer3 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    top: 40%;
+    left: 650px;
     position: absolute;
 }
 
