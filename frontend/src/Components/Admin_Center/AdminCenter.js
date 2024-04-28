@@ -16,7 +16,7 @@ const AdminCenter = (props) =>{
     return (
         <div>
             <Layout/>
-            <div className='pageTitle'>
+            <div className='pageTitle_01'>
                 <h1>Admin Center</h1>
             </div>
             <br/>
@@ -28,12 +28,12 @@ const AdminCenter = (props) =>{
             </div>
             <div className='button'>
                 <Link to='/admin-center/create-clerk'>
-                    <img className='clerkCreationButton' src={clerkCreationButton}/>
+                    <img className='adminButtons' src={clerkCreationButton}/>
                 </Link>
             </div>
             <div className='button'>
                 <Link to='/admin-center/reset-password'>
-                    <img className='resetPassButton' src={resetPassButton}/>
+                    <img className='adminButtons' src={resetPassButton}/>
                 </Link>
             </div>
         </div>
