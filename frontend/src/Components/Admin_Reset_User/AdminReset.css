@@ -1,8 +1,25 @@
-.inputContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.inputContainerReset {
+    /*background-color: #f9f9f9;*/
+    border: 1px solid #ccc;
+    padding: 20px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.box{
+    width: 1800px;
+    height: 1000px;
+    min-height: 100px;
+    overflow: auto;
+    border: 10px solid #ffb81c;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 .inputBox {
@@ -23,40 +40,17 @@ input[type='button'] {
     background: #64ed82;
     color: #ffffff;
     padding: 12px 24px;
-    margin: 8px;
+    margin: 10px;
     font-size: 24px;
     border-radius: 8px;
     cursor: pointer;
     outline: none;
-
+    position: relative;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+
 
     &:hover{
         background-color: #006016;
-    }
-}
-
-input[type='button2'] {
-    border: none;
-    background: #ffb81c;
-    color: #ffffff;
-    padding: 12px 24px;
-    margin: 8px;
-    font-size: 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    position: absolute;
-    text-align: center;
-    left: 37%;
-
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-    &:hover{
-        background-color: #855f00;
     }
 }
 
