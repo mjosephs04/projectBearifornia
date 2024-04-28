@@ -20,20 +20,20 @@ const AdminCenter = (props) =>{
                 <h1>Admin Center</h1>
             </div>
             <br/>
-            <div className='inputContainer1'>
+            <div className='inputContainer_01'>
                 <p>Create Clerk Account</p>
             </div>
-            <div className='inputContainer2'>
+            <div className='inputContainer_02'>
                 <p>Reset User Passwords</p>
             </div>
             <div className='button'>
-                <Link to='/add-room'>
+                <Link to='/admin-center/create-clerk'>
                     <img className='clerkCreationButton' src={clerkCreationButton}/>
                 </Link>
             </div>
             <div className='button'>
                 <Link to='/admin-center/reset-password'>
-                    <img className='clerkCreationButton' src={resetPassButton}/>
+                    <img className='resetPassButton' src={resetPassButton}/>
                 </Link>
             </div>
         </div>
