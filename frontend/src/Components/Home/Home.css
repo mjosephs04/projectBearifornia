@@ -27,16 +27,23 @@
     font-size: 75px;
     position: absolute;
     top: 290px;
-    left: 425px;
+    left: 863px;
     animation-name: fadeIn;
     animation-duration: 4s;
     animation-timing-function: ease-in-out;
 }
 
+.centerPageThingy{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
 .reserve-button{
     position: absolute;
     top: 450px;
-    left: 50%;
+    left: 40%;
     width: 300px;
     height: 50px;
     color: white;

@@ -11,8 +11,8 @@ const Home = () => {
 
     return (
         <div>
-            <div>
-                <Layout />
+            <Layout />
+            <div className="centerPageThingy">
                 <img className='home-banner' src={homeBanner} alt="Reserve Now!"/>
                 <h1 className='text-overlay'>Reserve Now</h1>
                 <Link to='/reserve'>
