@@ -1,0 +1,68 @@
+.box_ViewBill{
+    width: 1800px;
+    height: 1000px;
+    min-height: 100px;
+    overflow: auto;
+    border: 10px solid #ffb81c;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.receipt_ViewBill{
+    /*background-color: #f9f9f9;*/
+    border: 1px solid #ccc;
+    padding: 20px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.payTotalBillButton{
+    width: 150px;
+    height: 30px;
+    border: none;
+    background-color: #003b00;
+    color: white;
+
+    &:hover{
+        background-color: #002600;
+    }
+}
+
+
+.accountname_container{
+    font-family: Damascus;
+    text-decoration: underline;
+}
+
+.cardinfo_container{
+    font-family: Damascus;
+    text-decoration: underline;
+}
+
+.shoptotal_container{
+    font-family: Damascus;
+    text-decoration: underline;
+}
+
+
+.staytotal_container{
+    font-family: Damascus;
+    text-decoration: underline;
+}
+
+
+.tax_container{
+    font-family: Damascus;
+    text-decoration: underline;
+}
+
+.totalbill_container{
+    font-family: Damascus;
+    text-decoration: underline;
+}

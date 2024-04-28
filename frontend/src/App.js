@@ -20,6 +20,7 @@ import ModifyInfo from './Components/Clerk_Modify_Info/ModifyInfo'
 import AdminCenter from "./Components/Admin_Center/AdminCenter";
 import AdminReset from "./Components/Admin_Reset_User/AdminReset";
 import AdminCreate from "./Components/Admin_Clerk_Create/AdminCreate";
+import ViewBill from "./Components/ViewBill/ViewBill";
 const App = () => {
     return (
         <>
@@ -43,6 +44,7 @@ const App = () => {
                 <Route exact path='/admin-center' element={<AdminCenter/>}/>
                 <Route exact path='/admin-center/reset-password' element={<AdminReset/>}/>
                 <Route exact path='/admin-center/create-clerk' element={<AdminCreate/>}/>
+                <Route exact path='/view-bill' element={<ViewBill/>}/>
 
             </Routes>
         </>
