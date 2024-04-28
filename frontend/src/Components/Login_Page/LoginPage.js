@@ -30,11 +30,13 @@ const LoginPage = (props) =>{
             }).then(data => {
                 console.log(data[1]);
                 // setResponse(response)
-                if(data[1] == "ADMIN"){
+                if(data[1] == "CLERK"){
 
                     navigate('/clerk-center');
 
 
+                }else if(data[1] == "ADMIN"){
+                    navigate('/admin-center');
                 }else{
 
                 }
