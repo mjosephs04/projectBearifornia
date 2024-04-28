@@ -30,30 +30,26 @@ const CreateAccount = (props) =>{
     return (
         <div>
             <Layout/>
-            <br/>
-            <div className='inputContainer'>
-
-                <input
-                    //value={email}
-                    placeholder="Enter your username here"
-                    className={'inputBox'}
-                    onChange={input => setUsername(input.target.value)}
-                />
+            <div className='box'>
+                <div className='loginAligner'>
+                    <h1>Create your Bearifornia account</h1>
+                    <input
+                        //value={email}
+                        placeholder="Enter new username here"
+                        className={'inputBoxLogin'}
+                        onChange={input => setUsername(input.target.value)}
+                    />
+                    <input
+                        //value={email}
+                        placeholder="Enter your password here"
+                        className={'inputBoxLogin'}
+                        type="password"
+                        onChange={input => setPassword(input.target.value)}
+                    />
+                    <input className={'inputButton'} type="buttonLogin" onClick={onButtonClick} value={'Create account'}/>
+                </div>
             </div>
             <br/>
-            <div className='inputContainer'>
-                <input
-                    //value={email}
-                    placeholder="Enter your password here"
-                    className={'inputBox'}
-                    type="password"
-                    onChange={input => setPassword(input.target.value)}
-                />
-            </div>
-            <br/>
-            <div className={'inputContainer'}>
-                <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Create account'}/>
-            </div>
 
 
         </div>
