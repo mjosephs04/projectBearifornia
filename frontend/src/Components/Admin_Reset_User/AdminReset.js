@@ -68,7 +68,7 @@ const AdminReset = (props) =>{
                         type="password"
                         onChange={evt => setPassword(evt.target.value)}
                     />
-                    <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Log in'}/>
+                    <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Update Account'}/>
                 </div>
             </div>
 
