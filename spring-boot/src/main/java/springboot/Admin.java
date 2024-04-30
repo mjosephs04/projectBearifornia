@@ -1,6 +1,9 @@
 package springboot;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,49 +38,32 @@ public class Admin implements User{
         name = x;
     }
 
+    public String addUser(Connection conn, String user, String pass, String userT){
+        String insertSQL = "INSERT INTO USERS (USERNAME, PASSWORD, USERTYPE) VALUES (?, ?, ?)";
+
+        try (PreparedStatement statement = conn.prepareStatement(insertSQL)) {
+            statement.setString(1, user);
+            statement.setString(2, pass);
+            statement.setString(3, userT);
+            statement.executeUpdate();
+
+            return "success";
+        } catch(SQLException e) {
+            System.out.println("Could not insert users into database: " + e.getMessage());
+            return "Could not insert users into database: " + e.getMessage();
+        }
+    }
+
     //returns either "success" or a fail message
-    public String addUser(String username, String password, UserType type) {
-        List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Users.csv"));
-        ) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Failed to read in the currently available rooms";
-        }
+    public String addClerk(String username, String password, UserType type) {
+        Connection conn = databaseSetup.getDBConnection();
 
-        // Add the new line containing the new room
-        StringBuilder newUser = new StringBuilder();
-        newUser.append(username).append(",").append(password).append(",").append(type.toString());
-        if (!lines.contains(newUser)) {
-            lines.add(newUser.toString());
-        } else {
-            return "User already exists";
+        if(type.equals(UserType.CLERK)){
+            return addUser(conn, username, password, type.toString());
         }
-
-        FileWriter fw;
-        try {
-            fw = new FileWriter("spring-boot/src/main/resources/Users.csv");
-        } catch (IOException x) {
-            x.printStackTrace();
-            return "Could not write to User database";
+        else{
+            return "failure-- admins may only create CLERK accounts";
         }
-
-        // Write the updated content back to the CSV file
-        try (BufferedWriter writer = new BufferedWriter(fw)) {
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Could not write to User database";
-        }
-
-        return "success";
     }
 
     @Override
