@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import springboot.UserType;
 import springboot.database.Setup;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
