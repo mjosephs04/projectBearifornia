@@ -3,14 +3,17 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import "./CreateAccount.css"
 const CreateAccount = (props) =>{
+    const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
     const onButtonClick = () => {
         const payload = [
+            name,
             username,
             password
         ]
+        console.log(name);
         console.log(username);
         console.log(password);
         console.log(payload);
@@ -33,6 +36,12 @@ const CreateAccount = (props) =>{
             <div className='box'>
                 <div className='loginAligner'>
                     <h1>Create your Bearifornia account</h1>
+                    <input
+                        //value={email}
+                        placeholder="Enter legal name here"
+                        className={'inputBoxLogin'}
+                        onChange={input => setName(input.target.value)}
+                    />
                     <input
                         //value={email}
                         placeholder="Enter new username here"
