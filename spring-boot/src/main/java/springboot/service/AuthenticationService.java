@@ -2,28 +2,38 @@ package springboot.service;
 
 import org.springframework.stereotype.Service;
 import springboot.UserType;
+import springboot.database.Setup;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Service
 public class AuthenticationService {
 
     public UserType authenticate(String username, String password) {
-        String line;
-        String splitBy = ",";
-        try (BufferedReader br = new BufferedReader(new FileReader("spring-boot/src/main/resources/Users.csv"))) {
-            while ((line = br.readLine()) != null) { //reads until the end of the stream
-                String[] user = line.split(splitBy); // use comma as separator
-                if (user[0].equals(username) && user[1].equals(password)) {
-                    return UserType.valueOf(user[2].toUpperCase()); // Convert userType String to Enum
+        String query = "SELECT USERTYPE FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
+
+        try (Connection conn = Setup.getDBConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String userTypeString = rs.getString("USERTYPE");
+                    return UserType.valueOf(userTypeString.toUpperCase());
+
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+
+        } catch (SQLException e) {
+            //ADD LOGGING
+            System.out.println("Failed to authenticate user.");
         }
-        return null;
+
+        return null; // Return null if authentication fails
     }
 }
