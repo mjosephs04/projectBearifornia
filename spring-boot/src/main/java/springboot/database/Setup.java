@@ -1,9 +1,6 @@
 package springboot.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Setup {
 
@@ -19,20 +16,20 @@ public class Setup {
         }
     }
 
-
     private static void initDbTables(Connection conn) {
         String[] tableCreationCommands = {
-                "CREATE TABLE ROOMS (roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numOfBeds INT, qualityLevel INT, bedType VARCHAR(255), smokingAllowed BOOLEAN)",
-                "CREATE TABLE RESERVATIONS (roomNumber INT, cost DECIMAL(10, 2), roomType VARCHAR(255), numOfBeds INT, qualityLevel INT, bedType VARCHAR(255), smokingAllowed BOOLEAN, startDate DATE, endDate DATE, username VARCHAR(255), FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))",
-                "CREATE TABLE USERS (name VARCHAR(255), username VARCHAR(255) PRIMARY KEY, password VARCHAR(255), userType VARCHAR(255))",
-                "CREATE TABLE PRODUCT (productId VARCHAR(255) PRIMARY KEY, productName VARCHAR(255), productStock INT, productDescription VARCHAR(255), productPrice DECIMAL(10, 2))"
+                "CREATE TABLE ROOMS(roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numBeds INT, qualityLevel VARCHAR(255), bedType VARCHAR(255), smokingAllowed BOOLEAN)",
+                "CREATE TABLE RESERVATIONS (roomNumber INT PRIMARY KEY, startDate DATE, endDate DATE, username VARCHAR(255), FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))",
+                "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)",
+                "CREATE TABLE PRODUCT (productId VARCHAR(255) PRIMARY KEY, productName VARCHAR(255), productStock INT, productDescription VARCHAR(255), productPrice DECIMAL(10, 2))",
         };
 
         try (Statement statement = conn.createStatement()) {
             for (String sql : tableCreationCommands) {
                 String tableName = sql.split(" ")[2];  // Assumes table name is the third word in SQL statement
                 if (tableExists(conn, tableName)) {
-                    statement.executeUpdate("DROP TABLE if exists " + tableName + " CASCADE");
+                    dropForeignKeyConstraints(conn, tableName);
+                    statement.executeUpdate("DROP TABLE " + tableName);
                 }
                 statement.executeUpdate(sql);
             }
@@ -57,6 +54,17 @@ public class Setup {
         // Check if the table exists in the database
         try (var resultSet = conn.getMetaData().getTables(null, null, tableName, null)) {
             return resultSet.next();
+        }
+    }
+
+    private static void dropForeignKeyConstraints(Connection conn, String tableName) throws SQLException {
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = conn.getMetaData().getExportedKeys(null, null, tableName)) {
+            while (rs.next()) {
+                String fkName = rs.getString("FK_NAME");
+                String fkTable = rs.getString("FKTABLE_NAME");
+                stmt.executeUpdate("ALTER TABLE " + fkTable + " DROP CONSTRAINT " + fkName);
+            }
         }
     }
 
