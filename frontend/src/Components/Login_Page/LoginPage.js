@@ -50,7 +50,7 @@ const LoginPage = (props) =>{
     return (
         <div>
             <Layout/>
-            <div className="box">
+            <div className="boxLoginPage">
                 <div className="loginAligner">
                     <h1>Hotel Bearifornia Login Page</h1>
                     <input
