@@ -76,7 +76,7 @@ const ProductDetails = (props) =>{
             </div>
 
 
-            <Link to='/shop-catalog'>
+            <Link to='/catalog'>
                 <button className='Back-Button'>Go Back</button>
             </Link>
 

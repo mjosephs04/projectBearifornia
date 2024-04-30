@@ -11,32 +11,32 @@
     height: 2vh;
 }
 
-.inputContainer1 {
+.inputContainer1Clerk {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    top: 40%;
+    /*top: 40%;*/
     left: 109px;
     position: absolute;
 }
 
-.inputContainer2 {
+.inputContainer2Clerk {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    top: 40%;
+    /*top: 40%;*/
     left: 390px;
     position: absolute;
 }
 
-.inputContainer3 {
+.inputContainer3Clerk {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    top: 40%;
+    /*top: 40%;*/
     left: 650px;
     position: absolute;
 }

@@ -22,13 +22,13 @@ const ClerkCenter = (props) =>{
                 <h1>Clerk Center</h1>
             </div>
             <br/>
-            <div className='inputContainer1'>
+            <div className='inputContainer1Clerk'>
                 <p>Add Room</p>
             </div>
-            <div className='inputContainer2'>
+            <div className='inputContainer2Clerk'>
                 <p>Check In/Out</p>
             </div>
-            <div className='inputContainer3'>
+            <div className='inputContainer3Clerk'>
                 <p>Modify Information</p>
             </div>
             <div className='button'>
