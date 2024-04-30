@@ -24,6 +24,7 @@ public class Product {
         this.productPrice = productPrice;
     }
 
+
     public static List<Product> getProductsFromDatabase() throws SQLException {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM PRODUCTS";
@@ -42,6 +43,40 @@ public class Product {
         }
         return products;
     }
+
+    // Update product stock in the database based on the items purchased
+    //Pass in a List of the items purchased (NEED ID
+    public static void updateStockAtCheckout (List<Product> itemList) {
+        String selectQuery = "SELECT PRODUCTSTOCK FROM PRODUCT WHERE PRODUCTID = ?";
+        String updateQuery = "UPDATE PRODUCT SET PRODUCTSTOCK = ? WHERE PRODUCTID = ?";
+        try (Connection conn = Setup.getDBConnection();
+             PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
+             PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+
+            for (Product item : itemList) {
+                // Get current stock for the product
+                selectStmt.setString(1, item.getProductId());
+                ResultSet rs = selectStmt.executeQuery();
+                if (rs.next()) {
+                    int currentStock = rs.getInt("PRODUCTSTOCK");
+                    int newStock = currentStock - 1; // Subtract 1 for each purchased product
+                    updateStmt.setInt(1, newStock);
+                    updateStmt.setString(2, item.getProductId());
+                    updateStmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to update product stock in the database at checkout.");
+        }
+    }
+
+
+
+
+
+
+
 
     // Update product details in the database when setters are called
     public void setProductName(String productName) {
@@ -115,6 +150,26 @@ public class Product {
             e.printStackTrace();
             System.out.println("Failed to update product price in the database.");
         }
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public int getProductStock() {
+        return productStock;
+    }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
     }
 
     @Override
