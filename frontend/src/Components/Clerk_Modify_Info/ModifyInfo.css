@@ -24,7 +24,7 @@
     margin-right: auto;
 }
 
-input[type='button'] {
+inputModify[type='button'] {
     border: none;
     background: #64ed82;
     color: white;

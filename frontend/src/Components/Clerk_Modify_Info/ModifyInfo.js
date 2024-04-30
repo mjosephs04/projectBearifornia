@@ -11,20 +11,22 @@ const ModifyInfo = () =>{
     return (
         <div>
             <Layout/>
-            <div className='inputContainerModify'>
-                <input
-                    placeholder="Enter new username"
-                    className={'inputBox'}
-                />
-            </div>
-            <div className='inputContainerModify'>
-                <input
-                    placeholder="Enter new password"
-                    className={'inputBox'}
-                />
-            </div>
-            <div className={'inputContainerModify'}>
-                <input className={'input'} type="button" value={'Save Changes'}/>
+            <div className='boxLoginPage'>
+                <div className='inputContainerModify'>
+                    <input
+                        placeholder="Change username"
+                        className={'inputBox'}
+                    />
+                </div>
+                <div className='inputContainerModify'>
+                    <input
+                        placeholder="Change password"
+                        className={'inputBox'}
+                    />
+                </div>
+                <div className={'inputContainerModify'}>
+                    <input className={'inputModify'} type="button" value={'Save Changes'}/>
+                </div>
             </div>
         </div>
     );
