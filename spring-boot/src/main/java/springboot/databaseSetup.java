@@ -48,18 +48,22 @@ public class databaseSetup {
 				"FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))";
 
 
-//		String addUser = "INSERT INTO USERS(MARKJ, PASS123) VALUES (USERNAME, PASSWORD)";
 		try {
 			statement = conn.createStatement();
 		} catch (SQLException e) {
 			System.out.println("Couldn't connect to database");
 		}
 
-		//create rooms, reservations, and users table
+		//initialize rooms, reservations, and users tables
+		// it first checks if the tables already exist, and if so, they just
+		// clear all the existing values in the table
+		// if the table does not already exist, it creates a new one
+
+		//after this try catch block, there will be 3 empty tables:
+		// ROOMS, RESERVATIONS, and USERS
 		try {
 			if (tableExists(conn, "ROOMS")){
 				statement.executeUpdate("DELETE FROM ROOMS");
-				//statement.executeUpdate("DROP TABLE ROOMS");
 			}
 			else {
 				statement.execute(createRoomTable);
@@ -67,7 +71,6 @@ public class databaseSetup {
 
 			if (tableExists(conn, "RESERVATIONS")) {
 				statement.executeUpdate("DELETE FROM RESERVATIONS");
-				//statement.executeUpdate("DROP TABLE RESERVATIONS");
 			}
 			else {
 				statement.execute(createReservationTable);
@@ -75,7 +78,6 @@ public class databaseSetup {
 
 			if (tableExists(conn, "USERS")){
 				statement.executeUpdate("DELETE FROM USERS");
-				//statement.executeUpdate("DROP TABLE USERS");
 			}
 			else {
 				statement.execute(createUserTable);
