@@ -21,6 +21,13 @@ const Layout = () => {
                     Reserve Room
                 </Link>
             </div>
+
+            <div className='shop-link-layout'>
+                <Link to='/catalog'>
+                    Catalog
+                </Link>
+            </div>
+
             <div className="login-drop"><DropdownMenu/></div>
 
         </div>
