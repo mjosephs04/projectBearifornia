@@ -1,11 +1,10 @@
 package springboot;
 
-import java.io.*;
+import springboot.database.Setup;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Admin implements User{
     private static UserType classification = UserType.ADMIN;
@@ -56,7 +55,7 @@ public class Admin implements User{
 
     //returns either "success" or a fail message
     public String addClerk(String username, String password, UserType type) {
-        Connection conn = databaseSetup.getDBConnection();
+        Connection conn = Setup.getDBConnection();
 
         if(type.equals(UserType.CLERK)){
             return addUser(conn, username, password, type.toString());
