@@ -25,7 +25,7 @@ public class Setup {
                 "CREATE TABLE ROOMS (roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numOfBeds INT, qualityLevel INT, bedType VARCHAR(255), smokingAllowed BOOLEAN)",
                 "CREATE TABLE RESERVATIONS (roomNumber INT, cost DECIMAL(10, 2), roomType VARCHAR(255), numOfBeds INT, qualityLevel INT, bedType VARCHAR(255), smokingAllowed BOOLEAN, startDate DATE, endDate DATE, username VARCHAR(255), FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))",
                 "CREATE TABLE USERS (name VARCHAR(255), username VARCHAR(255) PRIMARY KEY, password VARCHAR(255), userType VARCHAR(255)",
-                "CREATE TABLE PRODUCT (productId VARCHAR(255) PRIMARY KEY, productName VARCHAR(255), productStock INT, productDescription VARCHAR(255), productPrice DECIMAL(10, 2))"
+                "CREATE TABLE PRODUCTS (productId VARCHAR(255) PRIMARY KEY, productName VARCHAR(255), productStock INT, productDescription VARCHAR(255), productPrice DECIMAL(10, 2))"
         };
 
         try (Statement statement = conn.createStatement()) {
