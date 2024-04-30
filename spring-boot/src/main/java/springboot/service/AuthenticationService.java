@@ -2,7 +2,7 @@ package springboot.service;
 
 import org.springframework.stereotype.Service;
 import springboot.UserType;
-import springboot.databaseSetup;
+import springboot.database.Setup;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ public class AuthenticationService {
     public UserType authenticate(String username, String password) {
         String query = "SELECT USERTYPE FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
 
-        try (Connection conn = databaseSetup.getDBConnection();
+        try (Connection conn = Setup.getDBConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, username);
             pstmt.setString(2, password);
