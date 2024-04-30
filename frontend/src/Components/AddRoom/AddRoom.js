@@ -30,6 +30,9 @@ const AddRoom = (props) =>{
                 if(response.status !== 200){
                     throw Error("Network error");
                 }
+                if(response.status === 200){
+                    navigate('/confirmation');
+                }
                 console.log(response);
                 return response.data;
             }).catch(error => {
