@@ -2,7 +2,7 @@ import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import "./AddRoom.css"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 const AddRoom = (props) =>{
 
     const [error, setError] = useState(false)
@@ -13,6 +13,7 @@ const AddRoom = (props) =>{
     const [qualityLevels, setQualityLevel] = useState([])
     const [bedType, setBedType] = useState([])
     const [smokingStatus, setSmokingStatus] = useState([])
+    const navigate = useNavigate();
 
     const onButtonClick = () => {
         const payload = [
