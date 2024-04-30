@@ -18,7 +18,7 @@ public class createAccountController {
         String message;
 
         Admin admin = new Admin("default");
-        message = admin.addUser(payload[0], payload[1], type);
+        message = admin.addClerk(payload[0], payload[1], type);
 
         if(message.equalsIgnoreCase("success")){
             result = true;
