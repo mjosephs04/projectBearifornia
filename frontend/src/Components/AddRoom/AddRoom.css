@@ -9,9 +9,97 @@
     left: 40%
 }
 
+.addRoomContainer_01{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_01{
+    font-size: 16px; /* Example font size */
+    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    display: flex;
+    align-items: center; /* Centers label text and select vertically */
+}
+
+.selectStyle_01{
+    font-size: 16px; /* Matches the font size */
+    margin-left: 10px; /* Adds space between the label text and the dropdown */
+}
+
+.addRoomContainer_02{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_02{
+    font-size: 16px; /* Example font size */
+    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    display: flex;
+    align-items: center; /* Centers label text and select vertically */
+}
+
+.selectStyle_02{
+    font-size: 16px; /* Matches the font size */
+    margin-left: 10px; /* Adds space between the label text and the dropdown */
+}
+
+.addRoomContainer_03{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_03{
+    font-size: 16px; /* Example font size */
+    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    display: flex;
+    align-items: center; /* Centers label text and select vertically */
+}
+
+.selectStyle_03{
+    font-size: 16px; /* Matches the font size */
+    margin-left: 10px; /* Adds space between the label text and the dropdown */
+}
+
+.addRoomContainer_04{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_04{
+    font-size: 16px; /* Example font size */
+    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    display: flex;
+    align-items: center; /* Centers label text and select vertically */
+}
+
+.selectStyle_04{
+    font-size: 16px; /* Matches the font size */
+    margin-left: 10px; /* Adds space between the label text and the dropdown */
+}
+
+.addRoomContainer_05{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_05{
+    font-size: 16px; /* Example font size */
+    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    display: flex;
+    align-items: center; /* Centers label text and select vertically */
+}
+
+.selectStyle_05{
+    font-size: 16px; /* Matches the font size */
+    margin-left: 10px; /* Adds space between the label text and the dropdown */
+}
+
+
+
 .add-room-button{
     position: absolute;
     left: 45%;
+    top: 50%;
     width: 120px;
     height: 40px;
     color: white;
