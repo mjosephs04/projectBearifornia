@@ -32,9 +32,10 @@
 
 .Back-Button{
     position: absolute;
-    right: 20%;
-    bottom: 21.75%;
-    left: 25%;
+    right: 5%;
+    top: 80%;
+    /*bottom: 21.75%;*/
+    /*left: 25%;*/
     width: 200px;
     height: 60px;
     color: white;
@@ -105,8 +106,9 @@
 .product {
     position: absolute;
     right: 20%;
-    bottom: 21.75%;
-    left: 3%;
+    top: 80%;
+    /*bottom: 21.75%;*/
+    /*left: 3%;*/
     width: 150px;
     height: 60px;
     display: inline-block;
