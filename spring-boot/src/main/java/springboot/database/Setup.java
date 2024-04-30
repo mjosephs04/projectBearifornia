@@ -18,7 +18,7 @@ public class Setup {
 
     private static void initDbTables(Connection conn) {
         String[] tableCreationCommands = {
-                "CREATE TABLE ROOMS(roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numBeds INT, qualityLevel VARCHAR(255), bedType VARCHAR(255), smokingAllowed BOOLEAN)",
+                "CREATE TABLE ROOMS (roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numBeds INT, qualityLevel VARCHAR(255), bedType VARCHAR(255), smokingAllowed BOOLEAN)",
                 "CREATE TABLE RESERVATIONS (roomNumber INT PRIMARY KEY, startDate DATE, endDate DATE, username VARCHAR(255), FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))",
                 "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)",
                 "CREATE TABLE PRODUCT (productId VARCHAR(255) PRIMARY KEY, productName VARCHAR(255), productStock INT, productDescription VARCHAR(255), productPrice DECIMAL(10, 2))",
@@ -27,10 +27,19 @@ public class Setup {
         try (Statement statement = conn.createStatement()) {
             for (String sql : tableCreationCommands) {
                 String tableName = sql.split(" ")[2];  // Assumes table name is the third word in SQL statement
+
+                System.out.println("Checking if table " + tableName + " exists.");
                 if (tableExists(conn, tableName)) {
+                    System.out.println("Table " + tableName + " exists. Dropping table.");
                     dropForeignKeyConstraints(conn, tableName);
                     statement.executeUpdate("DROP TABLE " + tableName);
+                    System.out.println("Table " + tableName + " dropped.");
                 }
+
+//                if (tableExists(conn, tableName)) {
+//                    dropForeignKeyConstraints(conn, tableName);
+//                    statement.executeUpdate("DROP TABLE " + tableName);
+//                }
                 statement.executeUpdate(sql);
             }
         } catch (SQLException e) {
@@ -51,9 +60,9 @@ public class Setup {
     }
 
     private static boolean tableExists(Connection conn, String tableName) throws SQLException {
-        // Check if the table exists in the database
-        try (var resultSet = conn.getMetaData().getTables(null, null, tableName, null)) {
-            return resultSet.next();
+        DatabaseMetaData dbm = conn.getMetaData();
+        try (ResultSet rs = dbm.getTables(null, null, tableName.toUpperCase(), null)) {
+            return rs.next();
         }
     }
 
@@ -63,9 +72,12 @@ public class Setup {
             while (rs.next()) {
                 String fkName = rs.getString("FK_NAME");
                 String fkTable = rs.getString("FKTABLE_NAME");
-                stmt.executeUpdate("ALTER TABLE " + fkTable + " DROP CONSTRAINT " + fkName);
+                if (fkName != null) {
+                    stmt.executeUpdate("ALTER TABLE \"" + fkTable + "\" DROP CONSTRAINT \"" + fkName + "\"");
+                }
             }
         }
     }
+
 
 }
