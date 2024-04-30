@@ -14,7 +14,7 @@ const ConfirmationLanding = (props) => {
             <Layout/>
             <div className='box'>
                 <div className='confirmation-label'>
-                    <p>Reservation has been made!</p>
+                    <p>Your request has been made!</p>
                 </div>
                 <br/>
                 <Link to='/'>
