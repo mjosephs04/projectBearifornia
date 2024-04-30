@@ -142,7 +142,7 @@ const AddRoom = (props) =>{
                         <option value="Twin">Twin</option>
                         <option value="Full">Full</option>
                         <option value="Queen">Queen</option>
-                        <option value="King">Kind</option>
+                        <option value="King">King</option>
 
                     </select>
 
