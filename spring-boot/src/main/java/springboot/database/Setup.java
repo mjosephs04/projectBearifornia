@@ -32,7 +32,7 @@ public class Setup {
             for (String sql : tableCreationCommands) {
                 String tableName = sql.split(" ")[2];  // Assumes table name is the third word in SQL statement
                 if (tableExists(conn, tableName)) {
-                    statement.executeUpdate("DROP TABLE " + tableName);
+                    statement.executeUpdate("DROP TABLE if exists " + tableName + " CASCADE");
                 }
                 statement.executeUpdate(sql);
             }
