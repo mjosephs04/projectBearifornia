@@ -112,6 +112,7 @@
 }
 
 .add-room-failed{
+    /*Adjusting alert*/
     color: red;
     font-size: 20px;
     position: absolute;

@@ -166,7 +166,7 @@ const AddRoom = (props) =>{
             <div className='addRoomContainer_05'>
                 <label className="labelStyle_05">
                     Select Smoking Status
-                    <select value={smokingStatus} className="selectStyle_05" onChange={evt =>setSmokingStatus(evt.target.value)}>
+                    <select select value={String(smokingStatus)} onChange={handleChange}>
                         <option value="true">True</option>
                         <option value="false">False</option>
                     </select>
