@@ -37,7 +37,7 @@ public class Admin implements User{
         name = x;
     }
 
-    public String addUser(Connection conn, String user, String pass, String userT){
+    public static String addUser(Connection conn, String user, String pass, String userT){
         String insertSQL = "INSERT INTO USERS (USERNAME, PASSWORD, USERTYPE) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = conn.prepareStatement(insertSQL)) {
@@ -54,7 +54,7 @@ public class Admin implements User{
     }
 
     //returns either "success" or a fail message
-    public String addClerk(String username, String password, UserType type) {
+    public static String addClerk(String username, String password, UserType type) {
         Connection conn = Setup.getDBConnection();
 
         if(type.equals(UserType.CLERK)){
