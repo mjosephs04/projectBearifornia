@@ -15,15 +15,15 @@
 }
 
 .labelStyle_01{
-    font-size: 16px; /* Example font size */
-    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-right: 10px;
     display: flex;
-    align-items: center; /* Centers label text and select vertically */
+    align-items: center;
 }
 
 .selectStyle_01{
-    font-size: 16px; /* Matches the font size */
-    margin-left: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-left: 10px;
 }
 
 .addRoomContainer_02{
@@ -32,15 +32,15 @@
 }
 
 .labelStyle_02{
-    font-size: 16px; /* Example font size */
-    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-right: 10px;
     display: flex;
-    align-items: center; /* Centers label text and select vertically */
+    align-items: center;
 }
 
 .selectStyle_02{
-    font-size: 16px; /* Matches the font size */
-    margin-left: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-left: 10px;
 }
 
 .addRoomContainer_03{
@@ -49,15 +49,15 @@
 }
 
 .labelStyle_03{
-    font-size: 16px; /* Example font size */
-    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-right: 10px;
     display: flex;
-    align-items: center; /* Centers label text and select vertically */
+    align-items: center;
 }
 
 .selectStyle_03{
-    font-size: 16px; /* Matches the font size */
-    margin-left: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-left: 10px;
 }
 
 .addRoomContainer_04{
@@ -66,15 +66,15 @@
 }
 
 .labelStyle_04{
-    font-size: 16px; /* Example font size */
-    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-right: 10px;
     display: flex;
-    align-items: center; /* Centers label text and select vertically */
+    align-items: center;
 }
 
 .selectStyle_04{
-    font-size: 16px; /* Matches the font size */
-    margin-left: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-left: 10px;
 }
 
 .addRoomContainer_05{
@@ -83,15 +83,15 @@
 }
 
 .labelStyle_05{
-    font-size: 16px; /* Example font size */
-    margin-right: 10px; /* Adds space between the label text and the dropdown */
+    font-size: 16px;
+    margin-right: 10px;
     display: flex;
-    align-items: center; /* Centers label text and select vertically */
+    align-items: center;
 }
 
 .selectStyle_05{
     font-size: 16px;
-    margin-left: 10px; /* Adds space between the label text and the dropdown */
+    margin-left: 10px;
 }
 
 
@@ -109,4 +109,17 @@
     &:hover{
         background-color: #003a00;
     }
+}
+
+.add-room-failed{
+    color: red;
+    font-size: 20px;
+    position: absolute;
+    left: 30%;
+    top: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    text-align: center;
 }

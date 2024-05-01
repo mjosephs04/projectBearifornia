@@ -8,11 +8,16 @@ const AddRoom = (props) =>{
     const [error, setError] = useState(false)
     const [roomNumber, setRoomNumber] = useState([])
     const [roomCost, setRoomCost] = useState([])
-    const [roomType, setRoomType] = useState([])
-    const [numBeds, setNumBeds] = useState([])
-    const [qualityLevels, setQualityLevel] = useState([])
-    const [bedType, setBedType] = useState([])
-    const [smokingStatus, setSmokingStatus] = useState([])
+    const [roomType, setRoomType] = useState("Nature Retreat")
+    const [numBeds, setNumBeds] = useState("One Bed")
+    const [qualityLevels, setQualityLevel] = useState("Executive")
+    const [bedType, setBedType] = useState("Twin")
+    const [smokingStatus, setSmokingStatus] = useState(true)
+    // Handle changes in the dropdown
+    const handleChange = (event) => {
+        // Convert the string value to a boolean
+        setSmokingStatus(event.target.value === 'true');
+    };
     const navigate = useNavigate();
 
     const onButtonClick = () => {
@@ -34,10 +39,13 @@ const AddRoom = (props) =>{
                 if(response.status === 200){
                     navigate('/confirmation');
                 }
+
+
                 console.log(response);
                 return response.data;
             }).catch(error => {
-                console.log(error);
+                console.log("Error with authentication" + error);
+                setError(true);
         })
     };
 
@@ -159,8 +167,8 @@ const AddRoom = (props) =>{
                 <label className="labelStyle_05">
                     Select Smoking Status
                     <select value={smokingStatus} className="selectStyle_05" onChange={evt =>setSmokingStatus(evt.target.value)}>
-                        <option value="Smoking">Smoking</option>
-                        <option value="No Smoking">No Smoking</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
                     </select>
                 </label>
             </div>
@@ -171,6 +179,12 @@ const AddRoom = (props) =>{
 
 
             <button className='add-room-button' onClick={onButtonClick}>Add Room</button>
+
+
+            {error && (
+                <h1 className='add-room-failed'>Adding Room Failed: A field is empty/bad input!</h1>
+            )}
+
 
         </div>
     );
