@@ -3,8 +3,13 @@ package springboot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springboot.User;
+import springboot.UserFunctions;
 import springboot.service.AuthenticationService;
 import springboot.UserType;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 @RestController
@@ -25,6 +30,19 @@ public class AuthenticationController {
         }
 
         return ResponseEntity.ok(new String[]{"User authenticated successfully as " + data[0] + " " + data[1], userType.toString()});
+    }
+
+    @PostMapping("/getAllUsers")
+    public ResponseEntity<String> getAllUsers() {
+        ArrayList<User> users = null;
+        try {
+            users = (ArrayList<User>) UserFunctions.readInAllUsers();
+        }catch(IOException e) {
+            return ResponseEntity.ok("failure -- couldn't read in all users");
+        }
+
+        return ResponseEntity.ok("success -- all users read");
+
     }
 
 }
