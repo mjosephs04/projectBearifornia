@@ -1,8 +1,8 @@
 package springboot.service;
 
 import org.springframework.stereotype.Service;
-import springboot.database.Setup;
 import springboot.UserType;
+import springboot.database.Setup;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,17 +17,22 @@ public class AccountService {
         this.setup = setup;
     }
 
-    public String createClerk(String name, String username, String password) {
-        Connection conn = setup.getDBConnection();
-        return addUser(conn, name, username, password, UserType.CLERK.toString());
+    public String createClerk(String name, String username, String password, UserType userType) {
+        if (!userType.equals(UserType.ADMIN)) {
+            return "Failure: Only admins can create clerk accounts.";
+        }
+        return addUser(name, username, password, UserType.CLERK.toString());
     }
 
-    public String createGuest(String name, String username, String password) {
-        Connection conn = setup.getDBConnection();
-        return addUser(conn, name, username, password, UserType.GUEST.toString());
+    public String createGuest(String name, String username, String password, UserType userType) {
+        if (!userType.equals(UserType.CLERK) && !userType.equals(UserType.GUEST)) {
+            return "Failure: Only clerks and guests can create guest accounts.";
+        }
+        return addUser(name, username, password, UserType.GUEST.toString());
     }
 
-    private String addUser(Connection conn, String name, String username, String password, String userType) {
+    private String addUser(String name, String username, String password, String userType) {
+        Connection conn = Setup.getDBConnection();
         String insertSQL = "INSERT INTO USERS (NAME, USERNAME, PASSWORD, USERTYPE) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = conn.prepareStatement(insertSQL)) {
@@ -38,7 +43,6 @@ public class AccountService {
             statement.executeUpdate();
             return "success";
         } catch (SQLException e) {
-            System.out.println("Could not insert user into database: " + e.getMessage());
             return "Could not insert user into database: " + e.getMessage();
         }
     }

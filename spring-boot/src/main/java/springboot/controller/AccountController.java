@@ -3,6 +3,8 @@ package springboot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springboot.UserType;
+import springboot.dto.UserDto;
 import springboot.service.AccountService;
 
 @RestController
@@ -18,24 +20,26 @@ public class AccountController {
     }
 
     @PostMapping("/createClerk")
-    public ResponseEntity<String> createClerk(@RequestBody String[] payload) {
-        String message = accountService.createClerk(payload[0], payload[1], payload[2]);
+    public ResponseEntity<String> createClerk(@RequestBody UserDto payload) {
+        UserType userType = UserType.valueOf(payload.getUserType().toUpperCase());
+        String message = accountService.createClerk(payload.getName(), payload.getUsername(), payload.getPassword(), userType);
 
         if ("success".equalsIgnoreCase(message)) {
-            return ResponseEntity.ok("Created account.");
+            return ResponseEntity.ok("Created clerk account.");
         } else {
-            return ResponseEntity.badRequest().body("Failed to create account. " + message);
+            return ResponseEntity.badRequest().body(message);
         }
     }
 
     @PostMapping("/createGuest")
-    public ResponseEntity<String> createGuest(@RequestBody String[] payload) {
-        String message = accountService.createGuest(payload[0], payload[1], payload[2]);
+    public ResponseEntity<String> createGuest(@RequestBody UserDto payload) {
+        UserType userType = UserType.valueOf(payload.getUserType().toUpperCase());
+        String message = accountService.createGuest(payload.getName(), payload.getUsername(), payload.getPassword(), userType);
 
         if ("success".equalsIgnoreCase(message)) {
-            return ResponseEntity.ok("Created account.");
+            return ResponseEntity.ok("Created guest account.");
         } else {
-            return ResponseEntity.badRequest().body("Failed to create account. " + message);
+            return ResponseEntity.badRequest().body(message);
         }
     }
 }
