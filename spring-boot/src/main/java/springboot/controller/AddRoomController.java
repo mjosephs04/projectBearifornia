@@ -22,11 +22,12 @@ public class AddRoomController {
 
     @PostMapping("/addRoom")
     public ResponseEntity<String> addRoom(@RequestBody String[] roomDetails) {
+        String message = null;
         try {
-            addRoomService.addRoom(roomDetails);
+            message = addRoomService.addRoom(roomDetails);
             return ResponseEntity.ok("Room successfully added to CSV.");
-        } catch (IllegalArgumentException | SQLException e) {
-            return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid request: " + message + " " + e.getMessage());
         }
     }
 }

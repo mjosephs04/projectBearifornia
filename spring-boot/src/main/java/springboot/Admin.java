@@ -38,13 +38,13 @@ public class Admin implements User{
     }
 
     public static String addUser(Connection conn, String name, String user, String pass, String userT){
-        String insertSQL = "INSERT INTO USERS (NAME, USERNAME, PASSWORD, USERTYPE) VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO USERS (NAME, USERNAME, PASSWORD, USERTYPE) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = conn.prepareStatement(insertSQL)) {
             statement.setString(1, name);
             statement.setString(2, user);
             statement.setString(3, pass);
-            statement.setString(4, pass);
+            statement.setString(4, userT);
             statement.executeUpdate();
 
             return "success";

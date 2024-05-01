@@ -1,12 +1,7 @@
 package springboot;
 
 import springboot.database.Setup;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -42,20 +37,6 @@ public class Room {
         this.typeOfRoom = room.getTypeOfRoom();
         this.smokingAllowed = room.getSmokingAllowed();
         this.bedType = room.getBedType();
-    }
-
-    //PRINT INFO
-    public void printRoomInfo() {
-        System.out.println(roomNumber);
-        System.out.println("Room type: " + typeOfRoom);
-        System.out.println("Bed type: " + bedType);
-        System.out.println("# of beds: " + numOfBeds);
-        System.out.println("Quality level: " + qualityLevel);
-        if (!smokingAllowed) {
-            System.out.println("Smoking not allowed.");
-        } else {
-            System.out.println("Smoking allowed.");
-        }
     }
 
 
@@ -100,39 +81,44 @@ public class Room {
     }
 
 
-    //checks if a certain room is available for the desired dates
+    //checks if a certain room is available for the desired dates -- also returns false if r is null
     public static boolean isAvailable(Room r, LocalDate start, LocalDate end){
-        List<Reservation> allReservations = Reservation.readInAllReservations();
+        if(r != null) {
+            List<Reservation> allReservations = Reservation.readInAllReservations();
 
-        //check all reservations to see if there are any conflicting ones for the given room
-        for(Reservation res : allReservations){
-            if(res.getRoom().equals(r)){
-                if(res.conflictsWith(start, end)){
-                    return false;
+            //check all reservations to see if there are any conflicting ones for the given room
+            for (Reservation res : allReservations) {
+                if (res.getRoom().equals(r)) {
+                    if (res.conflictsWith(start, end)) {
+                        return false;
+                    }
                 }
             }
-        }
 
-        return true;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 
     // finds a room from a roomNumber
     public static Room findRoom(int roomNumber) {
         Room room = null;
-        String sql = "SELECT * FROM ROOMS WHERE ROOMNUMBER = " + Integer.toString(roomNumber);
+        String findRoom = "SELECT * FROM ROOMS WHERE ROOMNUMBER = " + roomNumber;
         Connection conn = Setup.getDBConnection();
-        try (PreparedStatement statement = conn.prepareStatement(sql)) {
-            statement.setInt(1, roomNumber);
+        try {
+            PreparedStatement statement = conn.prepareStatement(findRoom);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 room = new Room(resultSet.getInt("ROOMNUMBER"),
-                        resultSet.getDouble("COST"),
+                        resultSet.getBigDecimal("COST").doubleValue(),
                         resultSet.getString("ROOMTYPE"),
                         resultSet.getInt("NUMBEDS"),
                         resultSet.getString("QUALITYLEVEL"),
                         resultSet.getString("BEDTYPE"),
-                        resultSet.getBoolean("SMOKING"));
+                        resultSet.getBoolean("SMOKINGALLOWED"));
             }
         }
         catch(SQLException e) {
@@ -140,6 +126,38 @@ public class Room {
         }
         return room;
     }
+
+
+    //returns a list of all existing rooms
+    public static List<Room> readInAllRooms(){
+        List<Room> rooms = new ArrayList<>();
+        String selectSQL = "SELECT * FROM ROOMS";
+        Connection conn = Setup.getDBConnection();
+
+        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                // Retrieve values from the ResultSet and create User objects
+                Integer roomNum = resultSet.getInt("roomNumber");
+                Double cost = resultSet.getDouble("cost");
+                String roomType = resultSet.getString("roomType");
+                Integer numBeds = resultSet.getInt("numBeds");
+                String qualityLevel = resultSet.getString("qualityLevel");
+                String bedType = resultSet.getString("bedType");
+                boolean smokingAllowed = resultSet.getBoolean("smokingAllowed");
+
+
+                // Create a room object and add it to the list
+                rooms.add(new Room(roomNum, cost, roomType, numBeds, qualityLevel, bedType, smokingAllowed));
+            }
+        }
+        catch(SQLException e) {
+            System.out.println("failure " + e);
+        }
+        return rooms;
+    }
+
 
     public Double getCost() {
         return cost;
@@ -191,36 +209,6 @@ public class Room {
 
     public String getBedType(){
         return bedType;
-    }
-
-    //opens csv file and returns a list of all existing rooms
-    public static List<Room> readInAllRooms(){
-        List<Room> rooms = new ArrayList<>();
-        String selectSQL = "SELECT * FROM ROOMS";
-        Connection conn = Setup.getDBConnection();
-
-        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                // Retrieve values from the ResultSet and create User objects
-                Integer roomNum = resultSet.getInt("roomNumber");
-                Double cost = resultSet.getDouble("cost");
-                String roomType = resultSet.getString("roomType");
-                Integer numBeds = resultSet.getInt("numBeds");
-                String qualityLevel = resultSet.getString("qualityLevel");
-                String bedType = resultSet.getString("bedType");
-                Boolean smokingAllowed = resultSet.getBoolean("smokingAllowed");
-
-
-                // Create a room object and add it to the list
-                rooms.add(new Room(roomNum, cost, roomType, numBeds, qualityLevel, bedType, smokingAllowed));
-            }
-        }
-        catch(SQLException e) {
-            System.out.println("failure " + e);
-        }
-        return rooms;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package springboot;
 
+import org.springframework.cglib.core.Local;
 import springboot.database.Setup;
+import springboot.service.AddRoomService;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -115,6 +117,10 @@ public class Reservation {
 
     public static String addToDatabase(LocalDate checkInDate, LocalDate checkOutDate, int roomNumber, String name) {
         Room room = Room.findRoom(roomNumber);
+
+        if(room == null){
+            return "failure -- room does not exist";
+        }
         if(Room.isAvailable(room, checkInDate, checkOutDate)){
             try (Connection conn = Setup.getDBConnection()) {
                 // Insert the reservation into the database
@@ -138,14 +144,6 @@ public class Reservation {
         }
     }
 
-    public Integer getIdNumber() {
-        return idNumber;
-    }
-
-    public void setIdNumber(Integer idNumber) {
-        this.idNumber = idNumber;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Reservation) {
@@ -160,6 +158,14 @@ public class Reservation {
     @Override
     public int hashCode() {
         return Objects.hash(room, endDay, startDay);
+    }
+
+    public Integer getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(Integer idNumber) {
+        this.idNumber = idNumber;
     }
 
     public LocalDate getStartDay() {
