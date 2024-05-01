@@ -101,23 +101,28 @@ public class Room {
         return rooms;
     }
 
-    // Search for available rooms based on criteria
-    //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
+    // finds a room from a roomNumber
     public static Room findRoom(int roomNumber) throws IOException {
-        List<Room> rooms = readInAllRooms();
-
-        //so now we will check all rooms only rooms that match the desired criteria
-        // if room does NOT match criteria, remove it from list
-        rooms.removeIf(curr -> curr.getRoomNumber() != roomNumber);
-
-        //at the end of this loop, the list rooms should only contain the desired room
-
-        if(rooms.size() == 1){
-            return rooms.get(0);
+        Room room = null;
+        String sql = "SELECT * FROM ROOMS WHERE ROOMNUMBER = " + Integer.toString(roomNumber);
+        Connection conn = Setup.getDBConnection();
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, roomNumber);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                room = new Room(resultSet.getInt("ROOMNUMBER"),
+                        resultSet.getDouble("COST"),
+                        resultSet.getString("ROOMTYPE"),
+                        resultSet.getInt("NUMBEDS"),
+                        resultSet.getString("QUALITYLEVEL"),
+                        resultSet.getString("BEDTYPE"),
+                        resultSet.getBoolean("SMOKING"));
+            }
         }
-        else{
+        catch(SQLException e) {
             return null;
         }
+        return room;
     }
 
     public Double getCost() {
