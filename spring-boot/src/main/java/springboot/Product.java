@@ -4,19 +4,16 @@ import springboot.database.Setup;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Product {
-    private String productId;
+    private final String productId;
     private String productName;
     private int productStock;
     private String productDescription;
     private double productPrice;
-    private String imageURL;
-    private String category;
+    private final String imageURL;
+    private final String category;
 
     public Product(String productId, String productName, int productStock, String productDescription, double productPrice, String imageURL, String category) {
         this.productId = productId;
@@ -74,32 +71,10 @@ public class Product {
 //        }
 //    }
 
-    // Update product details in the database when setters are called
-    public void setProductName(String productName) {
-        this.productName = productName;
-        updateProductNameInDatabase(productName);
-    }
-
-    public void setProductStock(int productStock) {
-        this.productStock = productStock;
-        updateProductStockInDatabase(productStock);
-    }
-
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
-        updateProductDescriptionInDatabase(productDescription);
-    }
-
-    public void setProductPrice(double productPrice) {
-        this.productPrice = productPrice;
-        updateProductPriceInDatabase(productPrice);
-    }
-
     // Database update methods
     private void updateProductNameInDatabase(String newName) {
         String updateQuery = "UPDATE PRODUCTS SET PRODUCTNAME = ? WHERE PRODUCTID = ?";
-        try (Connection conn = Setup.getDBConnection();
-             PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+        try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
             pstmt.setString(1, newName);
             pstmt.setString(2, productId);
             pstmt.executeUpdate();
@@ -111,8 +86,7 @@ public class Product {
 
     private void updateProductStockInDatabase(int newStock) {
         String updateQuery = "UPDATE PRODUCTS SET PRODUCTSTOCK = ? WHERE PRODUCTID = ?";
-        try (Connection conn = Setup.getDBConnection();
-             PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+        try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
             pstmt.setInt(1, newStock);
             pstmt.setString(2, productId);
             pstmt.executeUpdate();
@@ -124,8 +98,7 @@ public class Product {
 
     private void updateProductDescriptionInDatabase(String newDescription) {
         String updateQuery = "UPDATE PRODUCTS SET PRODUCTDESCRIPTION = ? WHERE PRODUCTID = ?";
-        try (Connection conn = Setup.getDBConnection();
-             PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+        try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
             pstmt.setString(1, newDescription);
             pstmt.setString(2, productId);
             pstmt.executeUpdate();
@@ -137,8 +110,7 @@ public class Product {
 
     private void updateProductPriceInDatabase(double newPrice) {
         String updateQuery = "UPDATE PRODUCTS SET PRODUCTPRICE = ? WHERE PRODUCTID = ?";
-        try (Connection conn = Setup.getDBConnection();
-             PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+        try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
             pstmt.setDouble(1, newPrice);
             pstmt.setString(2, productId);
             pstmt.executeUpdate();
@@ -156,16 +128,37 @@ public class Product {
         return productName;
     }
 
+    // Update product details in the database when setters are called
+    public void setProductName(String productName) {
+        this.productName = productName;
+        updateProductNameInDatabase(productName);
+    }
+
     public int getProductStock() {
         return productStock;
+    }
+
+    public void setProductStock(int productStock) {
+        this.productStock = productStock;
+        updateProductStockInDatabase(productStock);
     }
 
     public String getProductDescription() {
         return productDescription;
     }
 
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+        updateProductDescriptionInDatabase(productDescription);
+    }
+
     public double getProductPrice() {
         return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+        updateProductPriceInDatabase(productPrice);
     }
 
     public String getImageURL() {
