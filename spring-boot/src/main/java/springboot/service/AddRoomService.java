@@ -6,13 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.springframework.stereotype.Service;
+import springboot.database.Setup;
 
 @Service
 public class AddRoomService {
-
-    private static final String DB_URL = "jdbc:derby:HotelDB;";
-    private static final String DB_USER = "";
-    private static final String DB_PASSWORD = "";
 
     public void addRoom(String[] roomDetails) throws SQLException {
         if (roomDetails.length != 7) {
@@ -20,7 +17,7 @@ public class AddRoomService {
         }
 
         String insertQuery = "INSERT INTO rooms (roomNumber, cost, roomType, numOfBeds, qualityLevel, bedType, smokingAllowed) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        try (Connection conn = Setup.getDBConnection();
              PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
             pstmt.setInt(1, Integer.parseInt(roomDetails[0])); // roomNumber
             pstmt.setBigDecimal(2, new java.math.BigDecimal(roomDetails[1])); // cost
