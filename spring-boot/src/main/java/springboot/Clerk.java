@@ -50,11 +50,11 @@ public class Clerk implements User {
     }
 
     //returns either "success" or a fail message
-    public static String addGuest(String username, String password, UserType type) {
+    public static String addGuest(String name, String username, String password, UserType type) {
         Connection conn = Setup.getDBConnection();
 
         if(type.equals(UserType.GUEST)){
-            return Admin.addUser(conn, username, password, type.toString());
+            return Admin.addUser(conn, name, username, password, type.toString());
         }
         else{
             return "failure-- clerks may only create GUEST accounts";
