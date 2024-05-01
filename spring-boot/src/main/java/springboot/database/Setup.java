@@ -1,7 +1,10 @@
 package springboot.database;
 
+import org.springframework.context.annotation.Configuration;
+
 import java.sql.*;
 
+@Configuration
 public class Setup {
 
     private static final String DB_CONNECTION = "jdbc:derby:beariforniaDB;";
@@ -46,7 +49,6 @@ public class Setup {
         Connection dbConnection = null;
         try {
             dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
-            return dbConnection;
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Couldn't connect to database");
