@@ -1,59 +1,41 @@
 package springboot.controller;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springboot.Admin;
-import springboot.Clerk;
-import springboot.UserType;
+import springboot.service.AccountService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/register")
-public class createAccountController {
+public class AccountController {
 
-    //payload contains: name, username, password, type
+    private final AccountService accountService;
+
+    @Autowired
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
     @PostMapping("/createClerk")
-    public ResponseEntity<String> createClerk(@RequestBody String[] payload){
-        boolean result = false;
-        UserType type = UserType.valueOf(payload[3].toUpperCase());
-        String message;
+    public ResponseEntity<String> createClerk(@RequestBody String[] payload) {
+        String message = accountService.createClerk(payload[0], payload[1], payload[2]);
 
-        message = Admin.addClerk(payload[0], payload[1], payload[2], type);
-
-        if(message.equalsIgnoreCase("success")){
-            result = true;
-        }
-
-        if(result){
+        if ("success".equalsIgnoreCase(message)) {
             return ResponseEntity.ok("Created account.");
-        }
-        else{
-            return ResponseEntity.badRequest().body("Failed to create account." + message);
+        } else {
+            return ResponseEntity.badRequest().body("Failed to create account. " + message);
         }
     }
 
-
-    //payload contains: name, username, password, type
     @PostMapping("/createGuest")
-    public ResponseEntity<String> createGuest(@RequestBody String[] payload){
-        boolean result = false;
-        UserType type = UserType.valueOf(payload[3].toUpperCase());
-        String message;
+    public ResponseEntity<String> createGuest(@RequestBody String[] payload) {
+        String message = accountService.createGuest(payload[0], payload[1], payload[2]);
 
-        message = Clerk.addGuest(payload[0], payload[1], payload[2], type);
-
-        if(message.equalsIgnoreCase("success")){
-            result = true;
-        }
-
-        if(result){
+        if ("success".equalsIgnoreCase(message)) {
             return ResponseEntity.ok("Created account.");
-        }
-        else{
-            return ResponseEntity.badRequest().body("Failed to create account." + message);
+        } else {
+            return ResponseEntity.badRequest().body("Failed to create account. " + message);
         }
     }
-
-
 }
