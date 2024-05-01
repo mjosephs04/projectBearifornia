@@ -1,7 +1,10 @@
 package springboot.database;
 
+import org.springframework.context.annotation.Configuration;
+
 import java.sql.*;
 
+@Configuration
 public class Setup {
 
     private static final String DB_CONNECTION = "jdbc:derby:beariforniaDB;";
@@ -17,12 +20,7 @@ public class Setup {
     }
 
     private static void initDbTables(Connection conn) {
-        String[] tableCreationCommands = {
-                "CREATE TABLE ROOMS (roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numBeds INT, qualityLevel VARCHAR(255), bedType VARCHAR(255), smokingAllowed BOOLEAN)",
-                "CREATE TABLE RESERVATIONS (roomNumber INT PRIMARY KEY, startDate DATE, endDate DATE, username VARCHAR(255), FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))",
-                "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)",
-                "CREATE TABLE PRODUCT (productId VARCHAR(255) PRIMARY KEY, productName VARCHAR(255), productStock INT, productDescription VARCHAR(255), productPrice DECIMAL(10, 2))",
-        };
+        String[] tableCreationCommands = {"CREATE TABLE ROOMS (roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numBeds INT, qualityLevel VARCHAR(255), bedType VARCHAR(255), smokingAllowed BOOLEAN)", "CREATE TABLE RESERVATIONS (roomNumber INT PRIMARY KEY, startDate DATE, endDate DATE, username VARCHAR(255), FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))", "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)", "CREATE TABLE PRODUCTS (productId INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, productStock INT, productName VARCHAR(255), category VARCHAR(255), productPrice DECIMAL(10, 2), productDescription VARCHAR(255), imageURL VARCHAR(2048))",};
 
         try (Statement statement = conn.createStatement()) {
             for (String sql : tableCreationCommands) {
