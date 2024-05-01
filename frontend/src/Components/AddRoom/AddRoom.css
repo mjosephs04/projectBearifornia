@@ -9,9 +9,97 @@
     left: 40%
 }
 
+.addRoomContainer_01{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_01{
+    font-size: 16px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.selectStyle_01{
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.addRoomContainer_02{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_02{
+    font-size: 16px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.selectStyle_02{
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.addRoomContainer_03{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_03{
+    font-size: 16px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.selectStyle_03{
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.addRoomContainer_04{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_04{
+    font-size: 16px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.selectStyle_04{
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.addRoomContainer_05{
+    position: absolute;
+    left: 40%;
+}
+
+.labelStyle_05{
+    font-size: 16px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.selectStyle_05{
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+
+
 .add-room-button{
     position: absolute;
     left: 45%;
+    top: 50%;
     width: 120px;
     height: 40px;
     color: white;
@@ -21,4 +109,18 @@
     &:hover{
         background-color: #003a00;
     }
+}
+
+.add-room-failed{
+    /*Adjusting alert*/
+    color: red;
+    font-size: 20px;
+    position: absolute;
+    left: 30%;
+    top: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    text-align: center;
 }
