@@ -1,40 +1,51 @@
 package springboot;
 
+import springboot.database.Setup;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class UserFunctions {
 
     public static List<User> readInAllUsers() throws IOException {
-        ArrayList<User> users = new ArrayList<>(); //store all the rooms we read in
-        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Users.csv"));
+        List<User> userList = new ArrayList<>();
+        String selectSQL = "SELECT * FROM USERS";
+        Connection conn = Setup.getDBConnection();
 
-        reader.readLine(); //skip first line of header info
-        String line;
+        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
+            ResultSet resultSet = statement.executeQuery();
 
-        //name,username,password,userType
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            String[] split = line.split(",");
-            if(split[3].equalsIgnoreCase("admin")){
-                Admin curr = new Admin(split[0], split[1], split[2]);
-                users.add(curr);
-            }
-            else if(split[3].equalsIgnoreCase("guest")){
-                Guest curr = new Guest(split[0], split[1], split[2]);
-                users.add(curr);
-            }
-            else{
-                Clerk curr = new Clerk(split[0], split[1], split[2]);
-                users.add(curr);
-            }
+            while (resultSet.next()) {
+                // Retrieve values from the ResultSet and create User objects
+                String name = resultSet.getString("name");
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                UserType userType = UserType.valueOf(resultSet.getString("userType"));
 
+                // Create a User object and add it to the list
+                if(userType == UserType.ADMIN) {
+                    userList.add(new Admin(name, username, password));
+                }
+                else if(userType == UserType.GUEST) {
+                    userList.add(new Guest(name, username, password));
+                }
+                else if(userType == UserType.CLERK) {
+                    userList.add(new Clerk(name, username, password));
+                }
+            }
         }
-
-        return users;
+        catch(SQLException e) {
+            System.out.println("failure " + e);
+        }
+        return userList;
     }
 
     //returns the guest info associated with a username
