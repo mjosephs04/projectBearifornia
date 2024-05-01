@@ -1,8 +1,8 @@
 .inputContainer_AdminCreate_01{
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*align-items: flex-start;*/
-    /*justify-content: center;*/
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .inputContainer > .errorLabel {
@@ -17,6 +17,7 @@
     border-radius: 8px;
     border: 1px solid grey;
     padding-left: 8px;
+    margin-bottom: 30px;
 
     display: block;
     margin-left: auto;
@@ -40,4 +41,14 @@
     &:hover{
         background-color: #006016;
     }
+}
+
+.centerHeader{
+    padding: 20px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
 }

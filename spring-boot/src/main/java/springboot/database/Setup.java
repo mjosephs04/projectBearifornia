@@ -29,18 +29,13 @@ public class Setup {
                 String tableName = sql.split(" ")[2];  // Assumes table name is the third word in SQL statement
 
                 System.out.println("Checking if table " + tableName + " exists.");
-                if (tableExists(conn, tableName)) {
-                    System.out.println("Table " + tableName + " exists. Dropping table.");
-                    dropForeignKeyConstraints(conn, tableName);
-                    statement.executeUpdate("DROP TABLE " + tableName);
-                    System.out.println("Table " + tableName + " dropped.");
+                if (!tableExists(conn, tableName)) {
+                    System.out.println("Table " + tableName + " does not exist. Creating table.");
+                    statement.executeUpdate(sql);
+                    System.out.println("Table " + tableName + " created.");
+                } else {
+                    System.out.println("Table " + tableName + " already exists. No action taken.");
                 }
-
-//                if (tableExists(conn, tableName)) {
-//                    dropForeignKeyConstraints(conn, tableName);
-//                    statement.executeUpdate("DROP TABLE " + tableName);
-//                }
-                statement.executeUpdate(sql);
             }
         } catch (SQLException e) {
             System.err.println("Error creating/modifying tables: " + e.getMessage());
@@ -65,19 +60,4 @@ public class Setup {
             return rs.next();
         }
     }
-
-    private static void dropForeignKeyConstraints(Connection conn, String tableName) throws SQLException {
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = conn.getMetaData().getExportedKeys(null, null, tableName)) {
-            while (rs.next()) {
-                String fkName = rs.getString("FK_NAME");
-                String fkTable = rs.getString("FKTABLE_NAME");
-                if (fkName != null) {
-                    stmt.executeUpdate("ALTER TABLE \"" + fkTable + "\" DROP CONSTRAINT \"" + fkName + "\"");
-                }
-            }
-        }
-    }
-
-
 }
