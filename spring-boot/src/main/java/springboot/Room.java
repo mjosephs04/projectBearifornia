@@ -87,7 +87,7 @@ public class Room {
                 //if it does, remove it from the total list of rooms if it isn't available for
                 //the desired dates
                 if(res.getRoom().equals(room)){
-                    if(! res.isAvailable(startDate, endDate)){
+                    if(res.conflictsWith(startDate, endDate)){
                         rooms.remove(res.room);
                     }
                 }
