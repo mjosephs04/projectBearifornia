@@ -1,5 +1,9 @@
 package springboot;
 
+import springboot.database.Setup;
+
+import java.sql.Connection;
+
 public class Clerk implements User {
 
     private static UserType classification;
@@ -43,5 +47,17 @@ public class Clerk implements User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    //returns either "success" or a fail message
+    public static String addGuest(String username, String password, UserType type) {
+        Connection conn = Setup.getDBConnection();
+
+        if(type.equals(UserType.GUEST)){
+            return Admin.addUser(conn, username, password, type.toString());
+        }
+        else{
+            return "failure-- clerks may only create GUEST accounts";
+        }
     }
 }
