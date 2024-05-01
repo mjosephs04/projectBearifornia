@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-public class CSVToDatabase {
+public class InitializeDatabase {
 
     private static final String DB_CONNECTION = "jdbc:derby:beariforniaDB;create=true";
     private static final String DB_USER = "";
@@ -19,10 +19,27 @@ public class CSVToDatabase {
 
     public static void main(String[] args) {
         String csvFilePath = "spring-boot/src/main/resources/products.csv";
-        readAndInsertData(csvFilePath);
+        insertAdmin();
+        readAndInsertProducts(csvFilePath);
     }
 
-    private static void readAndInsertData(String filePath) {
+    public static void insertAdmin() {
+        try (Connection connection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD)) {
+            String sql = "INSERT INTO USERS (name, username, password, userType) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, "admin");
+                statement.setString(2, "admin");
+                statement.setString(3, "bearifornia");
+                statement.setString(4, "admin");
+                statement.executeUpdate();
+                System.out.println("Admin inserted successfully.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error inserting admin: " + e.getMessage());
+        }
+    }
+
+    private static void readAndInsertProducts(String filePath) {
         try (Connection connection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
              Reader reader = new FileReader(filePath)) {
 
