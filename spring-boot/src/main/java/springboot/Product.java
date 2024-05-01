@@ -16,14 +16,16 @@ public class Product {
     private String productDescription;
     private double productPrice;
     private String imageURL;
+    private String category;
 
-    public Product(String productId, String productName, int productStock, String productDescription, double productPrice, String imageURL) {
+    public Product(String productId, String productName, int productStock, String productDescription, double productPrice, String imageURL, String category) {
         this.productId = productId;
         this.productName = productName;
         this.productStock = productStock;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
         this.imageURL = imageURL;
+        this.category = category;
     }
 
 //    public static List<Product> getProductsFromDatabase() throws SQLException {
