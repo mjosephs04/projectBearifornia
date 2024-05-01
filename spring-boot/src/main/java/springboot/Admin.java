@@ -37,13 +37,14 @@ public class Admin implements User{
         name = x;
     }
 
-    public static String addUser(Connection conn, String user, String pass, String userT){
-        String insertSQL = "INSERT INTO USERS (USERNAME, PASSWORD, USERTYPE) VALUES (?, ?, ?)";
+    public static String addUser(Connection conn, String name, String user, String pass, String userT){
+        String insertSQL = "INSERT INTO USERS (NAME, USERNAME, PASSWORD, USERTYPE) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = conn.prepareStatement(insertSQL)) {
-            statement.setString(1, user);
-            statement.setString(2, pass);
-            statement.setString(3, userT);
+            statement.setString(1, name);
+            statement.setString(2, user);
+            statement.setString(3, pass);
+            statement.setString(4, pass);
             statement.executeUpdate();
 
             return "success";
@@ -54,11 +55,11 @@ public class Admin implements User{
     }
 
     //returns either "success" or a fail message
-    public static String addClerk(String username, String password, UserType type) {
+    public static String addClerk(String name, String username, String password, UserType type) {
         Connection conn = Setup.getDBConnection();
 
         if(type.equals(UserType.CLERK)){
-            return addUser(conn, username, password, type.toString());
+            return addUser(conn, name, username, password, type.toString());
         }
         else{
             return "failure-- admins may only create CLERK accounts";

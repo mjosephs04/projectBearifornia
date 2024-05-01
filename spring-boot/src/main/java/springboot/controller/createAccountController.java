@@ -12,13 +12,14 @@ import springboot.UserType;
 @RequestMapping("/api/register")
 public class createAccountController {
 
+    //payload contains: name, username, password, type
     @PostMapping("/createClerk")
     public ResponseEntity<String> createClerk(@RequestBody String[] payload){
         boolean result = false;
-        UserType type = UserType.CLERK;
+        UserType type = UserType.valueOf(payload[3].toUpperCase());
         String message;
 
-        message = Admin.addClerk(payload[0], payload[1], type);
+        message = Admin.addClerk(payload[0], payload[1], payload[2], type);
 
         if(message.equalsIgnoreCase("success")){
             result = true;
@@ -32,13 +33,15 @@ public class createAccountController {
         }
     }
 
+
+    //payload contains: name, username, password, type
     @PostMapping("/createGuest")
     public ResponseEntity<String> createGuest(@RequestBody String[] payload){
         boolean result = false;
-        UserType type = UserType.GUEST;
+        UserType type = UserType.valueOf(payload[3].toUpperCase());
         String message;
 
-        message = Clerk.addGuest(payload[0], payload[1], type);
+        message = Clerk.addGuest(payload[0], payload[1], payload[2], type);
 
         if(message.equalsIgnoreCase("success")){
             result = true;
