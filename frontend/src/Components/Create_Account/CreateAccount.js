@@ -2,10 +2,12 @@ import Layout from '../Layout/Layout'
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import "./CreateAccount.css"
+import {useNavigate} from "react-router-dom";
 const CreateAccount = (props) =>{
     const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate();
 
     const onButtonClick = () => {
         const payload = [
@@ -24,6 +26,9 @@ const CreateAccount = (props) =>{
                 console.log(response);
                 if (response.status !== 200) {
                     throw new Error('Network response was not ok: ' + response.data);
+                }
+                if(response.status === 200){
+                    navigate('/confirmation');
                 }
                 return response.data;
             }).catch(error => {
