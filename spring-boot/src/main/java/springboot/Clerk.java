@@ -1,9 +1,5 @@
 package springboot;
 
-import springboot.database.Setup;
-
-import java.sql.Connection;
-
 public class Clerk implements User {
 
     private static UserType classification;
@@ -20,14 +16,18 @@ public class Clerk implements User {
         classification = UserType.CLERK;
     }
 
-    public Clerk(String name, String username, String password){
+    public Clerk(String name, String username, String password) {
         this.name = name;
         this.username = username;
         this.password = password;
     }
 
-    public UserType getType() {
+    public static UserType getClassification() {
         return classification;
+    }
+
+    public static void setClassification(UserType classification) {
+        Clerk.classification = classification;
     }
 
     @Override
@@ -36,8 +36,8 @@ public class Clerk implements User {
     }
 
     @Override
-    public void setName(String x) {
-        name = x;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -49,15 +49,11 @@ public class Clerk implements User {
         this.username = username;
     }
 
-    //returns either "success" or a fail message
-    public static String addGuest(String name, String username, String password, UserType type) {
-        Connection conn = Setup.getDBConnection();
+    public String getPassword() {
+        return password;
+    }
 
-        if(type.equals(UserType.GUEST)){
-            return Admin.addUser(conn, name, username, password, type.toString());
-        }
-        else{
-            return "failure-- clerks may only create GUEST accounts";
-        }
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
