@@ -147,4 +147,32 @@ public class Product {
             System.out.println("Failed to update product price in the database.");
         }
     }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public int getProductStock() {
+        return productStock;
+    }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public String getCategory() {
+        return category;
+    }
 }
