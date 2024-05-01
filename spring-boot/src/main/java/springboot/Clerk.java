@@ -30,6 +30,10 @@ public class Clerk implements User {
         Clerk.classification = classification;
     }
 
+    public UserType getType() {
+        return classification;
+    }
+
     @Override
     public String getName() {
         return name;
