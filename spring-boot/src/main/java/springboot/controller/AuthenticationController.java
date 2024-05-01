@@ -32,16 +32,16 @@ public class AuthenticationController {
         return ResponseEntity.ok(new String[]{"User authenticated successfully as " + data[0] + " " + data[1], userType.toString()});
     }
 
-    @PostMapping("/getAllUsers")
-    public ResponseEntity<String> getAllUsers() {
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<?> getAllUsers() {
         ArrayList<User> users = null;
         try {
             users = (ArrayList<User>) UserFunctions.readInAllUsers();
         }catch(IOException e) {
-            return ResponseEntity.ok("failure -- couldn't read in all users");
+            return ResponseEntity.ok(users);
         }
 
-        return ResponseEntity.ok("success -- all users read");
+        return ResponseEntity.ok(users);
 
     }
 
