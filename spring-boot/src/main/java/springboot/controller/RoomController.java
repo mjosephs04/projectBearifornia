@@ -1,10 +1,15 @@
 package springboot.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springboot.Listing;
+import springboot.Room;
+
+import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -47,6 +52,19 @@ public class RoomController {
                 Step into the past in the en-suite bathroom, with vintage-inspired fixtures and cozy touches.
 
                 Experience the allure of a bygone era in the heart of our stylish retreat.""", "https://i.pinimg.com/originals/bb/ce/4b/bbce4b1fb3216aa36d02005082896338.jpg");
+    }
+
+    @GetMapping("/getAllRooms")
+    public ResponseEntity<List<Room>> getAllRooms(){
+        List<Room> rooms;
+
+        try {
+            rooms = Room.readInAllRooms();
+        }catch(IOException e){
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        return ResponseEntity.ok().body(rooms);
     }
 
 }
