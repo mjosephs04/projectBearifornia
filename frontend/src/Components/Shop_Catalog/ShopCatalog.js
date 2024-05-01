@@ -22,7 +22,7 @@ const ShopCatalog = () =>{
                 <div className="itemCatalog">
                     <img src={goldChainIMG} alt="Product 1"/>
                     <h2>Ernesto's Links</h2>
-                    <Link to='/product-details'>
+                    <Link to="/product-details/chain">
                         <button>View Details</button>
                     </Link>
                 </div>

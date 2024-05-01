@@ -41,7 +41,7 @@ const App = () => {
                 <Route exact path='/shop' element={<ShopHome />}/>
                 <Route exact path='/catalog' element={<ShopCatalog />}/>
                 <Route exact path='/view-cart' element={<ViewCart />}/>
-                <Route exact path='/product-details' element={<ProductDetails/>}/>
+                <Route exact path='/product-details/:name' element={<ProductDetails/>}/>
                 <Route exact path='/modify-info' element={<ModifyInfo/>}/>
                 <Route exact path='/admin-center' element={<AdminCenter/>}/>
                 <Route exact path='/admin-center/reset-password' element={<AdminReset/>}/>

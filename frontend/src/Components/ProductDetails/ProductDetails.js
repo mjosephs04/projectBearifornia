@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import "./ProductDetails.css"
 import {Link} from "react-router-dom";
+import { useLocation, useParams } from 'react-router-dom'
+
 
 // Assets
 import goldChainIMG from '../../assets/GoldChain.png'
@@ -20,13 +22,18 @@ const ProductDetails = (props) =>{
     const increment = () => setQuantity(quantity + 1);
     const decrement = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
+    const location = useLocation()
+    const params = useParams()
 
-    const fetchData = () => {
-        axios.get('http://localhost:8080/rooms/nature-retreat') // Have to change the axios.get ask Mark about this
+    const fetchData = (props) => {
+        console.log(params)
+        axios.get('http://localhost:8080/api/products/' + params.name) // Have to change the axios.get ask Mark about this
             .then(response => {
                 if (response.status !== 200) {
                     throw new Error('Network response was not ok: ' + response.data);
                 }
+                console.log(response.data)
+
                 return response.data;
             })
             .then(data => {
@@ -54,6 +61,7 @@ const ProductDetails = (props) =>{
     return (
         <div class="Container1">
             <Layout/>
+
 
             <div className="product">
                 {/*<h2>{product.name} - ${product.price.toFixed(2)}</h2>*/}
