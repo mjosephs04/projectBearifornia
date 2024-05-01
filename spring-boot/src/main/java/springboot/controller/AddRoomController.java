@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import springboot.service.AddRoomService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -24,10 +25,8 @@ public class AddRoomController {
         try {
             addRoomService.addRoom(roomDetails);
             return ResponseEntity.ok("Room successfully added to CSV.");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | SQLException e) {
             return ResponseEntity.badRequest().body("Invalid request: " + e.getMessage());
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body("Failed to add room: " + e.getMessage());
         }
     }
 }
