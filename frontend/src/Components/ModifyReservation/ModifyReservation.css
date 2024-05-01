@@ -1,0 +1,42 @@
+.modifyReservationContainer {
+    width: 300px;
+    height: 500px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 50px auto;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="date"] {
+    width: calc(100% - 22px); /* Adjusting for input padding */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modifyReservationButton {
+    background-color: #64ed82;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+
+    &:hover{
+        background-color: #006016;
+    }
+}
