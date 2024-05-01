@@ -31,14 +31,11 @@ const LoginPage = (props) =>{
                 console.log(data[1]);
                 // setResponse(response)
                 if(data[1] == "CLERK"){
-
                     navigate('/clerk-center');
-
-
                 }else if(data[1] == "ADMIN"){
                     navigate('/admin-center');
-                }else{
-
+                }else if(data[1] == "GUEST"){
+                    navigate('/guest-center')
                 }
             }).catch(error => {
                 console.log("Error with authentication" + error);

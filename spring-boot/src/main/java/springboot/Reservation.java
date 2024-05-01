@@ -49,35 +49,7 @@ public class Reservation {
 
     //opens csv file and returns a list of all existing reservations
     public static List<Reservation> readInAllReservations() throws IOException {
-        ArrayList<Reservation> reservations = new ArrayList<>(); //store all the rooms we read in
-        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/RoomsTaken.csv"));
-
-        reader.readLine(); //skip first line of header info
-        String line;
-
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            String[] split = line.split(",");
-            Room currentRoom = new Room(Integer.parseInt(split[0]), //roomNumber
-                    Double.parseDouble(split[1]),//cost
-                    split[2], //roomType
-                    Integer.parseInt(split[3]), //number of beds
-                    Integer.parseInt(split[4]), //quality level
-                    split[5], //bedType
-                    Boolean.parseBoolean(split[6]) //smoking
-            );
-            // Define the date format pattern
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-
-            // Parse the string to LocalDate
-            LocalDate startD = LocalDate.parse(split[7], formatter);
-            LocalDate endD = LocalDate.parse(split[8], formatter);
-            Reservation currReservation = new Reservation(currentRoom, startD, endD);
-
-            reservations.add(currReservation);
-        }
-
-        return reservations;
+        return null;
     }
 
     public boolean isAvailable(LocalDate start, LocalDate end){

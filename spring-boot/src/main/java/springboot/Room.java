@@ -1,8 +1,14 @@
 package springboot;
 
+import springboot.database.Setup;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -11,8 +17,8 @@ import java.util.Objects;
 
 public class Room {
     private Double cost = 0.00;
-    private Integer roomNumber, numOfBeds, qualityLevel = 0;
-    private String typeOfRoom, bedType = "";
+    private Integer roomNumber, numOfBeds;
+    private String qualityLevel, typeOfRoom, bedType = "";
     private boolean smokingAllowed = false;
 
     //DEFAULT CONSTRUCTOR
@@ -20,7 +26,7 @@ public class Room {
     }
 
     //CONSTRUCTOR
-    public Room(Integer roomNum, Double c, String roomType, Integer numBed, Integer quality, String bedType, boolean smoking) {
+    public Room(Integer roomNum, Double c, String roomType, Integer numBed, String quality, String bedType, boolean smoking) {
         this.cost = c;
         this.roomNumber = roomNum;
         this.numOfBeds = numBed;
@@ -138,11 +144,11 @@ public class Room {
         this.numOfBeds = numOfBeds;
     }
 
-    public Integer getQualityLevel() {
+    public String getQualityLevel() {
         return qualityLevel;
     }
 
-    public void setQualityLevel(Integer qualityLevel) {
+    public void setQualityLevel(String qualityLevel) {
         this.qualityLevel = qualityLevel;
     }
 
@@ -168,28 +174,32 @@ public class Room {
 
     //opens csv file and returns a list of all existing rooms
     public static List<Room> readInAllRooms() throws IOException {
-        ArrayList<Room> roomList = new ArrayList<>(); //store all the rooms we read in
-        BufferedReader reader = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
+        List<Room> rooms = new ArrayList<>();
+        String selectSQL = "SELECT * FROM ROOMS";
+        Connection conn = Setup.getDBConnection();
 
-        reader.readLine(); //skip first line of header info
-        String line;
+        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
+            ResultSet resultSet = statement.executeQuery();
 
-        //read in available rooms from csv and store in list
-        while ((line = reader.readLine()) != null) {
-            String[] split = line.split(",");
-            Room currentRoom = new Room(Integer.parseInt(split[0]), //roomNumber
-                    Double.parseDouble(split[1]),//cost
-                    split[2], //roomType
-                    Integer.parseInt(split[3]), //number of beds
-                    Integer.parseInt(split[4]), //quality level
-                    split[5], //bedType
-                    Boolean.parseBoolean(split[6]) //smoking
-            );
+            while (resultSet.next()) {
+                // Retrieve values from the ResultSet and create User objects
+                Integer roomNum = resultSet.getInt("roomNumber");
+                Double cost = resultSet.getDouble("cost");
+                String roomType = resultSet.getString("roomType");
+                Integer numBeds = resultSet.getInt("numBeds");
+                String qualityLevel = resultSet.getString("qualityLevel");
+                String bedType = resultSet.getString("bedType");
+                Boolean smokingAllowed = resultSet.getBoolean("smokingAllowed");
 
-            roomList.add(currentRoom);
+
+                // Create a room object and add it to the list
+                rooms.add(new Room(roomNum, cost, roomType, numBeds, qualityLevel, bedType, smokingAllowed));
+            }
         }
-
-        return roomList;
+        catch(SQLException e) {
+            System.out.println("failure " + e);
+        }
+        return rooms;
     }
 
     @Override
