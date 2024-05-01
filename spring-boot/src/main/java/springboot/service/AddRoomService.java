@@ -12,6 +12,10 @@ import springboot.database.Setup;
 @Service
 public class AddRoomService {
 
+    //roomDetails contains: roomNum, cost, roomType, numBeds,quality,bedtype, smoking
+    //this fxn creates a room from those details and then calls the other overloaded
+    //addRoom fxn
+    //returns either "success" or a fail message
     public static String addRoom(String[] roomDetails){
         if (roomDetails.length != 7) {
             throw new IllegalArgumentException("Invalid number of room details provided.");
@@ -26,9 +30,10 @@ public class AddRoomService {
                         Boolean.parseBoolean(roomDetails[6]) //smoking
                         );
 
-        return addRoom(r);
+        return addRoom(r); //returns
     }
 
+    //adds a room to the database if it does not already exist
     public static String addRoom(Room room){
         Room copy = Room.findRoom(room.getRoomNumber()); //see if room already exists in database
 

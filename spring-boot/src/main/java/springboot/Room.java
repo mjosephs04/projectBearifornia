@@ -63,13 +63,15 @@ public class Room {
 
         // Iterate through all rooms
         for (Room room : rooms) {
-            //for each room, check if that room has any reservations associated with it
-            for(Reservation res : allReservations){
-                //if it does, remove it from the total list of rooms if it isn't available for
-                //the desired dates
-                if(res.getRoom().equals(room)){
-                    if(res.conflictsWith(startDate, endDate)){
-                        rooms.remove(res.room);
+            if(allReservations != null) {
+                //for each room, check if that room has any reservations associated with it
+                for (Reservation res : allReservations) {
+                    //if it does, remove it from the total list of rooms if it isn't available for
+                    //the desired dates
+                    if (res.getRoom().equals(room)) {
+                        if (res.conflictsWith(startDate, endDate)) {
+                            rooms.remove(res.room);
+                        }
                     }
                 }
             }
@@ -87,18 +89,20 @@ public class Room {
             List<Reservation> allReservations = Reservation.readInAllReservations();
 
             //check all reservations to see if there are any conflicting ones for the given room
-            for (Reservation res : allReservations) {
-                if (res.getRoom().equals(r)) {
-                    if (res.conflictsWith(start, end)) {
-                        return false;
+            if(allReservations != null) {
+                for (Reservation res : allReservations) {
+                    if (res.getRoom().equals(r)) {
+                        if (res.conflictsWith(start, end)) {
+                            return false;
+                        }
                     }
                 }
             }
-
             return true;
         }
         else{
-            return false;
+            return false;//this happens when the room parameter is false-- which should ideally NEVER
+                            //happen, but u never know...
         }
     }
 
@@ -111,7 +115,7 @@ public class Room {
         try {
             PreparedStatement statement = conn.prepareStatement(findRoom);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.next()) {//if the room was found, make a new room w its info
                 room = new Room(resultSet.getInt("ROOMNUMBER"),
                         resultSet.getBigDecimal("COST").doubleValue(),
                         resultSet.getString("ROOMTYPE"),
