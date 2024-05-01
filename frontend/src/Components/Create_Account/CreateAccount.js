@@ -11,14 +11,15 @@ const CreateAccount = (props) =>{
         const payload = [
             name,
             username,
-            password
+            password,
+            "GUEST"
         ]
         console.log(name);
         console.log(username);
         console.log(password);
         console.log(payload);
 
-        axios.post('http://localhost:8080/api/register/createAccount', payload)
+        axios.post('http://localhost:8080/api/register/createGuest', payload)
             .then(response => {
                 console.log(response);
                 if (response.status !== 200) {

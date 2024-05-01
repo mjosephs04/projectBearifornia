@@ -3,19 +3,23 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import "./AdminCreate.css"
 const AdminCreate = (props) =>{
+    const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
     const onButtonClick = () => {
         const payload = [
+            name,
             username,
-            password
+            password,
+            "CLERK"
         ]
+        console.log(name);
         console.log(username);
         console.log(password);
         console.log(payload);
 
-        axios.post('http://localhost:8080/api/register/createAccount', payload)
+        axios.post('http://localhost:8080/api/register/createClerk', payload)
             .then(response => {
                 console.log(response);
                 if (response.status !== 200) {
@@ -30,7 +34,18 @@ const AdminCreate = (props) =>{
     return (
         <div>
             <Layout/>
-            <br/>
+            <div className='centerHeader'>
+                <h1>Clerk Creation</h1>
+            </div>
+            <div className='inputContainer_AdminCreate_01'>
+
+                <input
+                    //value={email}
+                    placeholder="Enter legal name"
+                    className={'inputBox_AdminCreate'}
+                    onChange={input => setName(input.target.value)}
+                />
+            </div>
             <div className='inputContainer_AdminCreate_01'>
 
                 <input
