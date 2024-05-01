@@ -15,25 +15,7 @@ import java.util.List;
 public class ApplicationController {
     @RequestMapping("/runFunction")
     public List<Room> convertCSV() {
-
-        List<Room> listOfRooms = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("/Users/markjosephs/IdeaProjects/projectBearifornia/spring-boot/src/main/resources/Users.csv"))) {
-            String line;
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] row = line.split(",");
-                Room nRoom = new Room(Integer.parseInt(row[0]),
-                        Double.parseDouble(row[1]),
-                        row[2], Integer.parseInt(row[3]),
-                        Integer.parseInt(row[4]),
-                        row[5],
-                        Boolean.parseBoolean(row[6]));
-                listOfRooms.add(nRoom);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return listOfRooms;
+        return null;
     }
 
     @PostMapping("/endpoint")
