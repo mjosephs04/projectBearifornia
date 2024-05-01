@@ -8,7 +8,7 @@ import springboot.service.ProductService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/products")
+@RequestMapping("api/products")
 public class ProductController {
 
     private final ProductService productService;
