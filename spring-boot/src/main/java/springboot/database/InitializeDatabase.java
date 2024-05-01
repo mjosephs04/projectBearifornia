@@ -20,6 +20,7 @@ public class InitializeDatabase {
     public static void main(String[] args) {
         String csvFilePath = "spring-boot/src/main/resources/products.csv";
         insertAdmin();
+        insertClerk();
         readAndInsertProducts(csvFilePath);
     }
 
@@ -36,6 +37,22 @@ public class InitializeDatabase {
             }
         } catch (SQLException e) {
             System.err.println("Error inserting admin: " + e.getMessage());
+        }
+    }
+
+    public static void insertClerk() {
+        try (Connection connection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD)) {
+            String sql = "INSERT INTO USERS (name, username, password, userType) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, "clerk");
+                statement.setString(2, "clerk");
+                statement.setString(3, "bearifornia");
+                statement.setString(4, "clerk");
+                statement.executeUpdate();
+                System.out.println("Clerk inserted successfully.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error inserting clerk: " + e.getMessage());
         }
     }
 
