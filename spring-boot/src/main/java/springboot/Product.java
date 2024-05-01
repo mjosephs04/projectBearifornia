@@ -144,5 +144,5 @@ public class Product {
             e.printStackTrace();
             System.out.println("Failed to update product price in the database.");
         }
-
+    }
 }
