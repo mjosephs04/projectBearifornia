@@ -2,8 +2,6 @@ package springboot;
 
 import springboot.database.Setup;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -63,7 +61,7 @@ public class Room {
 
     // Search for available rooms based on criteria
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
-    public static List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) throws IOException {
+    public static List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) {
         List<Room> rooms = readInAllRooms();
         List<Reservation> allReservations = Reservation.readInAllReservations(); // Assuming this method exists to read available rooms
 
@@ -101,8 +99,26 @@ public class Room {
         return rooms;
     }
 
+
+    //checks if a certain room is available for the desired dates
+    public static boolean isAvailable(Room r, LocalDate start, LocalDate end){
+        List<Reservation> allReservations = Reservation.readInAllReservations();
+
+        //check all reservations to see if there are any conflicting ones for the given room
+        for(Reservation res : allReservations){
+            if(res.getRoom().equals(r)){
+                if(res.conflictsWith(start, end)){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
     // finds a room from a roomNumber
-    public static Room findRoom(int roomNumber) throws IOException {
+    public static Room findRoom(int roomNumber) {
         Room room = null;
         String sql = "SELECT * FROM ROOMS WHERE ROOMNUMBER = " + Integer.toString(roomNumber);
         Connection conn = Setup.getDBConnection();
@@ -178,7 +194,7 @@ public class Room {
     }
 
     //opens csv file and returns a list of all existing rooms
-    public static List<Room> readInAllRooms() throws IOException {
+    public static List<Room> readInAllRooms(){
         List<Room> rooms = new ArrayList<>();
         String selectSQL = "SELECT * FROM ROOMS";
         Connection conn = Setup.getDBConnection();

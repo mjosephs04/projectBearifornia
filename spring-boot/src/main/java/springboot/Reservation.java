@@ -1,9 +1,10 @@
 package springboot;
 
-import java.io.*;
+import springboot.database.Setup;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Reservation {
 
     Room room;
     private Integer idNumber;
-    private String name;
+    private String username;
     private LocalDate startDay;
     private LocalDate endDay;
     private Integer price;
@@ -26,13 +27,15 @@ public class Reservation {
         this.endDay = end;
     }
 
-    public Reservation(Room room, LocalDate start, LocalDate end, String n, String e, String a) {
-        this.room = new Room(room);
+    public Reservation(Integer roomNum, LocalDate start, LocalDate end, String username) {
+        try {
+            this.room = Room.findRoom(roomNum);
+        }catch(Exception e) {
+            System.out.println("could not make reservation-- roomNum is not associated with a room" + e);
+        }
         this.startDay = start;
         this.endDay = end;
-        this.name = n;
-        email = e;
-        address = a;
+        this.username = username;
     }
 
     //returns -1 if the start and end dates of the reservation are not valid
@@ -47,12 +50,35 @@ public class Reservation {
         return cost;
     }
 
-    //opens csv file and returns a list of all existing reservations
-    public static List<Reservation> readInAllReservations() throws IOException {
-        return null;
+    //returns a list of all existing reservations
+    public static List<Reservation> readInAllReservations(){
+        List<Reservation> reservations = new ArrayList<>();
+        String selectSQL = "SELECT * FROM RESERVATIONS";
+        Connection conn = Setup.getDBConnection();
+
+        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                // Retrieve values from the ResultSet and create reservation objects
+                Integer roomNum = resultSet.getInt("roomNumber");
+                LocalDate startDate = resultSet.getDate("startDate").toLocalDate();
+                LocalDate endDate = resultSet.getDate("endDate").toLocalDate();
+                String username = resultSet.getString("username");
+
+                // Create a room object and add it to the list
+                reservations.add(new Reservation(roomNum, startDate, endDate, username));
+            }
+        }
+        catch(SQLException e) {
+            System.out.println("failure " + e);
+            return null;
+        }
+        return reservations;
     }
 
-    public boolean isAvailable(LocalDate start, LocalDate end){
+    //returns true if the given reservation conflicts with the desired times
+    public boolean conflictsWith(LocalDate start, LocalDate end){
         boolean result = true;
 
         if(startDay.isBefore(start)){
@@ -81,85 +107,34 @@ public class Reservation {
     //returns either a failure message or "success"
     //the strings will be zoned dates
     //calls createReservation(reservation) which then adds it to csv
-    public static String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        Room r = null;
-        try {
-            r = Room.findRoom(roomNumber);
-        }
-        catch(IOException e){
-            return "fail";
-        }
+    public static String addToDatabase(String checkIn, String checkOut, int roomNumber, String name) {
+        LocalDate checkInDate = convertStringToDate(checkIn);
+        LocalDate checkOutDate = convertStringToDate(checkOut);
+        return addToDatabase(checkInDate, checkOutDate, roomNumber, name);
+    }
 
-        LocalDate startDate = convertStringToDate(checkIn);
-        LocalDate endDate = convertStringToDate(checkOut);
+    public static String addToDatabase(LocalDate checkInDate, LocalDate checkOutDate, int roomNumber, String name) {
+        Room room = Room.findRoom(roomNumber);
+        if(Room.isAvailable(room, checkInDate, checkOutDate)){
+            try (Connection conn = Setup.getDBConnection()) {
+                // Insert the reservation into the database
+                String sql = "INSERT INTO RESERVATIONS (ROOMNUMBER, STARTDATE, ENDDATE, USERNAME) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement statement = conn.prepareStatement(sql)) {
+                    statement.setInt(1, roomNumber);
+                    statement.setDate(2, Date.valueOf(checkInDate));
+                    statement.setDate(3, Date.valueOf(checkOutDate));
+                    statement.setString(4, name);
+                    statement.executeUpdate();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "failure -- An error occurred while adding the reservation. " + e.getMessage();
+            }
 
-        Reservation newReservation = new Reservation(r, startDate, endDate);
-        newReservation.setName(name);
-
-        String s = createReservation(newReservation);
-        if(s.equalsIgnoreCase("success")) {
             return "success";
         }
         else{
-            return "fail";
-        }
-    }
-
-
-    //returns either a failure message or "success"
-    //calls addReservedRoom to add it to csv
-    public static String createReservation(Reservation r) {
-        ArrayList<Reservation> existingReservations = null;
-        try {
-            existingReservations = (ArrayList<Reservation>) readInAllReservations();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "failure";
-        }
-
-        if (!existingReservations.contains(r)) {
-            StringBuilder csvFormatRoom = new StringBuilder();
-            Room reservedRoom = r.getRoom();
-
-            //convert room to a csv line in desired format
-            csvFormatRoom.append(reservedRoom.getRoomNumber()).append(",").
-                                append(reservedRoom.getCost()).append(",").
-                                append(reservedRoom.getTypeOfRoom()).append(",").
-                                append(reservedRoom.getNumOfBeds()).append(",").
-                                append(reservedRoom.getQualityLevel()).append(",").
-                                append(reservedRoom.getTypeOfRoom()).append(",").
-                                append(reservedRoom.getSmokingAllowed());
-
-            // Define the desired date format pattern
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-
-            // Format the LocalDate object using the formatter
-            String start = r.getStartDay().format(formatter);
-            String end = r.getEndDay().format(formatter);
-
-            csvFormatRoom.append(start).append(",").append(end);
-
-            String reserveRoom = addReservedRoom(csvFormatRoom.toString());
-            if (reserveRoom.equals("success")) {
-                return "success";
-            }
-        } else {
-            return "failure";
-        }
-
-        return "failure";
-    }
-
-    //takes a csv formatted line and puts it into the RoomsTaken.csv
-    //returns either "success" or a fail message depending on result
-    public static String addReservedRoom(String newRoom) {
-        try (FileWriter fw = new FileWriter("spring-boot/src/main/resources/RoomsTaken.csv", true);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter out = new PrintWriter(bw)) {
-            out.println(newRoom);
-            return "success";
-        } catch (IOException e) {
-            return "failure to add new reservation";
+            return "failure -- room is not available for those dates";
         }
     }
 
@@ -169,14 +144,6 @@ public class Reservation {
 
     public void setIdNumber(Integer idNumber) {
         this.idNumber = idNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
@@ -243,11 +210,13 @@ public class Reservation {
         this.email = email;
     }
 
-/*
-    public static void main(String[] args) {
+    public String getUsername() {
+        return username;
+    }
 
-    }*/
-
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
 
 

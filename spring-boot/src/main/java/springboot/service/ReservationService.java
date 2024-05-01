@@ -10,22 +10,16 @@ import java.util.List;
 
 @Service
 public class ReservationService {
-//    public List<Room> searchAvailableRooms(boolean smoking, String bedType, int numOfBeds, String roomType, LocalDate startDate, LocalDate endDate) {
-//        try {
-//            // Leverage the searchRooms method from Reservation class
-//            return reservationHelper.searchRooms(smoking, bedType, numOfBeds, roomType, startDate, endDate);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return List.of(); // Return an empty list in case of exceptions
-//        }
-//    }
 
     // Method to handle creating a new reservation
-    public String createReservation(Reservation newReservation) {
-        return Reservation.createReservation(newReservation);
+    public String createReservation(Reservation res) {
+        return Reservation.addToDatabase(res.getStartDay(),
+                                        res.getEndDay(),
+                                        res.getRoom().getRoomNumber(),
+                                        res.getUsername());
     }
 
     public String createReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        return Reservation.createReservation(checkIn, checkOut, roomNumber, name);
+        return Reservation.addToDatabase(checkIn, checkOut, roomNumber, name);
     }
 }
