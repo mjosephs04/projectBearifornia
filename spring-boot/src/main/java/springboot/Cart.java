@@ -39,4 +39,8 @@ public class Cart {
     public Map<Product, Integer> getItems() {
         return new HashMap<>(items);
     }
+
+    public List<Product> getItems() {
+        return items;
+    }
 }

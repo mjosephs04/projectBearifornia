@@ -15,19 +15,31 @@ const Layout = () => {
                     Hotel Bearifornia
                 </div>
             </Link>
-
             <div className='home-link'>
                 <Link to='/reserve'>
                     Reserve Room
                 </Link>
             </div>
-
             <div className='shop-link-layout'>
                 <Link to='/catalog'>
                     Catalog
                 </Link>
             </div>
-
+            <div className='view-cart-link-layout'>
+                <Link to='/view-cart'>
+                    View Cart
+                </Link>
+            </div>
+            <div className='view-cart-link-layout'>
+                <Link to='/view-cart'>
+                    View Cart
+                </Link>
+            </div>
+            <div className='view-bill-link-layout'>
+                <Link to='/view-bill'>
+                    View Bill
+                </Link>
+            </div>
             <div className="login-drop"><DropdownMenu/></div>
 
         </div>

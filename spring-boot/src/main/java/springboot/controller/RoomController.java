@@ -1,14 +1,9 @@
 package springboot.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import springboot.Listing;
-import springboot.Room;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.*;
+import springboot.*;
+import springboot.service.RoomService;
 import java.util.List;
 
 
@@ -62,4 +57,34 @@ public class RoomController {
         return ResponseEntity.ok().body(rooms);
     }
 
+    //payload should contain:
+    // --username of user who is trying to modify the room
+    // --roomNumber of room you are trying to modify
+    // Double newCost,
+    // String New roomType,
+    // Integer New numBed,
+    // String New quality,
+    // String New bedType,
+    // boolean New smoking
+    @PatchMapping("/updateRoom")
+    public ResponseEntity<String> modifyRoom(String[] payload){
+        User x = UserFunctions.findUser(payload[0]);
+        Integer roomNum =Integer.parseInt(payload[1]);
+
+        if(x instanceof Clerk){
+            Room r = new Room(roomNum, //roomnum
+                                Double.parseDouble(payload[2]), //cost
+                                payload[3], //roomtype
+                                Integer.parseInt(payload[4]), //numbed
+                                payload[5], ///quality
+                                payload[5], //bedtype
+                                Boolean.parseBoolean(payload[6])); //smoking
+            String message = RoomService.modifyRoom(roomNum, r);
+            if(message.equalsIgnoreCase("success")){
+                return ResponseEntity.ok().body("success");
+            }
+        }
+        return ResponseEntity.badRequest().body("only clerks may modify rooms");
+
+    }
 }

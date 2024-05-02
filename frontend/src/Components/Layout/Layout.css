@@ -86,6 +86,50 @@ body {
     }
 }
 
+.view-cart-link-layout{
+    position: absolute;
+    left: 950px;
+    top: 32px;
+    font-family: Helvetica;
+    font-size: 25px;
+
+    a { color: #ffffff
+    } /* Globally */
+
+    a:link {text-decoration: none}
+    a:visited { text-decoration: none; color: #ffffff; }
+    a:hover { text-decoration: none; color: #ffffff; }
+    a:focus { text-decoration: none; color: #ffffff; }
+    a:hover, a:active { text-decoration: none; color: #006016
+    }
+
+    &:hover{
+        color: #545454;
+    }
+}
+
+.view-bill-link-layout{
+    position: absolute;
+    left: 1200px;
+    top: 32px;
+    font-family: Helvetica;
+    font-size: 25px;
+
+    a { color: #ffffff
+    } /* Globally */
+
+    a:link {text-decoration: none}
+    a:visited { text-decoration: none; color: #ffffff; }
+    a:hover { text-decoration: none; color: #ffffff; }
+    a:focus { text-decoration: none; color: #ffffff; }
+    a:hover, a:active { text-decoration: none; color: #006016
+    }
+
+    &:hover{
+        color: #545454;
+    }
+}
+
 .title-color{
     color: white;
 }

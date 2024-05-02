@@ -3,6 +3,7 @@ package springboot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springboot.LoggedIn;
 import springboot.User;
 import springboot.UserFunctions;
 import springboot.service.AuthenticationService;
@@ -20,6 +21,7 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    //data should contain username, password
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody String[] data) {
 
@@ -28,6 +30,7 @@ public class AuthenticationController {
         if (userType == null) {
             return ResponseEntity.badRequest().body("Invalid username or password.");
         }
+        LoggedIn.logIn(data[0], userType);
 
         return ResponseEntity.ok(new String[]{"User authenticated successfully as " + data[0] + " " + data[1], userType.toString()});
     }
@@ -35,11 +38,7 @@ public class AuthenticationController {
     @GetMapping("/getAllUsers")
     public ResponseEntity<?> getAllUsers() {
         ArrayList<User> users = null;
-        try {
             users = (ArrayList<User>) UserFunctions.readInAllUsers();
-        }catch(IOException e) {
-            return ResponseEntity.ok(users);
-        }
 
         return ResponseEntity.ok(users);
 

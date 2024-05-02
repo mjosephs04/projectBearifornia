@@ -18,7 +18,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("{productName}")
+    @GetMapping("/{productName}")
     public ResponseEntity<?> getProduct(@PathVariable String productName) {
         Product product = productService.getProductByName(productName);
         if (product != null) {

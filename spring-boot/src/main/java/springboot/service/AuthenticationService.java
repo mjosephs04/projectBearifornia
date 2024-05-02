@@ -9,9 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 @Service
 public class AuthenticationService {
 
+    //returns null if the username and password arent valid, otherwise returns a userType
     public UserType authenticate(String username, String password) {
         String query = "SELECT USERTYPE FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
 

@@ -26,11 +26,11 @@ public class Product {
 //             PreparedStatement stmt = conn.prepareStatement(query);
 //             ResultSet rs = stmt.executeQuery()) {
 //            while (rs.next()) {
-//                String productId = rs.getString("PRODUCTID");
-//                String productName = rs.getString("PRODUCTNAME");
-//                int productStock = rs.getInt("PRODUCTSTOCK");
-//                String productDescription = rs.getString("PRODUCTDESCRIPTION");
-//                double productPrice = rs.getDouble("PRODUCTPRICE");
+//                String productId = rs.getString("productId");
+//                String productName = rs.getString("productName");
+//                int productStock = rs.getInt("productStock");
+//                String productDescription = rs.getString("productDescription");
+//                double productPrice = rs.getDouble("productPrice");
 //                Product product = new Product(productId, productName, productStock, productDescription, productPrice);
 //                products.add(product);
 //            }
@@ -40,30 +40,34 @@ public class Product {
 
     // Update product stock in the database based on the items purchased
 //    //Pass in a List of the items purchased (NEED ID
-//    public static void updateStockAtCheckout (List<Product> itemList) {
-//        String selectQuery = "SELECT PRODUCTSTOCK FROM PRODUCT WHERE PRODUCTID = ?";
-//        String updateQuery = "UPDATE PRODUCT SET PRODUCTSTOCK = ? WHERE PRODUCTID = ?";
-//        try (Connection conn = Setup.getDBConnection();
-//             PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
-//             PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+//    //This should take in a cart of items considered PURCHASED AND update them
+//productStock, productName, category, productPrice, productDescription, productId
 //
-//            for (Product item : itemList) {
-//                // Get current stock for the product
-//                selectStmt.setString(1, item.getProductId());
-//                ResultSet rs = selectStmt.executeQuery();
-//                if (rs.next()) {
-//                    int currentStock = rs.getInt("PRODUCTSTOCK");
-//                    int newStock = currentStock - 1; // Subtract 1 for each purchased product
-//                    updateStmt.setInt(1, newStock);
-//                    updateStmt.setString(2, item.getProductId());
-//                    updateStmt.executeUpdate();
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            System.out.println("Failed to update product stock in the database at checkout.");
-//        }
-//    }
+    public static void updateStockAtCheckout(Cart cart) {
+        String selectQuery = "SELECT productStock FROM PRODUCTS WHERE Product = ?";
+        String updateQuery = "UPDATE PRODUCTS SET productStock = ? WHERE productId = ?";
+        try (Connection conn = Setup.getDBConnection();
+             PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
+             PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+
+            for (Product item : cart.getItems()) {
+                // Get current stock for the product
+                selectStmt.setString(1, item.getProductId());
+                ResultSet rs = selectStmt.executeQuery();
+                if (rs.next()) {
+                    int currentStock = rs.getInt("productStock");
+                    int newStock = currentStock - 1; // Subtract 1 for each purchased product
+                    updateStmt.setInt(1, newStock);
+                    updateStmt.setString(2, item.getProductId());
+                    updateStmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            //NEEDS LOGGING EVENTUALLY
+            e.printStackTrace();
+            System.out.println("Failed to update product stock in the database at checkout.");
+        }
+    }
 
     public String getProductId() {
         return productId;
