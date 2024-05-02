@@ -15,10 +15,22 @@ const ModifyReservation = (props) =>{
     const [room, setRoom] = useState([])
 
     const onButtonClick = () => {
+        // Parsing dates to yyyy-mm-dd format
+        var parsedStartDate = new Date(checkInDate).toISOString().split('T')[0];
+        var parsedEndDate = new Date(checkOutDate).toISOString().split('T')[0];
+        var roomNum = room.roomNumber.toString();
+
+        console.log('New Start Date:', parsedStartDate);
+        console.log('New End Date:', parsedEndDate);
         const payload = [
+            parsedStartDate,
+            parsedEndDate,
+            roomNum,
+            reservationData.startDay,
+            reservationData.endDay
         ]
         console.log(payload);
-        axios.post('http://localhost:8080/api/reservations/updateRes', payload)
+        axios.patch('http://localhost:8080/api/reservations/updateRes', payload)
             .then(response =>{
                 if(response.status !== 200){
                     throw Error("Network error");
@@ -59,7 +71,7 @@ const ModifyReservation = (props) =>{
                 <h1>Modify reservation</h1>
                 <h2>Room Number: {room.roomNumber}</h2>
                 <div className="form-group">
-                    <label htmlFor="end-date">Start Date:</label>
+                    <label htmlFor="start-date">Start Date:</label>
                     <DatePicker
                         placeholderText={reservationData.startDay}
                         selected={checkInDate}
@@ -75,9 +87,8 @@ const ModifyReservation = (props) =>{
                     />
                 </div>
                 <Link to='/confirmation'>
-                    <button className='modifyReservationButton' >Modify Reservation</button>
+                    <button className='modifyReservationButton' onClick={onButtonClick}>Modify Reservation</button>
                 </Link>
-
             </div>
         </div>
     );
