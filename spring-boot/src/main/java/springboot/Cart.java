@@ -44,4 +44,8 @@ public class Cart {
         }
         return totalAmount;
     }
+
+    public List<Product> getItems() {
+        return items;
+    }
 }
