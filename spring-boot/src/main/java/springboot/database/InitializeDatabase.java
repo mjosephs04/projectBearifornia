@@ -84,9 +84,9 @@ public class InitializeDatabase {
         try (Connection connection = Setup.getDBConnection()) {
             String sql = "INSERT INTO USERS (name, username, password, userType) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, "admin");
+                statement.setString(1, "admin1");
                 statement.setString(2, "admin");
-                statement.setString(3, "bearifornia");
+                statement.setString(3, "password");
                 statement.setString(4, "ADMIN");
                 statement.executeUpdate();
                 System.out.println("Admin inserted successfully.");
@@ -100,9 +100,9 @@ public class InitializeDatabase {
         try (Connection connection = Setup.getDBConnection()) {
             String sql = "INSERT INTO USERS (name, username, password, userType) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, "clerk");
+                statement.setString(1, "clerk1");
                 statement.setString(2, "clerk");
-                statement.setString(3, "bearifornia");
+                statement.setString(3, "password");
                 statement.setString(4, "CLERK");
                 statement.executeUpdate();
                 System.out.println("Clerk inserted successfully.");
@@ -148,6 +148,7 @@ public class InitializeDatabase {
             BufferedReader br = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
             String line;
             br.readLine(); //skip header
+
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 pstmt.setInt(1, Integer.parseInt(values[0])); // roomNumber
@@ -159,6 +160,8 @@ public class InitializeDatabase {
                 pstmt.setBoolean(7, Boolean.parseBoolean(values[6])); // smokingAllowed
                 pstmt.executeUpdate();
             }
+
+            System.out.println("Successfully populated rooms database");
         } catch (SQLException e) {
             System.err.println("Error inserting rooms: " + e.getMessage());
         }

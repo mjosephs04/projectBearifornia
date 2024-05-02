@@ -57,7 +57,10 @@ public class RoomController {
         return ResponseEntity.ok().body(rooms);
     }
 
-    //payload should contain: ONLY GUESTS CAN MODIFY RESERVATIONS, SO THEY SHOULD BE LOGGED IN BEFORE DOING SO
+    //payload should contain IN THIS ORDER!!!
+    // AND!!!!: ONLY GUESTS CAN MODIFY RESERVATIONS, SO THEY SHOULD BE LOGGED IN BEFORE DOING SO
+    //AND!!! DO NOT PASS USERNAME TO BACKEND OR ANYTHING
+
     // --roomNumber of room you are trying to modify
     // Double newCost,
     // String New roomType,
@@ -69,14 +72,14 @@ public class RoomController {
     public ResponseEntity<String> modifyRoom(String[] payload){
         String username = LoggedIn.isLoggedIn();
         UserType type = LoggedIn.type;
-        Integer roomNum =Integer.parseInt(payload[1]);
+        Integer roomNum =Integer.parseInt(payload[0]);
 
         if(username != null && type.equals(UserType.GUEST)){
             Room r = new Room(roomNum, //roomnum
-                                Double.parseDouble(payload[2]), //cost
-                                payload[3], //roomtype
-                                Integer.parseInt(payload[4]), //numbed
-                                payload[5], ///quality
+                                Double.parseDouble(payload[1]), //cost
+                                payload[2], //roomtype
+                                Integer.parseInt(payload[3]), //numbed
+                                payload[4], ///quality
                                 payload[5], //bedtype
                                 Boolean.parseBoolean(payload[6])); //smoking
             String message = RoomService.modifyRoom(roomNum, r);
