@@ -128,16 +128,20 @@ public class ReservationController {
 
     //returns the current users reservations
     @GetMapping("/showMyReservations")
-    public ResponseEntity<List<Reservation>> showMyReservations(String username){
-        User user;
-        user = UserFunctions.findUser(username);
-        if(!(user instanceof Guest)){
-            return ResponseEntity.badRequest().body(null);//throws an exception if the username is not associated with a guest account,
-                            //or if the username is not associated with an account at all
-        }
+    public ResponseEntity<List<Reservation>> showMyReservations(){
+        String username = LoggedIn.isLoggedIn();
 
-        //otherwise, if the username is associated with a guest account, returns all reservations
-        return ResponseEntity.ok(((Guest)user).getMyReservations());
+        if(username != null) {
+            User user = UserFunctions.findUser(username);
+
+            if (!(user instanceof Guest)) {
+                return ResponseEntity.badRequest().body(null);//throws an exception if the username is not associated with a guest account,
+                //or if the username is not associated with an account at all
+            }
+
+            //otherwise, if the username is associated with a guest account, returns all reservations
+            return ResponseEntity.ok(((Guest) user).getMyReservations());
+        }
     }
 
 
@@ -145,26 +149,23 @@ public class ReservationController {
     //this function will check that the username really is associated with an
     //admin account and then will return all guests accordingly.
     @PostMapping("/getAllGuests")
-    public ResponseEntity<List<User>> getAllGuests(String adminUsername){
-        User user;
-        try {
-            user = UserFunctions.findUser(adminUsername);
-            if(!(user instanceof Admin)){
-                throw new IOException();
-            }
-        }catch(IOException e){
-            //returns a bad request if the username is not associated with a guest account,
-            //or if the username is not associated with an account at all
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<List<User>> getAllGuests(){
+        String username = LoggedIn.isLoggedIn();
+        User user = UserFunctions.findUser(username);
 
-        List<User> list;
+        if(username != null && user instanceof Admin) {
+
+            List<User> list;
             list = UserFunctions.readInAllUsers();
 
-        //get only the guests from the list
-        list.removeIf(curr -> (curr instanceof Guest));
+            //get only the guests from the list
+            list.removeIf(curr -> !(curr instanceof Guest));
 
-        return ResponseEntity.ok(list);
+            return ResponseEntity.ok(list);
+        }
+        else{
+            return ResponseEntity.badRequest().body(null); //returns null list
+        }
     }
 
     //payload should contain:
@@ -181,16 +182,22 @@ public class ReservationController {
         }
     }
 
-    //payload contains: String checkInDate, String checkOutDate, int roomNumber, Stringname
+    //payload contains: String checkInDate, String checkOutDate, int roomNumber
     @GetMapping("/deleteRes")
     public ResponseEntity<String> deleteReservation(String[] payload) {
-        String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3]);
+        String username = LoggedIn.isLoggedIn();
+        if(username != null) {
+            String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), username);
 
-        if(message.equalsIgnoreCase("success")){
-            return ResponseEntity.ok("successfully modified reservation");
+            if (message.equalsIgnoreCase("success")) {
+                return ResponseEntity.ok("successfully modified reservation");
+            }
+            else{
+                return ResponseEntity.badRequest().body(message);
+            }
         }
         else{
-            return ResponseEntity.badRequest().body(message);
+            return ResponseEntity.badRequest().body("you need to log in first!");
         }
     }
 }

@@ -16,9 +16,11 @@ public class AccountController {
 
     @Autowired
     public AccountController(AccountService accountService) {
+
         this.accountService = accountService;
     }
 
+    //payload should contain name, username, password, userType
     @PostMapping("/createClerk")
     public ResponseEntity<String> createClerk(@RequestBody String[] payload) {
         UserType userType = UserType.valueOf(payload[3]);
