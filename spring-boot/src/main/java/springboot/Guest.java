@@ -59,18 +59,23 @@ public class Guest implements User {
 
     //returns either a failure message or "success"
     public String reserveRoom(Room reservedRoom, LocalDate start, LocalDate end) {
-        Reservation res = new Reservation(reservedRoom, start, end);
+        if(reservedRoom != null) {
+            Reservation res = new Reservation(reservedRoom, start, end);
 
-        return Reservation.addToDatabase(res.getStartDay(),
-                res.getEndDay(),
-                res.getRoom().getRoomNumber(),
-                res.getUsername());
+            return Reservation.addToDatabase(res.getStartDay(),
+                    res.getEndDay(),
+                    res.getRoom().getRoomNumber(),
+                    res.getUsername());
+        }
+        else{
+            return "room does not exist";
+        }
     }
 
     public String reserveRoom(Room reservedRoom, String start, String end) {
         return reserveRoom(reservedRoom,
-                            Reservation.convertStringToDate(start),
-                            Reservation.convertStringToDate(end));
+                Reservation.convertStringToDate(start),
+                Reservation.convertStringToDate(end));
     }
 
 
