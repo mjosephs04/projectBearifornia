@@ -20,7 +20,14 @@ public class Setup {
     }
 
     private static void initDbTables(Connection conn) {
-        String[] tableCreationCommands = {"CREATE TABLE ROOMS (roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numBeds INT, qualityLevel VARCHAR(255), bedType VARCHAR(255), smokingAllowed BOOLEAN)", "CREATE TABLE RESERVATIONS (roomNumber INT PRIMARY KEY, startDate DATE, endDate DATE, username VARCHAR(255), FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))", "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)", "CREATE TABLE PRODUCTS (productId INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, productStock INT, productName VARCHAR(255), category VARCHAR(255), productPrice DECIMAL(10, 2), productDescription VARCHAR(255), imageURL VARCHAR(2048))",};
+        String[] tableCreationCommands = {
+                "CREATE TABLE ROOMS (roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numBeds INT, qualityLevel VARCHAR(255), bedType VARCHAR(255), smokingAllowed BOOLEAN)",
+                "CREATE TABLE RESERVATIONS (roomNumber INT PRIMARY KEY, startDate DATE, endDate DATE, username VARCHAR(255), FOREIGN KEY (roomNumber) REFERENCES rooms(roomNumber))",
+                "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)",
+                "CREATE TABLE PRODUCTS (productId INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, productStock INT, productName VARCHAR(255), category VARCHAR(255), productPrice DECIMAL(10, 2), productDescription VARCHAR(255), imageURL VARCHAR(2048))",
+                "CREATE TABLE TRANSACTIONS (transactionId INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, userId INT, transactionTime TIMESTAMP, totalAmount DECIMAL(10, 2), FOREIGN KEY (userId) REFERENCES USERS(Id))",
+                "CREATE TABLE TRANSACTION_DETAILS (transactionId INT, productId INT, quantity INT, unitPrice DECIMAL(10, 2), FOREIGN KEY (transactionId) REFERENCES TRANSACTIONS(transactionId), FOREIGN KEY (productId) REFERENCES PRODUCTS(productId), PRIMARY KEY (transactionId, productId))",
+        };
 
         try (Statement statement = conn.createStatement()) {
             for (String sql : tableCreationCommands) {
