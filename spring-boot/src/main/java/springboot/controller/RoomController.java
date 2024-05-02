@@ -57,12 +57,7 @@ public class RoomController {
     @GetMapping("/getAllRooms")
     public ResponseEntity<List<Room>> getAllRooms(){
         List<Room> rooms;
-
-        try {
-            rooms = Room.readInAllRooms();
-        }catch(IOException e){
-            return ResponseEntity.badRequest().body(null);
-        }
+         rooms = Room.readInAllRooms();
 
         return ResponseEntity.ok().body(rooms);
     }

@@ -1,35 +1,67 @@
 package springboot.service;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.springframework.stereotype.Service;
+import springboot.Room;
 import springboot.database.Setup;
 
 @Service
 public class AddRoomService {
 
-    public void addRoom(String[] roomDetails) throws SQLException {
+    //roomDetails contains: roomNum, cost, roomType, numBeds,quality,bedtype, smoking
+    //this fxn creates a room from those details and then calls the other overloaded
+    //addRoom fxn
+    //returns either "success" or a fail message
+    public static String addRoom(String[] roomDetails){
         if (roomDetails.length != 7) {
             throw new IllegalArgumentException("Invalid number of room details provided.");
         }
 
-        String insertQuery = "INSERT INTO rooms (roomNumber, cost, roomType, numOfBeds, qualityLevel, bedType, smokingAllowed) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = Setup.getDBConnection();
-             PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
-            pstmt.setInt(1, Integer.parseInt(roomDetails[0])); // roomNumber
-            pstmt.setBigDecimal(2, new java.math.BigDecimal(roomDetails[1])); // cost
-            pstmt.setString(3, roomDetails[2]); // roomType
-            pstmt.setInt(4, Integer.parseInt(roomDetails[3])); // numOfBeds
-            pstmt.setInt(5, Integer.parseInt(roomDetails[4])); // qualityLevel
-            pstmt.setString(6, roomDetails[5]); // bedType
-            pstmt.setBoolean(7, Boolean.parseBoolean(roomDetails[6])); // smokingAllowed
+        Room r = new Room(Integer.parseInt(roomDetails[0]), //room Num
+                        Double.parseDouble(roomDetails[1]), //cost
+                        roomDetails[2], //roomType
+                        Integer.parseInt(roomDetails[3]), //numBeds
+                        roomDetails[4], //qualityLevel
+                        roomDetails[5], //bedType
+                        Boolean.parseBoolean(roomDetails[6]) //smoking
+                        );
 
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new SQLException("Failed to add room to the database.", e);
+        return addRoom(r); //returns
+    }
+
+    //adds a room to the database if it does not already exist
+    public static String addRoom(Room room){
+        Room copy = Room.findRoom(room.getRoomNumber()); //see if room already exists in database
+
+        //if room does not already exist in database
+        if(copy == null){
+            String insertQuery = "INSERT INTO ROOMS (roomNumber, cost, roomType, numBeds, qualityLevel, bedType, smokingAllowed) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try{
+                Connection conn = Setup.getDBConnection();
+                PreparedStatement pstmt = conn.prepareStatement(insertQuery);
+
+                pstmt.setInt(1, room.getRoomNumber()); // roomNumber
+                pstmt.setBigDecimal(2, BigDecimal.valueOf(room.getCost())); // cost
+                pstmt.setString(3, room.getTypeOfRoom()); // roomType
+                pstmt.setInt(4, room.getNumOfBeds()); // numOfBeds
+                pstmt.setString(5, room.getQualityLevel()); // qualityLevel
+                pstmt.setString(6, room.getBedType()); // bedType
+                pstmt.setBoolean(7, room.getSmokingAllowed()); // smokingAllowed
+
+                pstmt.executeUpdate();
+
+            } catch (SQLException e) {
+                return "failure -- could not insert room " + e.getMessage();
+            }
+
+            return "success";
+        }
+        else{
+            return "failure -- room already exists";
         }
     }
 

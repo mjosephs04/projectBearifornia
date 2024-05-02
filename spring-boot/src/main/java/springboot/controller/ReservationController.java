@@ -38,10 +38,7 @@ public class ReservationController {
 
         //find the room associated with the room number
         Room room;
-        try{ room = Room.findRoom(Integer.parseInt(payload[2])); }
-        catch(IOException e ){
-            return ResponseEntity.badRequest().body("Room number not found.");
-        }
+        room = Room.findRoom(Integer.parseInt(payload[2]));
 
         //if the given username belongs to a guest, then make the reservation.
         //otherwise, return an error message
@@ -83,15 +80,10 @@ public class ReservationController {
         }
 
         ArrayList<Room> availableRooms;
-        try {
-            availableRooms = (ArrayList<Room>) Room.searchRooms(
-                    Boolean.parseBoolean(payload[0]),
-                    payload[1], bedNum, payload[2],
-                    payload[3], payload[4]);
-
-        }catch(IOException e){
-            return ResponseEntity.badRequest().body(null);
-        }
+        availableRooms = (ArrayList<Room>) Room.searchRooms(
+                Boolean.parseBoolean(payload[0]),
+                payload[1], bedNum, payload[2],
+                payload[3], payload[4]);
 
         if(availableRooms.isEmpty()){
             return ResponseEntity.badRequest().body(null);
@@ -121,12 +113,7 @@ public class ReservationController {
         LocalDate endDate = endD.toLocalDate();
 
         //try to find room associated with the roomNumber
-        try {
-            room = Room.findRoom(roomNumber);
-        }
-        catch(IOException e){
-            return ResponseEntity.badRequest().body(-1.0);
-        }
+        room = Room.findRoom(roomNumber);
 
         //if we found the room, check the cost!
         if(room != null){

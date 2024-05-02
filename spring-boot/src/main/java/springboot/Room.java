@@ -1,14 +1,7 @@
 package springboot;
 
 import springboot.database.Setup;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -46,24 +39,10 @@ public class Room {
         this.bedType = room.getBedType();
     }
 
-    //PRINT INFO
-    public void printRoomInfo() {
-        System.out.println(roomNumber);
-        System.out.println("Room type: " + typeOfRoom);
-        System.out.println("Bed type: " + bedType);
-        System.out.println("# of beds: " + numOfBeds);
-        System.out.println("Quality level: " + qualityLevel);
-        if (!smokingAllowed) {
-            System.out.println("Smoking not allowed.");
-        } else {
-            System.out.println("Smoking allowed.");
-        }
-    }
-
 
     // Search for available rooms based on criteria
     //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
-    public static List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) throws IOException {
+    public static List<Room> searchRooms(boolean smoking, String bedType, int bedNum, String roomType, String start, String end) {
         List<Room> rooms = readInAllRooms();
         List<Reservation> allReservations = Reservation.readInAllReservations(); // Assuming this method exists to read available rooms
 
@@ -84,13 +63,15 @@ public class Room {
 
         // Iterate through all rooms
         for (Room room : rooms) {
-            //for each room, check if that room has any reservations associated with it
-            for(Reservation res : allReservations){
-                //if it does, remove it from the total list of rooms if it isn't available for
-                //the desired dates
-                if(res.getRoom().equals(room)){
-                    if(! res.isAvailable(startDate, endDate)){
-                        rooms.remove(res.room);
+            if(allReservations != null) {
+                //for each room, check if that room has any reservations associated with it
+                for (Reservation res : allReservations) {
+                    //if it does, remove it from the total list of rooms if it isn't available for
+                    //the desired dates
+                    if (res.getRoom().equals(room)) {
+                        if (res.conflictsWith(startDate, endDate)) {
+                            rooms.remove(res.room);
+                        }
                     }
                 }
             }
@@ -101,24 +82,86 @@ public class Room {
         return rooms;
     }
 
-    // Search for available rooms based on criteria
-    //the two strings at the end are in the format: 2024-04-20T20:39:06.000Z
-    public static Room findRoom(int roomNumber) throws IOException {
-        List<Room> rooms = readInAllRooms();
 
-        //so now we will check all rooms only rooms that match the desired criteria
-        // if room does NOT match criteria, remove it from list
-        rooms.removeIf(curr -> curr.getRoomNumber() != roomNumber);
+    //checks if a certain room is available for the desired dates -- also returns false if r is null
+    public static boolean isAvailable(Room r, LocalDate start, LocalDate end){
+        if(r != null) {
+            List<Reservation> allReservations = Reservation.readInAllReservations();
 
-        //at the end of this loop, the list rooms should only contain the desired room
-
-        if(rooms.size() == 1){
-            return rooms.get(0);
+            //check all reservations to see if there are any conflicting ones for the given room
+            if(allReservations != null) {
+                for (Reservation res : allReservations) {
+                    if (res.getRoom().equals(r)) {
+                        if (res.conflictsWith(start, end)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
         else{
-            return null;
+            return false;//this happens when the room parameter is false-- which should ideally NEVER
+                            //happen, but u never know...
         }
     }
+
+
+    // finds a room from a roomNumber
+    public static Room findRoom(int roomNumber) {
+        Room room = null;
+        String findRoom = "SELECT * FROM ROOMS WHERE ROOMNUMBER = " + roomNumber;
+        Connection conn = Setup.getDBConnection();
+        try {
+            PreparedStatement statement = conn.prepareStatement(findRoom);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {//if the room was found, make a new room w its info
+                room = new Room(resultSet.getInt("ROOMNUMBER"),
+                        resultSet.getBigDecimal("COST").doubleValue(),
+                        resultSet.getString("ROOMTYPE"),
+                        resultSet.getInt("NUMBEDS"),
+                        resultSet.getString("QUALITYLEVEL"),
+                        resultSet.getString("BEDTYPE"),
+                        resultSet.getBoolean("SMOKINGALLOWED"));
+            }
+        }
+        catch(SQLException e) {
+            return null;
+        }
+        return room;
+    }
+
+
+    //returns a list of all existing rooms
+    public static List<Room> readInAllRooms(){
+        List<Room> rooms = new ArrayList<>();
+        String selectSQL = "SELECT * FROM ROOMS";
+        Connection conn = Setup.getDBConnection();
+
+        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                // Retrieve values from the ResultSet and create User objects
+                Integer roomNum = resultSet.getInt("roomNumber");
+                Double cost = resultSet.getDouble("cost");
+                String roomType = resultSet.getString("roomType");
+                Integer numBeds = resultSet.getInt("numBeds");
+                String qualityLevel = resultSet.getString("qualityLevel");
+                String bedType = resultSet.getString("bedType");
+                boolean smokingAllowed = resultSet.getBoolean("smokingAllowed");
+
+
+                // Create a room object and add it to the list
+                rooms.add(new Room(roomNum, cost, roomType, numBeds, qualityLevel, bedType, smokingAllowed));
+            }
+        }
+        catch(SQLException e) {
+            System.out.println("failure " + e);
+        }
+        return rooms;
+    }
+
 
     public Double getCost() {
         return cost;
@@ -170,36 +213,6 @@ public class Room {
 
     public String getBedType(){
         return bedType;
-    }
-
-    //opens csv file and returns a list of all existing rooms
-    public static List<Room> readInAllRooms() throws IOException {
-        List<Room> rooms = new ArrayList<>();
-        String selectSQL = "SELECT * FROM ROOMS";
-        Connection conn = Setup.getDBConnection();
-
-        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                // Retrieve values from the ResultSet and create User objects
-                Integer roomNum = resultSet.getInt("roomNumber");
-                Double cost = resultSet.getDouble("cost");
-                String roomType = resultSet.getString("roomType");
-                Integer numBeds = resultSet.getInt("numBeds");
-                String qualityLevel = resultSet.getString("qualityLevel");
-                String bedType = resultSet.getString("bedType");
-                Boolean smokingAllowed = resultSet.getBoolean("smokingAllowed");
-
-
-                // Create a room object and add it to the list
-                rooms.add(new Room(roomNum, cost, roomType, numBeds, qualityLevel, bedType, smokingAllowed));
-            }
-        }
-        catch(SQLException e) {
-            System.out.println("failure " + e);
-        }
-        return rooms;
     }
 
     @Override
