@@ -43,7 +43,7 @@ public class UserFunctions {
         return userList;
     }
 
-    //returns the guest info associated with a username
+    //returns the guest info associated with a username, or null if there is no user associated w it
     public static User findUser(String username) {
         List<User> guestList = readInAllUsers();
 
