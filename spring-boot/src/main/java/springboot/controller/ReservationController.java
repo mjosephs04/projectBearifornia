@@ -127,21 +127,17 @@ public class ReservationController {
     }
 
     //returns the current users reservations
-    @PostMapping("/showMyReservations")
+    @GetMapping("/showMyReservations")
     public ResponseEntity<List<Reservation>> showMyReservations(String username){
         User user;
-        try {
-            user = UserFunctions.findUser(username);
-            if(!(user instanceof Guest)){
-                throw new IOException();
-            }
-        }catch(IOException e){ //throws an exception if the username is not associated with a guest account,
-                                //or if the username is not associated with an account at all
-            return ResponseEntity.badRequest().body(null);
+        user = UserFunctions.findUser(username);
+        if(!(user instanceof Guest)){
+            return ResponseEntity.badRequest().body(null);//throws an exception if the username is not associated with a guest account,
+                            //or if the username is not associated with an account at all
         }
 
         //otherwise, if the username is associated with a guest account, returns all reservations
-        return ResponseEntity.ok(((Guest)user).reservationList);
+        return ResponseEntity.ok(((Guest)user).getMyReservations());
     }
 
 
