@@ -132,12 +132,12 @@ public class ReservationController {
 
     //returns the current users reservations
     @GetMapping("/showMyReservations")
-    public ResponseEntity<List<Reservation>> showMyReservations(){
+    public ResponseEntity<Reservation> showMyReservations(){
         String username = LoggedIn.isLoggedIn();
 
         if(username != null && LoggedIn.type.equals(UserType.GUEST)) {
             //otherwise, if the username is associated with a guest account, returns all reservations
-            return ResponseEntity.ok().body(Guest.getMyReservations(username));
+            return ResponseEntity.ok().body(Guest.getMyReservations(username).get(0));
         }
 
         return ResponseEntity.badRequest().body(null);
