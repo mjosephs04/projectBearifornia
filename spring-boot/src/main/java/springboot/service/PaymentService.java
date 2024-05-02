@@ -1,10 +1,10 @@
 package springboot.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import springboot.Cart;
 import springboot.Product;
 import springboot.database.Setup;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
