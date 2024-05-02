@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cart {
-    private Map<Product, Integer> items;
+    private final Map<Product, Integer> items;
 
     public Cart() {
         items = new HashMap<>();
@@ -17,11 +17,11 @@ public class Cart {
         items.merge(product, quantity, Integer::sum);
     }
 
-    public void removeProduct(Product product, int quantity) {
-        if (product == null || quantity <= 0) {
-            throw new IllegalArgumentException("Product cannot be null and quantity must be greater than zero.");
+    public void removeProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null.");
         }
-        items.computeIfPresent(product, (k, v) -> (v > quantity) ? v - quantity : null);
+        items.remove(product);
     }
 
     public int getProductQuantity(Product product) {
