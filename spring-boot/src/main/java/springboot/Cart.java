@@ -1,47 +1,42 @@
 package springboot;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Cart {
-    private List<Product> items;
+    private Map<Product, Integer> items;
 
     public Cart() {
-        this.items = new ArrayList<Product>();
+        items = new HashMap<>();
     }
 
-    public void addItem(Product product) {
-        if (isStockAvailable(product)) {
-            items.add(product);
-            System.out.println(product.getProductName() + " added to cart.");
-        } else {
-            System.out.println("Not enough stock available for " + product.getProductName());
+    public void addProduct(Product product, int quantity) {
+        if (product == null || quantity <= 0) {
+            throw new IllegalArgumentException("Product cannot be null and quantity must be greater than zero.");
         }
+        items.merge(product, quantity, Integer::sum);
     }
 
-    private boolean isStockAvailable(Product product) {
-        return product.getProductStock() > 0;
-    }
-
-    /*
-    public void checkout(Payment payment) {
-        if (!items.isEmpty()) {
-            double totalAmount = calculateTotalAmount();
-            //THIS WILL CONNECT TO SOMETHING THAT CAN PAY
-            //payment.makePayment(totalAmount);
-            items.clear(); // Empty the cart after checkout
-            System.out.println("Checkout completed successfully.");
-        } else {
-            System.out.println("Cart is empty. Nothing to checkout.");
+    public void removeProduct(Product product, int quantity) {
+        if (product == null || quantity <= 0) {
+            throw new IllegalArgumentException("Product cannot be null and quantity must be greater than zero.");
         }
+        items.computeIfPresent(product, (k, v) -> (v > quantity) ? v - quantity : null);
     }
-    */
 
-    private double calculateTotalAmount() {
-        double totalAmount = 0.0;
-        for (Product item : items) {
-            totalAmount += item.getProductPrice() ; // Assuming each product costs the same as its stock
+    public int getProductQuantity(Product product) {
+        return items.getOrDefault(product, 0);
+    }
+
+    public double getTotalPrice() {
+        double total = 0.0;
+        for (Map.Entry<Product, Integer> entry : items.entrySet()) {
+            total += entry.getKey().getProductPrice() * entry.getValue();
         }
-        return totalAmount;
+        return total;
+    }
+
+    public Map<Product, Integer> getItems() {
+        return new HashMap<>(items);
     }
 }
