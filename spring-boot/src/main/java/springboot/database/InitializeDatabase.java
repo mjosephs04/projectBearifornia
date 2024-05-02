@@ -4,18 +4,16 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InitializeDatabase {
-
-    private static final String DB_CONNECTION = "jdbc:derby:beariforniaDB;create=true";
-    private static final String DB_USER = "";
-    private static final String DB_PASSWORD = "";
 
     public static void main(String[] args) {
         String csvFilePath = "spring-boot/src/main/resources/products.csv";
@@ -24,6 +22,7 @@ public class InitializeDatabase {
         insertAdmin();
         insertClerk();
         readAndInsertProducts(csvFilePath);
+        populateRooms();
     }
 
     public static void dropTables() {
@@ -135,6 +134,35 @@ public class InitializeDatabase {
         } catch (SQLException e) {
             System.err.println("Error during database connection or query execution: " + e.getMessage());
         } catch (IOException e) {
+            System.err.println("Error reading the file: " + e.getMessage());
+        }
+    }
+
+    private static void populateRooms(){
+        try{
+            Connection connection = Setup.getDBConnection();
+            //"CREATE TABLE ROOMS (roomNumber INT PRIMARY KEY, cost DECIMAL(10, 2), roomType VARCHAR(255), numBeds INT, qualityLevel VARCHAR(255), bedType VARCHAR(255), smokingAllowed BOOLEAN)",
+            String sql = "INSERT INTO ROOMS (roomNumber, cost, roomType, numBeds, qualityLevel, bedType, smokingAllowed) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            BufferedReader br = new BufferedReader(new FileReader("spring-boot/src/main/resources/Rooms.csv"));
+            String line;
+            br.readLine(); //skip header
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                pstmt.setInt(1, Integer.parseInt(values[0])); // roomNumber
+                pstmt.setBigDecimal(2, BigDecimal.valueOf(Double.parseDouble(values[1]))); // cost
+                pstmt.setString(3, values[2]); // roomType
+                pstmt.setInt(4, Integer.parseInt(values[3])); // numOfBeds
+                pstmt.setString(5, values[4]); // qualityLevel
+                pstmt.setString(6, values[5]); // bedType
+                pstmt.setBoolean(7, Boolean.parseBoolean(values[6])); // smokingAllowed
+                pstmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error inserting rooms: " + e.getMessage());
+        }
+        catch(IOException e){
             System.err.println("Error reading the file: " + e.getMessage());
         }
     }
