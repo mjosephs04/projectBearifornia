@@ -27,7 +27,7 @@ public class ReservationService {
     }
     
     public static String deleteReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        LocalDate start = Reservation.convertStringToDate(checkIn);
+        /*LocalDate start = Reservation.convertStringToDate(checkIn);
         LocalDate end = Reservation.convertStringToDate(checkOut);
         String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = " + roomNumber +
                             " AND USERNAME = " + name +
@@ -43,59 +43,65 @@ public class ReservationService {
             }
             return "success";
         }
+        return "failure -- reservation does not exist";*/
+        LocalDate start = Reservation.convertStringToDate(checkIn);
+        LocalDate end = Reservation.convertStringToDate(checkOut);
+
+        String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = ? AND USERNAME = ? AND STARTDATE = ? AND ENDDATE = ?";
+
+        Connection conn = Setup.getDBConnection();
+        Reservation res = getReservation(checkIn, checkOut, roomNumber, name);
+
+        if (res != null) {
+            try (PreparedStatement pstmt = conn.prepareStatement(deleteRes)) {
+                pstmt.setInt(1, roomNumber);
+                pstmt.setString(2, name);
+                pstmt.setDate(3, Date.valueOf(start));
+                pstmt.setDate(4, Date.valueOf(end));
+
+                int rowsAffected = pstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    return "success";
+                } else {
+                    return "failure -- no matching reservation found";
+                }
+            } catch (SQLException e) {
+                return "failure " + e.getMessage();
+            }
+        }
         return "failure -- reservation does not exist";
     }
 
 
     public static Reservation getReservation(String checkIn, String checkOut, int roomNumber, String name) {
         Reservation res = null;
-        String findRes  = "SELECT * FROM RESERVATIONS WHERE ROOMNUMBER = " + roomNumber +
-                            " AND USERNAME = " + name
-                + " AND STARTDATE = " + Date.valueOf(Reservation.convertStringToDate(checkIn))
-                + " AND ENDDATE = " + Date.valueOf(Reservation.convertStringToDate(checkOut));
-        Connection conn = Setup.getDBConnection();
-        try {
-            ResultSet resultSet = conn.createStatement().executeQuery(findRes);
-            if (resultSet.next()) {//if the res was found, make a new room w its info
+        LocalDate start = Reservation.convertStringToDate(checkIn);
+        LocalDate end = Reservation.convertStringToDate(checkOut);
+        String findRes = "SELECT * FROM RESERVATIONS WHERE ROOMNUMBER = ? AND USERNAME = ? AND STARTDATE = ? AND ENDDATE = ?";
+
+        try (Connection conn = Setup.getDBConnection();
+             PreparedStatement pstmt = conn.prepareStatement(findRes)) {
+
+            pstmt.setInt(1, roomNumber);
+            pstmt.setString(2, name);
+            pstmt.setDate(3, Date.valueOf(start));
+            pstmt.setDate(4, Date.valueOf(end));
+
+            ResultSet resultSet = pstmt.executeQuery();
+            if (resultSet.next()) {
                 res = new Reservation(roomNumber,
-                        Reservation.convertStringToDate(checkIn),
-                        Reservation.convertStringToDate(checkOut),
+                        start,
+                        end,
                         name);
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
         return res;
     }
 
     public static String modifyReservation(String newStart, String newEnd, int roomNumber, String oldStart, String oldEnd) {
-        /*LocalDate updatedStart = Reservation.convertStringToDate(newStart);
-        LocalDate updatedEnd = Reservation.convertStringToDate(newEnd);
-        LocalDate oldS = Reservation.convertStringToDate(oldStart);
-        LocalDate oldE = Reservation.convertStringToDate(oldEnd);
-
-
-        String updateQuery = "UPDATE RESERVATIONS SET STARTDATE = " + Date.valueOf(updatedStart) +
-                ", ENDDATE = " + Date.valueOf(updatedEnd) +
-                " WHERE ROOMNUMBER = " + roomNumber +
-                " AND STARTDATE = " + Date.valueOf(oldS) +
-                " AND ENDDATE = " + Date.valueOf(oldE);
-
-        try {
-            Statement stmt = Setup.getDBConnection().createStatement();
-            int rowsAffected = stmt.executeUpdate(updateQuery);
-
-            if (rowsAffected == 0) {
-                // No matching reservation found
-                return "No matching reservation found to modify.";
-            } else {
-                return "success";
-            }
-        } catch (SQLException e) {
-            return "Failed to modify reservation" + e.getMessage();
-        }*/
-
         LocalDate updatedStart = Reservation.convertStringToDate(newStart);
         LocalDate updatedEnd = Reservation.convertStringToDate(newEnd);
         LocalDate oldS = Reservation.convertStringToDate(oldStart);

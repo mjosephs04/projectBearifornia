@@ -200,7 +200,6 @@ public class ReservationController {
 
 
     /*
-
     public static void main(String[] args) {
         InitializeDatabase.main(args);
 
@@ -240,5 +239,13 @@ public class ReservationController {
                             "2024-05-03T11:00:00.000Z"
         }).getBody());
         //this works^^^
+
+
+        //payload contains: String checkInDate, String checkOutDate, int roomNumber
+        x.deleteReservation(new String[]{
+                "2024-05-01T14:00:00.000Z",
+                "2024-05-03T11:00:00.000Z",
+                "101"
+        });
     }*/
 }
