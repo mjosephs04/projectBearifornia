@@ -29,12 +29,7 @@ public class ReservationController {
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
         User x;
         //try to find the user associated with the username
-        try {
             x = UserFunctions.findUser(payload[3]);
-        }
-        catch(IOException e){
-            return ResponseEntity.badRequest().body("User not found.");
-        }
 
         //find the room associated with the room number
         Room room;
@@ -168,17 +163,38 @@ public class ReservationController {
         }
 
         List<User> list;
-        try {
             list = UserFunctions.readInAllUsers();
-        }
-        catch(IOException e){
-            //returns a bad request if we could not read in all users
-            return ResponseEntity.badRequest().body(null);
-        }
 
         //get only the guests from the list
         list.removeIf(curr -> (curr instanceof Guest));
 
         return ResponseEntity.ok(list);
+    }
+
+    //payload should contain:
+    // String newStartDate, String newEndDate, int roomNumber, String oldStartDate, String oldEndDate
+    @PatchMapping("/updateRes")
+    public ResponseEntity<String> updateReservation(String[] payload) {
+        String message = ReservationService.modifyReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3], payload[4]);
+
+        if(message.equalsIgnoreCase("success")){
+            return ResponseEntity.ok("successfully modified reservation");
+        }
+        else{
+            return ResponseEntity.badRequest().body(message);
+        }
+    }
+
+    //payload contains: String checkInDate, String checkOutDate, int roomNumber, Stringname
+    @GetMapping("/deleteRes")
+    public ResponseEntity<String> deleteReservation(String[] payload) {
+        String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3]);
+
+        if(message.equalsIgnoreCase("success")){
+            return ResponseEntity.ok("successfully modified reservation");
+        }
+        else{
+            return ResponseEntity.badRequest().body(message);
+        }
     }
 }

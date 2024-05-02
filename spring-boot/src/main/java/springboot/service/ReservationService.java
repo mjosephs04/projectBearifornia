@@ -1,17 +1,11 @@
 package springboot.service;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import springboot.Reservation;
-import springboot.Room;
-import springboot.UserType;
-import springboot.database.InitializeDatabase;
 import springboot.database.Setup;
-
-import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Service
 public class ReservationService {
@@ -32,7 +26,7 @@ public class ReservationService {
         return Reservation.addToDatabase(checkIn, checkOut, roomNumber, username);
     }
     
-    public String deleteReservation(String checkIn, String checkOut, int roomNumber, String name) {
+    public static String deleteReservation(String checkIn, String checkOut, int roomNumber, String name) {
         LocalDate start = Reservation.convertStringToDate(checkIn);
         LocalDate end = Reservation.convertStringToDate(checkOut);
         String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = " + roomNumber +
@@ -75,4 +69,32 @@ public class ReservationService {
         return res;
     }
 
+    public static String modifyReservation(String newStart, String newEnd, int roomNumber, String oldStart, String oldEnd) {
+        LocalDate updatedStart = Reservation.convertStringToDate(newStart);
+        LocalDate updatedEnd = Reservation.convertStringToDate(newEnd);
+        LocalDate oldS = Reservation.convertStringToDate(oldStart);
+        LocalDate oldE = Reservation.convertStringToDate(oldEnd);
+
+
+        String updateQuery = "UPDATE RESERVATIONS SET STARTDATE = " + Date.valueOf(updatedStart) +
+                ", ENDDATE = " + Date.valueOf(updatedEnd) +
+                " WHERE ROOMNUMBER = " + roomNumber +
+                " AND STARTDATE = " + Date.valueOf(oldS) +
+                " AND ENDDATE = " + Date.valueOf(oldE) +
+                " AND ROOMNUMBER = " + roomNumber;
+
+        try {
+            Statement stmt = Setup.getDBConnection().createStatement();
+            int rowsAffected = stmt.executeUpdate(updateQuery);
+
+            if (rowsAffected == 0) {
+                // No matching reservation found
+                return "No matching reservation found to modify.";
+            } else {
+                return "success";
+            }
+        } catch (SQLException e) {
+            return "Failed to modify reservation" + e.getMessage();
+        }
+    }
 }

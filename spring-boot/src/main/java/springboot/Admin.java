@@ -1,10 +1,5 @@
 package springboot;
 
-import springboot.database.Setup;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class Admin implements User{
     private static UserType classification = UserType.ADMIN;
