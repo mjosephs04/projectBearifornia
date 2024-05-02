@@ -57,8 +57,7 @@ public class RoomController {
         return ResponseEntity.ok().body(rooms);
     }
 
-    //payload should contain:
-    // --username of user who is trying to modify the room
+    //payload should contain: ONLY GUESTS CAN MODIFY RESERVATIONS, SO THEY SHOULD BE LOGGED IN BEFORE DOING SO
     // --roomNumber of room you are trying to modify
     // Double newCost,
     // String New roomType,
@@ -68,10 +67,11 @@ public class RoomController {
     // boolean New smoking
     @PatchMapping("/updateRoom")
     public ResponseEntity<String> modifyRoom(String[] payload){
-        User x = UserFunctions.findUser(payload[0]);
+        String username = LoggedIn.isLoggedIn();
+        UserType type = LoggedIn.type;
         Integer roomNum =Integer.parseInt(payload[1]);
 
-        if(x instanceof Clerk){
+        if(username != null && type.equals(UserType.GUEST)){
             Room r = new Room(roomNum, //roomnum
                                 Double.parseDouble(payload[2]), //cost
                                 payload[3], //roomtype

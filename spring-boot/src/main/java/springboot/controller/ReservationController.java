@@ -36,22 +36,18 @@ public class ReservationController {
         } else if(payload.length >= 4) {
             username = payload[3];
         }
-        if(username != null) {
-            User x = UserFunctions.findUser(payload[2]);
-            if(x instanceof Guest) {
-                //find the room associated with the room number
-                Room room = Room.findRoom(Integer.parseInt(payload[2]));
+        if(username != null && ! LoggedIn.type.equals(UserType.ADMIN)) {
+            //find the room associated with the room number
+            Room room = Room.findRoom(Integer.parseInt(payload[2]));
 
-                String result = ((Guest) x).reserveRoom(room, payload[0], payload[1]);
-                if ("success".equals(result)) {
-                    return ResponseEntity.ok("Reservation created successfully.");
-                } else {
-                    return ResponseEntity.badRequest().body("Failed to create reservation.");
-                }
+            if(room != null) {
+                return ResponseEntity.ok().body(Reservation.addToDatabase(Reservation.convertStringToDate(payload[0]),
+                        Reservation.convertStringToDate(payload[1]),
+                        room.getRoomNumber(),
+                        username));
             }
-            //if username belongs to admin -- not allowed
-            else {
-                return ResponseEntity.badRequest().body("invalid username");
+            else{
+                return ResponseEntity.badRequest().body("room does not exist");
             }
         }
         else{
@@ -135,16 +131,9 @@ public class ReservationController {
     public ResponseEntity<List<Reservation>> showMyReservations(){
         String username = LoggedIn.isLoggedIn();
 
-        if(username != null) {
-            User user = UserFunctions.findUser(username);
-
-            if (!(user instanceof Guest)) {
-                return ResponseEntity.badRequest().body(null);//throws an exception if the username is not associated with a guest account,
-                //or if the username is not associated with an account at all
-            }
-
+        if(username != null && LoggedIn.type.equals(UserType.GUEST)) {
             //otherwise, if the username is associated with a guest account, returns all reservations
-            return ResponseEntity.ok(((Guest) user).getMyReservations());
+            return ResponseEntity.ok().body(Guest.getMyReservations(username));
         }
         return ResponseEntity.badRequest().body(null);
     }
@@ -156,10 +145,8 @@ public class ReservationController {
     @PostMapping("/getAllGuests")
     public ResponseEntity<List<User>> getAllGuests(){
         String username = LoggedIn.isLoggedIn();
-        User user = UserFunctions.findUser(username);
 
-        if(username != null && user instanceof Admin) {
-
+        if(username != null && LoggedIn.type.equals(UserType.ADMIN)) {
             List<User> list;
             list = UserFunctions.readInAllUsers();
 

@@ -108,7 +108,7 @@ public class Guest implements User {
         return password;
     }
 
-    public List<Reservation> getMyReservations(){
+    public static List<Reservation> getMyReservations(String username){
         String selectQuery = "SELECT * FROM RESERVATIONS WHERE USERNAME = " + username;
         List<Reservation> reservations = new ArrayList<>();
 

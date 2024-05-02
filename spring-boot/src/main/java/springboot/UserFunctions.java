@@ -46,7 +46,7 @@ public class UserFunctions {
     //returns the guest info associated with a username, or null if there is no user associated w it
     public static User findUser(String username) {
         //                "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)",
-        String find = "SELECT * FROM USERS WHERE USERNAME = " + username;
+        String find = "SELECT * FROM USERS WHERE username = " + username;
         Connection conn = Setup.getDBConnection();
         try {
             ResultSet resultSet = conn.createStatement().executeQuery(find);
