@@ -1,17 +1,11 @@
 package springboot.service;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import springboot.Reservation;
-import springboot.Room;
-import springboot.UserType;
-import springboot.database.InitializeDatabase;
 import springboot.database.Setup;
-
-import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Service
 public class ReservationService {

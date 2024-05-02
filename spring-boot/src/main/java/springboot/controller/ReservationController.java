@@ -29,12 +29,7 @@ public class ReservationController {
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
         User x;
         //try to find the user associated with the username
-        try {
             x = UserFunctions.findUser(payload[3]);
-        }
-        catch(IOException e){
-            return ResponseEntity.badRequest().body("User not found.");
-        }
 
         //find the room associated with the room number
         Room room;
@@ -168,13 +163,7 @@ public class ReservationController {
         }
 
         List<User> list;
-        try {
             list = UserFunctions.readInAllUsers();
-        }
-        catch(IOException e){
-            //returns a bad request if we could not read in all users
-            return ResponseEntity.badRequest().body(null);
-        }
 
         //get only the guests from the list
         list.removeIf(curr -> (curr instanceof Guest));

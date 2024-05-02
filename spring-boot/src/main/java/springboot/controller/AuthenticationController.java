@@ -35,11 +35,7 @@ public class AuthenticationController {
     @GetMapping("/getAllUsers")
     public ResponseEntity<?> getAllUsers() {
         ArrayList<User> users = null;
-        try {
             users = (ArrayList<User>) UserFunctions.readInAllUsers();
-        }catch(IOException e) {
-            return ResponseEntity.ok(users);
-        }
 
         return ResponseEntity.ok(users);
 
