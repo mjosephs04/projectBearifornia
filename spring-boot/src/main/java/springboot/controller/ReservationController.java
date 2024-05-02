@@ -142,6 +142,7 @@ public class ReservationController {
             //otherwise, if the username is associated with a guest account, returns all reservations
             return ResponseEntity.ok(((Guest) user).getMyReservations());
         }
+        return ResponseEntity.badRequest().body(null);
     }
 
 
