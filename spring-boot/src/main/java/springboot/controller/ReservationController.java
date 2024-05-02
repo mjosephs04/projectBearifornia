@@ -181,4 +181,31 @@ public class ReservationController {
 
         return ResponseEntity.ok(list);
     }
+
+    //payload should contain:
+    // String newStartDate, String newEndDate, int roomNumber, String oldStartDate, String oldEndDate
+    @PatchMapping("/updateRes")
+    public ResponseEntity<String> updateReservation(String[] payload) {
+        String message = ReservationService.modifyReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3], payload[4]);
+
+        if(message.equalsIgnoreCase("success")){
+            return ResponseEntity.ok("successfully modified reservation");
+        }
+        else{
+            return ResponseEntity.badRequest().body(message);
+        }
+    }
+
+    //payload contains: String checkInDate, String checkOutDate, int roomNumber, Stringname
+    @GetMapping("/deleteRes")
+    public ResponseEntity<String> deleteReservation(String[] payload) {
+        String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3]);
+
+        if(message.equalsIgnoreCase("success")){
+            return ResponseEntity.ok("successfully modified reservation");
+        }
+        else{
+            return ResponseEntity.badRequest().body(message);
+        }
+    }
 }
