@@ -37,22 +37,28 @@ public class ReservationController {
             username = payload[3];
         }
         if(username != null) {
-            User x = UserFunctions.findUser(payload[2]);
-            if(x instanceof Guest) {
-                //find the room associated with the room number
-                Room room = Room.findRoom(Integer.parseInt(payload[2]));
-
-                String result = ((Guest) x).reserveRoom(room, payload[0], payload[1]);
-                if ("success".equals(result)) {
-                    return ResponseEntity.ok("Reservation created successfully.");
-                } else {
-                    return ResponseEntity.badRequest().body("Failed to create reservation.");
-                }
-            }
+//            User x = UserFunctions.findUser(payload[3]);
+//            if(x instanceof Guest) {
+//                //find the room associated with the room number
+//                Room room = Room.findRoom(Integer.parseInt(payload[2]));
+//
+//
+//                String result = ((Guest) x).reserveRoom(room, payload[0], payload[1]);
+//                if ("success".equals(result)) {
+//                    return ResponseEntity.ok("Reservation created successfully.");
+//                } else {
+//                    return ResponseEntity.badRequest().body("Failed to create reservation.");
+//                }
+//            }
             //if username belongs to admin -- not allowed
-            else {
-                return ResponseEntity.badRequest().body("invalid username");
-            }
+            return ResponseEntity.ok().body(Reservation.addToDatabase(Reservation.convertStringToDate(payload[0]),
+                    Reservation.convertStringToDate(payload[1]),
+                    Integer.parseInt(payload[2]),
+                    username));
+
+//            else {
+//                return ResponseEntity.badRequest().body("invalid username");
+//            }
         }
         else{
             return ResponseEntity.badRequest().body("you must be logged in");
