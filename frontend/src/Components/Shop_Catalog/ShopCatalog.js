@@ -31,7 +31,7 @@ const ShopCatalog = () =>{
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJYlzLMJu2a1iZFS11caTZL6jS5vyB9yAH7Q&s"
                          alt="Product 2"/>
                     <h2>Single Slice of Bacon</h2>
-                    <Link to="/product-details/Single%20Slice%20Of%20Bacon">
+                    <Link to="/product-details/Single%20Slice%20of%20Bacon">
                         <button>View Details</button>
                     </Link>
                 </div>
