@@ -1,21 +1,16 @@
 package springboot;
 
 import springboot.database.Setup;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class UserFunctions {
 
-    public static List<User> readInAllUsers() throws IOException {
+    public static List<User> readInAllUsers() {
         List<User> userList = new ArrayList<>();
         String selectSQL = "SELECT * FROM USERS";
         Connection conn = Setup.getDBConnection();
@@ -49,7 +44,7 @@ public class UserFunctions {
     }
 
     //returns the guest info associated with a username
-    public static User findUser(String username) throws IOException {
+    public static User findUser(String username) {
         List<User> guestList = readInAllUsers();
 
         guestList.removeIf(curr -> ! curr.getUsername().equals(username));

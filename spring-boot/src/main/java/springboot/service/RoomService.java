@@ -1,16 +1,13 @@
 package springboot.service;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
+import java.sql.*;
 import org.springframework.stereotype.Service;
 import springboot.Room;
 import springboot.database.Setup;
 
 @Service
-public class AddRoomService {
+public class RoomService {
 
     //roomDetails contains: roomNum, cost, roomType, numBeds,quality,bedtype, smoking
     //this fxn creates a room from those details and then calls the other overloaded
@@ -62,6 +59,31 @@ public class AddRoomService {
         }
         else{
             return "failure -- room already exists";
+        }
+    }
+
+
+    public static String modifyRoom(Integer roomNumber, Room newRoom){
+        String updateQuery = "UPDATE ROOMS SET cost = " + newRoom.getCost() +
+                ", roomType = " + newRoom.getTypeOfRoom() +
+                ", numBeds = " + newRoom.getNumOfBeds() +
+                ", qualityLevel = " + newRoom.getQualityLevel() +
+                ", bedType = " + newRoom.getBedType() +
+                ", smokingAllowed = " + newRoom.getSmokingAllowed() +
+                " WHERE ROOMNUMBER = " + roomNumber;
+
+        try {
+            Statement stmt = Setup.getDBConnection().createStatement();
+            int rowsAffected = stmt.executeUpdate(updateQuery);
+
+            if (rowsAffected == 0) {
+                // No matching reservation found
+                return "No matching reservation found to modify.";
+            } else {
+                return "success";
+            }
+        } catch (SQLException e) {
+            return "Failed to modify reservation" + e.getMessage();
         }
     }
 
