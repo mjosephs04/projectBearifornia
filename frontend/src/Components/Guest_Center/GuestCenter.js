@@ -26,7 +26,7 @@ const GuestCenter = (props) =>{
                 <p>Modify Reservation</p>
             </div>
             <div className='button'>
-                <Link to='/add-room'>
+                <Link to='/modify-reservation'>
                     <img className='bedroomButton' src={bedroomButton}/>
                 </Link>
             </div>
