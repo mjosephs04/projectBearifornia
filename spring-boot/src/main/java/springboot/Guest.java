@@ -3,18 +3,20 @@ package springboot;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Guest implements User {
 
     private static UserType classification;
-    public List<Reservation> reservationList;
     // Data Members
     private String name = "";
     private String username;
     private String password;
     private String streetAddress;
     private String email;
+
+    public List<Reservation> reservationList;
 
     public Guest(String name, String username, String password) {
         reservationList = new ArrayList<>();
@@ -52,7 +54,27 @@ public class Guest implements User {
         this.streetAddress = streetAddress;
     }
 
-    @Override
+    // User class interface methods
+
+    //returns either a failure message or "success"
+    public String reserveRoom(Room reservedRoom, LocalDate start, LocalDate end) {
+        Reservation res = new Reservation(reservedRoom, start, end);
+        reservationList.add(res);
+
+        return Reservation.addToDatabase(res.getStartDay(),
+                res.getEndDay(),
+                res.getRoom().getRoomNumber(),
+                res.getUsername());
+    }
+
+    public String reserveRoom(Room reservedRoom, String start, String end) {
+        return reserveRoom(reservedRoom,
+                            Reservation.convertStringToDate(start),
+                            Reservation.convertStringToDate(end));
+    }
+
+
+        @Override
     public UserType getType() {
         return classification;
     }
@@ -65,6 +87,10 @@ public class Guest implements User {
         this.username = username;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -75,20 +101,5 @@ public class Guest implements User {
 
     protected String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String reserveRoom(Room reservedRoom, LocalDate start, LocalDate end) {
-        Reservation reservation = new Reservation(reservedRoom, start, end);
-        reservationList.add(reservation);
-
-        return Reservation.createReservation(reservation);
-    }
-
-    public String reserveRoom(Room reservedRoom, String start, String end) {
-        return reserveRoom(reservedRoom, Reservation.convertStringToDate(start), Reservation.convertStringToDate(end));
     }
 }
