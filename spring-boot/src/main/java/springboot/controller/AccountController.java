@@ -3,6 +3,7 @@ package springboot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springboot.LoggedIn;
 import springboot.UserType;
 import springboot.dto.UserDto;
 import springboot.service.AccountService;
@@ -30,6 +31,17 @@ public class AccountController {
             return ResponseEntity.ok("Created clerk account.");
         } else {
             return ResponseEntity.badRequest().body(message);
+        }
+    }
+
+    @GetMapping("/LOGGED-IN")
+    public ResponseEntity<Boolean> loggedIn() {
+        String username = LoggedIn.isLoggedIn();
+        if(username == null){
+            return ResponseEntity.badRequest().body(false);
+        }
+        else{
+            return ResponseEntity.ok(true);
         }
     }
 
