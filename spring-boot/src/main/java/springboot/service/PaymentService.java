@@ -1,10 +1,12 @@
 package springboot.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springboot.Cart;
 import springboot.Product;
 import springboot.database.Setup;
+import springboot.Bank;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,32 +16,46 @@ import java.util.Map;
 @Service
 public class PaymentService {
 
+    @Autowired
+    private Bank bank;  // Assuming Bank is a bean, or instantiate it directly if not managed by Spring
+
+    /**
+     * Processes checkout by updating the stock of products in the database.
+     * Only completes the checkout if the bank approves the transaction.
+     *
+     * @param cart the cart containing products and their quantities
+     * @throws SQLException if there is an issue with database operations
+     */
     @Transactional
-    public void checkout(Cart cart) {
+    public void checkout(Cart cart) throws SQLException {
         if (cart == null || cart.getItems().isEmpty()) {
             throw new IllegalArgumentException("Cart cannot be empty.");
         }
 
-        Connection conn = Setup.getDBConnection();
+        double totalPrice = cart.getTotalPrice();
+        if (!bank.processTransaction(totalPrice)) {
+            throw new IllegalStateException("Bank transaction failed, checkout aborted.");
+        }
 
-        try {
+        try (Connection conn = Setup.getDBConnection()) {
             for (Map.Entry<Product, Integer> entry : cart.getItems().entrySet()) {
-                updateQuantityAtCheckout(entry.getKey(), entry.getValue());
+                updateQuantityAtCheckout(conn, entry.getKey(), entry.getValue());
             }
         } catch (SQLException e) {
             System.err.println("Error during checkout: " + e.getMessage());
-            try {
-                if (conn != null) conn.rollback();
-            } catch (SQLException ex) {
-                System.err.println("Error rolling back transaction: " + ex.getMessage());
-            }
+            throw e; // rethrow to let the transaction management handle the rollback
         }
     }
 
-    private void updateQuantityAtCheckout(Product product, int quantity) throws SQLException {
-        Connection conn = Setup.getDBConnection();
+    /**
+     * Updates the product stock in the database at checkout.
+     *
+     * @param conn the database connection
+     * @param product the product to update
+     * @param quantity the quantity to decrease from stock
+     */
+    private void updateQuantityAtCheckout(Connection conn, Product product, int quantity) throws SQLException {
         String sql = "UPDATE PRODUCTS SET productStock = productStock - ? WHERE productId = ? AND productStock >= ?";
-
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, quantity);
             pstmt.setString(2, product.getProductId());
@@ -52,4 +68,3 @@ public class PaymentService {
         }
     }
 }
-
