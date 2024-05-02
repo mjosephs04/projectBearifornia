@@ -20,9 +20,9 @@ public class AccountController {
     }
 
     @PostMapping("/createClerk")
-    public ResponseEntity<String> createClerk(@RequestBody UserDto payload) {
-        UserType userType = UserType.valueOf(payload.getUserType().toUpperCase());
-        String message = accountService.createClerk(payload.getName(), payload.getUsername(), payload.getPassword(), userType);
+    public ResponseEntity<String> createClerk(@RequestBody String[] payload) {
+        UserType userType = UserType.valueOf(payload[3]);
+        String message = accountService.createClerk(payload[0], payload[1], payload[2], userType);
 
         if ("success".equalsIgnoreCase(message)) {
             return ResponseEntity.ok("Created clerk account.");
@@ -32,9 +32,9 @@ public class AccountController {
     }
 
     @PostMapping("/createGuest")
-    public ResponseEntity<String> createGuest(@RequestBody UserDto payload) {
-        UserType userType = UserType.valueOf(payload.getUserType().toUpperCase());
-        String message = accountService.createGuest(payload.getName(), payload.getUsername(), payload.getPassword(), userType);
+    public ResponseEntity<String> createGuest(@RequestBody String[] payload) {
+        UserType userType = UserType.valueOf(payload[3]);
+        String message = accountService.createGuest(payload[0], payload[1], payload[2], userType);
 
         if ("success".equalsIgnoreCase(message)) {
             return ResponseEntity.ok("Created guest account.");
