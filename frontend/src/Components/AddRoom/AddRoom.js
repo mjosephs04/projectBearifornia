@@ -9,9 +9,9 @@ const AddRoom = (props) =>{
     const [roomNumber, setRoomNumber] = useState([])
     const [roomCost, setRoomCost] = useState([])
     const [roomType, setRoomType] = useState("Nature Retreat")
-    const [numBeds, setNumBeds] = useState("One Bed")
+    const [numBeds, setNumBeds] = useState(1)
     const [qualityLevels, setQualityLevel] = useState("Executive")
-    const [bedType, setBedType] = useState("Twin")
+    const [bedType, setBedType] = useState("Single")
     const [smokingStatus, setSmokingStatus] = useState(true)
     // Handle changes in the dropdown
     const handleChange = (event) => {
@@ -105,9 +105,9 @@ const AddRoom = (props) =>{
 
                     <select value={numBeds} className="selectStyle_02" onChange={evt =>setNumBeds(evt.target.value)}>
 
-                        <option value="1">One Bed</option>
+                        <option value="1">1</option>
 
-                        <option value="2">Two Beds</option>
+                        <option value="2">1</option>
 
                     </select>
 
@@ -147,10 +147,9 @@ const AddRoom = (props) =>{
 
                     <select value={bedType} className="selectStyle_04" onChange={evt =>setBedType(evt.target.value)}>
 
-                        <option value="Twin">Twin</option>
-                        <option value="Full">Full</option>
-                        <option value="Queen">Queen</option>
-                        <option value="King">King</option>
+                        <option value="Single">Single</option>
+                        <option value="Double">Double</option>
+                        <option value="Family">Family</option>
 
                     </select>
 
