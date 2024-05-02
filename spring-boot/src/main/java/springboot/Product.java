@@ -1,19 +1,13 @@
 package springboot;
 
-import springboot.database.Setup;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 public class Product {
     private final String productId;
-    private String productName;
-    private int productStock;
-    private String productDescription;
-    private double productPrice;
     private final String imageURL;
     private final String category;
+    private final String productName;
+    private final int productStock;
+    private final String productDescription;
+    private final double productPrice;
 
     public Product(String productId, String productName, int productStock, String productDescription, double productPrice, String imageURL, String category) {
         this.productId = productId;
