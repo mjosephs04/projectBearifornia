@@ -27,31 +27,36 @@ public class ReservationController {
     // adds reservation to database if it does not already exist
     @PostMapping("/create")
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
-        User x;
-        //try to find the user associated with the username
-            x = UserFunctions.findUser(payload[3]);
+        String username = null;
+        String message;
+        boolean good = true;
+        //if payload is length three, then they should be trying to make a reservation
+        //for the current user that is logged in
+        if(payload.length == 3) {
+            username = LoggedIn.isLoggedIn();
+        } else if(payload.length >= 4) {
+            username = payload[3];
+        }
+        if(username != null) {
+            User x = UserFunctions.findUser(payload[2]);
+            if(x instanceof Guest) {
+                //find the room associated with the room number
+                Room room = Room.findRoom(Integer.parseInt(payload[2]));
 
-        //find the room associated with the room number
-        Room room;
-        room = Room.findRoom(Integer.parseInt(payload[2]));
-
-        //if the given username belongs to a guest, then make the reservation.
-        //otherwise, return an error message
-        if(x instanceof Guest){
-            String result = ((Guest) x).reserveRoom(room, payload[0], payload[1]);
-            if ("success".equals(result)) {
-                return ResponseEntity.ok("Reservation created successfully.");
-            } else {
-                return ResponseEntity.badRequest().body("Failed to create reservation.");
+                String result = ((Guest) x).reserveRoom(room, payload[0], payload[1]);
+                if ("success".equals(result)) {
+                    return ResponseEntity.ok("Reservation created successfully.");
+                } else {
+                    return ResponseEntity.badRequest().body("Failed to create reservation.");
+                }
+            }
+            //if username belongs to admin -- not allowed
+            else {
+                return ResponseEntity.badRequest().body("invalid username");
             }
         }
-        //if username belongs to admin -- not allowed
-        else if(x instanceof Admin){
-            return ResponseEntity.badRequest().body("Admins cannot make reservations.");
-        }
-        //if username belongs to clerk --- they should have given the guest's username instead, not their own
         else{
-            return ResponseEntity.badRequest().body("Clerks can only make reservations on behalf of Guests.");
+            return ResponseEntity.badRequest().body("you must be logged in");
         }
     }
 
@@ -142,6 +147,7 @@ public class ReservationController {
             //otherwise, if the username is associated with a guest account, returns all reservations
             return ResponseEntity.ok(((Guest) user).getMyReservations());
         }
+        return ResponseEntity.badRequest().body(null);
     }
 
 
