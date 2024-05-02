@@ -45,16 +45,34 @@ public class UserFunctions {
 
     //returns the guest info associated with a username, or null if there is no user associated w it
     public static User findUser(String username) {
-        List<User> guestList = readInAllUsers();
-
-        guestList.removeIf(curr -> ! curr.getUsername().equals(username));
-        //at the end of this loop, the list rooms should only contain the desired guest
-
-        if(guestList.size() == 1){
-            return guestList.get(0);
+        //                "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)",
+        String find = "SELECT * FROM USERS WHERE USERNAME = " + username;
+        Connection conn = Setup.getDBConnection();
+        try {
+            ResultSet resultSet = conn.createStatement().executeQuery(find);
+            if (resultSet.next()) {//if the room was found, make a new room w its info
+                UserType type = UserType.valueOf(resultSet.getString("userType"));
+                if(type == UserType.ADMIN) {
+                    return new Admin(resultSet.getString("name"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"));
+                }
+                else if(type == UserType.GUEST) {
+                    return new Guest(resultSet.getString("name"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"));
+                }
+                else if(type == UserType.CLERK) {
+                    return new Clerk(resultSet.getString("name"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"));
+                }
+            }
         }
-        else{
+        catch(SQLException e) {
             return null;
         }
+
+        return null;
     }
 }
