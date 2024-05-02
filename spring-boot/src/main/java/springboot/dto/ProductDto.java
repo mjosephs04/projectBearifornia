@@ -1,6 +1,6 @@
 package springboot.dto;
 
-public class Product {
+public class ProductDto {
     private int stock;
     private String name;
     private String category;
@@ -8,7 +8,7 @@ public class Product {
     private String description;
     private String imageURL;
 
-    public Product(int stock, String name, String category, double price, String description, String imageURL) {
+    public ProductDto(int stock, String name, String category, double price, String description, String imageURL) {
         this.stock = stock;
         this.name = name;
         this.category = category;
