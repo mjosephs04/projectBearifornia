@@ -187,7 +187,7 @@ public class ReservationController {
             String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), username);
 
             if (message.equalsIgnoreCase("success")) {
-                return ResponseEntity.ok("successfully modified reservation");
+                return ResponseEntity.ok("successfully deleted reservation");
             }
             else{
                 return ResponseEntity.badRequest().body(message);
@@ -199,7 +199,7 @@ public class ReservationController {
     }
 
 
-    /*
+/*
     public static void main(String[] args) {
         InitializeDatabase.main(args);
 
@@ -208,11 +208,8 @@ public class ReservationController {
         create.createGuest(new String[]{
                 "cate", "catherine", "password", "GUEST"
         });
-        //CREATE RESERVATION -- payload should contain this info IN THIS ORDER!!!
-        //checkIn, checkOut, roomNumber, USERNAME!!!!!!----> this is only passed if a clerk is making
-        //                                              a reservation on behalf of a guest, then it should be the
-        //guest's username
-        // adds reservation to database if it does not already exist
+
+
         ReservationController x = new ReservationController();
         System.out.println(x.createReservation(new String[]{
                 "2024-05-01T14:00:00.000Z",
@@ -225,12 +222,14 @@ public class ReservationController {
         //this works ^^
 
 
+        //the functions im testing after this require an admin to execute
         LoggedIn.logIn("admin", UserType.ADMIN);
+
+
         x.getAllGuests().getBody().forEach(guest -> System.out.println(guest.getUsername()));
         //this works ^^
 
 
-        // String newStartDate, String newEndDate, int roomNumber, String oldStartDate, String oldEndDate
         System.out.println(x.updateReservation(new String[] {
                             "2024-05-03T14:00:00.000Z",
                             "2024-05-07T11:00:00.000Z",
@@ -242,10 +241,11 @@ public class ReservationController {
 
 
         //payload contains: String checkInDate, String checkOutDate, int roomNumber
-        x.deleteReservation(new String[]{
-                "2024-05-01T14:00:00.000Z",
-                "2024-05-03T11:00:00.000Z",
+        System.out.println(x.deleteReservation(new String[]{
+                "2024-05-03T14:00:00.000Z",
+                "2024-05-07T11:00:00.000Z",
                 "101"
-        });
-    }*/
+        }).getBody());
+    }
+    */
 }

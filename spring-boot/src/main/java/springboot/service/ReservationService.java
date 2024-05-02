@@ -2,6 +2,7 @@ package springboot.service;
 
 import org.springframework.stereotype.Service;
 import springboot.Reservation;
+import springboot.Room;
 import springboot.database.Setup;
 import java.sql.*;
 import java.time.LocalDate;
@@ -27,37 +28,19 @@ public class ReservationService {
     }
     
     public static String deleteReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        /*LocalDate start = Reservation.convertStringToDate(checkIn);
-        LocalDate end = Reservation.convertStringToDate(checkOut);
-        String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = " + roomNumber +
-                            " AND USERNAME = " + name +
-                            " AND STARTDATE = " + Date.valueOf(start)
-                            + " AND ENDDATE = " + Date.valueOf(end);
-        Connection conn = Setup.getDBConnection();
-        Reservation res = getReservation(checkIn, checkOut, roomNumber, name);
-        if(res != null) {
-            try {
-                conn.createStatement().executeQuery(deleteRes);
-            } catch (SQLException e) {
-                return "failure " + e.getMessage();
-            }
-            return "success";
-        }
-        return "failure -- reservation does not exist";*/
         LocalDate start = Reservation.convertStringToDate(checkIn);
         LocalDate end = Reservation.convertStringToDate(checkOut);
 
-        String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = ? AND USERNAME = ? AND STARTDATE = ? AND ENDDATE = ?";
+        String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = ? AND STARTDATE = ? AND ENDDATE = ?";
 
         Connection conn = Setup.getDBConnection();
-        Reservation res = getReservation(checkIn, checkOut, roomNumber, name);
+        Reservation res = getReservation(checkIn, checkOut, roomNumber);
 
         if (res != null) {
             try (PreparedStatement pstmt = conn.prepareStatement(deleteRes)) {
                 pstmt.setInt(1, roomNumber);
-                pstmt.setString(2, name);
-                pstmt.setDate(3, Date.valueOf(start));
-                pstmt.setDate(4, Date.valueOf(end));
+                pstmt.setDate(2, Date.valueOf(start));
+                pstmt.setDate(3, Date.valueOf(end));
 
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
@@ -73,26 +56,24 @@ public class ReservationService {
     }
 
 
-    public static Reservation getReservation(String checkIn, String checkOut, int roomNumber, String name) {
+    public static Reservation getReservation(String checkIn, String checkOut, int roomNumber) {
         Reservation res = null;
         LocalDate start = Reservation.convertStringToDate(checkIn);
         LocalDate end = Reservation.convertStringToDate(checkOut);
-        String findRes = "SELECT * FROM RESERVATIONS WHERE ROOMNUMBER = ? AND USERNAME = ? AND STARTDATE = ? AND ENDDATE = ?";
+        String findRes = "SELECT * FROM RESERVATIONS WHERE roomNumber = ? AND startDate = ? AND endDate = ?";
 
         try (Connection conn = Setup.getDBConnection();
              PreparedStatement pstmt = conn.prepareStatement(findRes)) {
 
             pstmt.setInt(1, roomNumber);
-            pstmt.setString(2, name);
-            pstmt.setDate(3, Date.valueOf(start));
-            pstmt.setDate(4, Date.valueOf(end));
+            pstmt.setDate(2, Date.valueOf(start));
+            pstmt.setDate(3, Date.valueOf(end));
 
             ResultSet resultSet = pstmt.executeQuery();
             if (resultSet.next()) {
                 res = new Reservation(roomNumber,
                         start,
-                        end,
-                        name);
+                        end, resultSet.getString("username"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

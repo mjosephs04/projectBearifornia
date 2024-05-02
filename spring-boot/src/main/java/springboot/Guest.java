@@ -112,18 +112,19 @@ public class Guest implements User {
 
         try (Connection conn = Setup.getDBConnection();
              PreparedStatement pstmt = conn.prepareStatement(selectQuery)) {
+
             pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
 
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    int roomNumber = rs.getInt("ROOMNUMBER");
-                    LocalDate startDate = rs.getDate("STARTDATE").toLocalDate();
-                    LocalDate endDate = rs.getDate("ENDDATE").toLocalDate();
+            while (rs.next()) {
+                int roomNumber = rs.getInt("ROOMNUMBER");
+                LocalDate startDate = rs.getDate("STARTDATE").toLocalDate();
+                LocalDate endDate = rs.getDate("ENDDATE").toLocalDate();
 
-                    Reservation reservation = new Reservation(roomNumber, startDate, endDate, username);
-                    reservations.add(reservation);
-                }
+                Reservation reservation = new Reservation(roomNumber, startDate, endDate, username);
+                reservations.add(reservation);
             }
+
         } catch (SQLException e) {
             System.err.println("Failed to get the reservations: " + e.getMessage());
         }
