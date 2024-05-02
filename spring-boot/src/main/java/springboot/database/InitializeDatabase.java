@@ -88,7 +88,7 @@ public class InitializeDatabase {
                 statement.setString(1, "admin");
                 statement.setString(2, "admin");
                 statement.setString(3, "bearifornia");
-                statement.setString(4, "admin");
+                statement.setString(4, "ADMIN");
                 statement.executeUpdate();
                 System.out.println("Admin inserted successfully.");
             }
@@ -104,7 +104,7 @@ public class InitializeDatabase {
                 statement.setString(1, "clerk");
                 statement.setString(2, "clerk");
                 statement.setString(3, "bearifornia");
-                statement.setString(4, "clerk");
+                statement.setString(4, "CLERK");
                 statement.executeUpdate();
                 System.out.println("Clerk inserted successfully.");
             }
