@@ -168,7 +168,7 @@ public class ReservationController {
     //payload should contain:
     // String newStartDate, String newEndDate, int roomNumber, String oldStartDate, String oldEndDate
     @PatchMapping("/updateRes")
-    public ResponseEntity<String> updateReservation(String[] payload) {
+    public ResponseEntity<String> updateReservation(@RequestBody String[] payload) {
         String message = ReservationService.modifyReservation(payload[0], payload[1], Integer.parseInt(payload[2]), payload[3], payload[4]);
 
         if(message.equalsIgnoreCase("success")){
