@@ -15,13 +15,14 @@ import playstationIMG from '../../assets/Playstation.png'
 const ProductDetails = (props) =>{
 
     // State to store the fetched data
-    const [productListingData, setproductListingData] = useState([]);
-
+    const [productName, setProductName] = useState('');
+    const [inStock, setInStock] = useState(0);
+    const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState(1);
-
+    const [imgURL, setImgURL] = useState('');
+    const [price, setPrice] = useState(0.00);
     const increment = () => setQuantity(quantity + 1);
     const decrement = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
-
     const location = useLocation()
     const params = useParams()
 
@@ -37,7 +38,11 @@ const ProductDetails = (props) =>{
                 return response.data;
             })
             .then(data => {
-                setproductListingData(data);
+                setImgURL(data.imageURL);
+                setProductName(data.name);
+                setInStock(data.stock);
+                setPrice(data.price);
+                setDescription(data.description);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -47,15 +52,6 @@ const ProductDetails = (props) =>{
     useEffect(() => {
         fetchData();
     }, []); // Empty dependency array ensures useEffect runs only once on mount
-
-
-
-
-    // This will link the functionality of adding an item to the cart
-    // API Call
-    const onButtonClick = () => {
-
-    };
 
 
     return (
@@ -75,12 +71,7 @@ const ProductDetails = (props) =>{
             </div>
 
             <div className="image-container">
-                <img src={playstationIMG}></img>
-
-                {/*This is what will grab the data from the backend*/}
-                {/*<img src={productListingData.imageURL}></img>*/}
-
-                {/*<button>Add To Cart</button>*/}
+                <img src={imgURL}></img>
             </div>
 
 
@@ -89,32 +80,21 @@ const ProductDetails = (props) =>{
             </Link>
 
             <div className="name-container">
-                <p>Name of Product: API call to get product name</p>
-
-                {/*This is what will grab the data from the backend*/}
-                {/*{productListingData.productName}*/}
+                <p>{productName}</p>
             </div>
 
 
             <div className="availability-container">
-                <p>Items available: API call to get accurate count</p>
-
-                {/*This is what will grab the data from the backend*/}
-                {/*{productListingData.productAvailability}*/}
+                <p>Number available: {inStock}</p>
             </div>
 
 
             <div className="price-container">
-                <p>$$$</p>
-
-                {/*This is what will grab the data from the backend*/}
-                {/*{productListingData.productPrice}*/}
+                <p>${price}</p>
             </div>
 
             <div className="description-container">
-                <p>This will be an api call from the back end to get the correct description for the item</p>
-                {/*This is what will grab the data from the backend*/}
-                {/*{productListingData.productDescription}*/}
+                <p>{description}</p>
             </div>
 
 
