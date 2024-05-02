@@ -64,6 +64,7 @@ public class RoomService {
 
 
     public static String modifyRoom(Integer roomNumber, Room newRoom){
+        /*
         String updateQuery = "UPDATE ROOMS SET cost = " + newRoom.getCost() +
                 ", roomType = " + newRoom.getTypeOfRoom() +
                 ", numBeds = " + newRoom.getNumOfBeds() +
@@ -84,6 +85,30 @@ public class RoomService {
             }
         } catch (SQLException e) {
             return "Failed to modify reservation" + e.getMessage();
+        }*/
+        String updateQuery = "UPDATE ROOMS SET cost = ?, roomType = ?, numBeds = ?, qualityLevel = ?, bedType = ?, smokingAllowed = ? WHERE ROOMNUMBER = ?";
+        try (Connection conn = Setup.getDBConnection();
+             PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+            // Set parameters for the prepared statement
+            pstmt.setBigDecimal(1, BigDecimal.valueOf(newRoom.getCost())); // cost
+            pstmt.setString(2, newRoom.getTypeOfRoom()); // roomType
+            pstmt.setInt(3, newRoom.getNumOfBeds()); // numBeds
+            pstmt.setString(4, newRoom.getQualityLevel()); // qualityLevel
+            pstmt.setString(5, newRoom.getBedType()); // bedType
+            pstmt.setBoolean(6, newRoom.getSmokingAllowed()); // smokingAllowed
+            pstmt.setInt(7, roomNumber); // roomNumber
+
+            // Execute the update query
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                // No matching room found
+                return "No matching room found to modify.";
+            } else {
+                return "success";
+            }
+        } catch (SQLException e) {
+            return "Failed to modify room: " + e.getMessage();
         }
     }
 

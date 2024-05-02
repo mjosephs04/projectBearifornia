@@ -1,9 +1,13 @@
 package springboot.controller;
 
+import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.*;
+import springboot.database.InitializeDatabase;
+import springboot.database.Setup;
+import springboot.service.AccountService;
 import springboot.service.ReservationService;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -128,13 +132,14 @@ public class ReservationController {
 
     //returns the current users reservations
     @GetMapping("/showMyReservations")
-    public ResponseEntity<List<Reservation>> showMyReservations(){
+    public ResponseEntity<Reservation> showMyReservations(){
         String username = LoggedIn.isLoggedIn();
 
         if(username != null && LoggedIn.type.equals(UserType.GUEST)) {
             //otherwise, if the username is associated with a guest account, returns all reservations
-            return ResponseEntity.ok().body(Guest.getMyReservations(username));
+            return ResponseEntity.ok().body(Guest.getMyReservations(username).get(0));
         }
+
         return ResponseEntity.badRequest().body(null);
     }
 
@@ -192,4 +197,48 @@ public class ReservationController {
             return ResponseEntity.badRequest().body("you need to log in first!");
         }
     }
+
+
+    /*
+
+    public static void main(String[] args) {
+        InitializeDatabase.main(args);
+
+        LoggedIn.logIn("catherine", UserType.GUEST);
+        AccountController create = new AccountController(new AccountService(new Setup()));
+        create.createGuest(new String[]{
+                "cate", "catherine", "password", "GUEST"
+        });
+        //CREATE RESERVATION -- payload should contain this info IN THIS ORDER!!!
+        //checkIn, checkOut, roomNumber, USERNAME!!!!!!----> this is only passed if a clerk is making
+        //                                              a reservation on behalf of a guest, then it should be the
+        //guest's username
+        // adds reservation to database if it does not already exist
+        ReservationController x = new ReservationController();
+        System.out.println(x.createReservation(new String[]{
+                "2024-05-01T14:00:00.000Z",
+                "2024-05-03T11:00:00.000Z",
+                "101"
+        }));
+        //this works ^^
+
+        x.showMyReservations().getBody().forEach(res -> System.out.println(res.getRoom().getRoomNumber()));
+        //this works ^^
+
+
+        LoggedIn.logIn("admin", UserType.ADMIN);
+        x.getAllGuests().getBody().forEach(guest -> System.out.println(guest.getUsername()));
+        //this works ^^
+
+
+        // String newStartDate, String newEndDate, int roomNumber, String oldStartDate, String oldEndDate
+        System.out.println(x.updateReservation(new String[] {
+                            "2024-05-03T14:00:00.000Z",
+                            "2024-05-07T11:00:00.000Z",
+                            "101",
+                            "2024-05-01T14:00:00.000Z",
+                            "2024-05-03T11:00:00.000Z"
+        }).getBody());
+        //this works^^^
+    }*/
 }
