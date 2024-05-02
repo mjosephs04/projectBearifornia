@@ -33,6 +33,7 @@ public class AccountController {
         }
     }
 
+    //payload contains: name, username, password, USERTYPE
     @PostMapping("/createGuest")
     public ResponseEntity<String> createGuest(@RequestBody String[] payload) {
         UserType userType = UserType.valueOf(payload[3]);

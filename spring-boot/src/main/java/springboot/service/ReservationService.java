@@ -70,7 +70,7 @@ public class ReservationService {
     }
 
     public static String modifyReservation(String newStart, String newEnd, int roomNumber, String oldStart, String oldEnd) {
-        LocalDate updatedStart = Reservation.convertStringToDate(newStart);
+        /*LocalDate updatedStart = Reservation.convertStringToDate(newStart);
         LocalDate updatedEnd = Reservation.convertStringToDate(newEnd);
         LocalDate oldS = Reservation.convertStringToDate(oldStart);
         LocalDate oldE = Reservation.convertStringToDate(oldEnd);
@@ -80,8 +80,7 @@ public class ReservationService {
                 ", ENDDATE = " + Date.valueOf(updatedEnd) +
                 " WHERE ROOMNUMBER = " + roomNumber +
                 " AND STARTDATE = " + Date.valueOf(oldS) +
-                " AND ENDDATE = " + Date.valueOf(oldE) +
-                " AND ROOMNUMBER = " + roomNumber;
+                " AND ENDDATE = " + Date.valueOf(oldE);
 
         try {
             Statement stmt = Setup.getDBConnection().createStatement();
@@ -95,6 +94,32 @@ public class ReservationService {
             }
         } catch (SQLException e) {
             return "Failed to modify reservation" + e.getMessage();
+        }*/
+
+        LocalDate updatedStart = Reservation.convertStringToDate(newStart);
+        LocalDate updatedEnd = Reservation.convertStringToDate(newEnd);
+        LocalDate oldS = Reservation.convertStringToDate(oldStart);
+        LocalDate oldE = Reservation.convertStringToDate(oldEnd);
+
+        String updateQuery = "UPDATE RESERVATIONS SET STARTDATE = ?, ENDDATE = ? WHERE ROOMNUMBER = ? AND STARTDATE = ? AND ENDDATE = ?";
+
+        try (Connection conn = Setup.getDBConnection();
+             PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+            pstmt.setDate(1, Date.valueOf(updatedStart));
+            pstmt.setDate(2, Date.valueOf(updatedEnd));
+            pstmt.setInt(3, roomNumber);
+            pstmt.setDate(4, Date.valueOf(oldS));
+            pstmt.setDate(5, Date.valueOf(oldE));
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                return "No matching reservation found to modify.";
+            } else {
+                return "success";
+            }
+        } catch (SQLException e) {
+            return "Failed to modify reservation: " + e.getMessage();
         }
     }
 }

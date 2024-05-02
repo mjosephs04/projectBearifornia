@@ -2,9 +2,7 @@ package springboot;
 
 import springboot.database.Setup;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,25 +107,25 @@ public class Guest implements User {
     }
 
     public static List<Reservation> getMyReservations(String username){
-        String selectQuery = "SELECT * FROM RESERVATIONS WHERE USERNAME = " + username;
+        String selectQuery = "SELECT * FROM RESERVATIONS WHERE USERNAME = ?";
         List<Reservation> reservations = new ArrayList<>();
 
-        try {
-            ResultSet rs = Setup.getDBConnection().createStatement().executeQuery(selectQuery);
+        try (Connection conn = Setup.getDBConnection();
+             PreparedStatement pstmt = conn.prepareStatement(selectQuery)) {
+            pstmt.setString(1, username);
 
-            while (rs.next()) {
-                // Extract data from result set
-                int roomNumber = rs.getInt("ROOMNUMBER");
-                LocalDate startDate = rs.getDate("STARTDATE").toLocalDate();
-                LocalDate endDate = rs.getDate("ENDDATE").toLocalDate();
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int roomNumber = rs.getInt("ROOMNUMBER");
+                    LocalDate startDate = rs.getDate("STARTDATE").toLocalDate();
+                    LocalDate endDate = rs.getDate("ENDDATE").toLocalDate();
 
-                // Create Reservation object and add to list
-                Reservation reservation = new Reservation(roomNumber, startDate, endDate, username);
-                reservations.add(reservation);
+                    Reservation reservation = new Reservation(roomNumber, startDate, endDate, username);
+                    reservations.add(reservation);
+                }
             }
         } catch (SQLException e) {
-            System.err.println("failure to get the reservations " + e.getMessage());
-            return null;
+            System.err.println("Failed to get the reservations: " + e.getMessage());
         }
 
         return reservations;

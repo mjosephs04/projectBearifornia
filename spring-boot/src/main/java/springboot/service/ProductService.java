@@ -2,6 +2,8 @@ package springboot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springboot.LoggedIn;
+import springboot.UserType;
 import springboot.database.Setup;
 import springboot.dto.Product;
 
@@ -41,5 +43,31 @@ public class ProductService {
             System.out.println("Database error: " + e.getMessage());
         }
         return null;
+    }
+
+    public static String createProduct(String productName, int productStock, String productDescription, double productPrice, String imageURL, String category) {
+        if (!LoggedIn.type.equals(UserType.CLERK)) {
+            return "Failure: Only clerks can create products.";
+        }
+        return addProduct(productName, productStock, productDescription, productPrice, imageURL, category);
+    }
+
+
+    public static String addProduct(String productName, int productStock, String productDescription, double productPrice, String imageURL, String category) {
+        Connection conn = Setup.getDBConnection();
+        String insertSQL = "INSERT INTO PRODUCTS (productName, productStock, productDescription, productPrice, imageURL, category) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement statement = conn.prepareStatement(insertSQL)) {
+            statement.setString(1, productName);
+            statement.setInt(2, productStock);
+            statement.setString(3, productDescription);
+            statement.setDouble(4, productPrice);
+            statement.setString(5, imageURL);
+            statement.setString(6, category);
+            statement.executeUpdate();
+            return "success";
+        } catch (SQLException e) {
+            return "Could not insert product into database: " + e.getMessage();
+        }
     }
 }
