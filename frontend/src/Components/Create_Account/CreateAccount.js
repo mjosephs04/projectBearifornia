@@ -16,6 +16,10 @@ const CreateAccount = (props) =>{
             password,
             "GUEST"
         ]
+        const loginPayload = [
+            username,
+            password
+        ]
         console.log(name);
         console.log(username);
         console.log(password);
@@ -28,7 +32,20 @@ const CreateAccount = (props) =>{
                     throw new Error('Network response was not ok: ' + response.data);
                 }
                 if(response.status === 200){
-                    navigate('/confirmation');
+                    axios.post('http://localhost:8080/api/auth/login', loginPayload)
+                        .then(response =>{
+                            console.log(response);
+                            if (response.status !== 200) {
+                                throw new Error('Network response was not ok: ' + response.data);
+                            }
+                            return response.data;
+                        }).then(data => {
+                        console.log(data[1]);
+                        // setResponse(response)
+                        navigate('/guest-center');
+                    }).catch(error => {
+                        console.log("Error with authentication" + error);
+                    });
                 }
                 return response.data;
             }).catch(error => {
