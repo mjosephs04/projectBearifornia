@@ -1,9 +1,12 @@
+//ProdController
+
 package springboot.controller;
 
+//Changed Imports
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springboot.dto.Product;
+import springboot.Product;
 import springboot.service.ProductService;
 
 @RestController

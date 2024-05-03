@@ -1,3 +1,5 @@
+//CartService
+
 package springboot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+//Changed imports
 @Service
 public class CartService {
 
@@ -29,6 +31,14 @@ public class CartService {
         return String.valueOf(price);
     }
 
+    public String shopCheckout(String [] items){
+        String result = "";
+        Cart cart = new Cart(createProductItems(items));
+        result = parseStockResult(checkAndUpdateStock(cart));
+        return result;
+
+    }
+
 
     // Method to check if a product is in stock and create product items for those in stock
     private List<Product> createProductItems(String[] itemNames) {
@@ -43,7 +53,6 @@ public class CartService {
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     int productId = resultSet.getInt("productId");
-                    String productIdString = String.valueOf(productId);
                     String productName = resultSet.getString("productName");
                     int productStock = resultSet.getInt("productStock");
                     String productDescription = resultSet.getString("productDescription");
@@ -51,7 +60,7 @@ public class CartService {
                     String imageURL = resultSet.getString("imageURL");
                     String category = resultSet.getString("category");
                     //String productId, String productName, int productStock, String productDescription, double productPrice, String imageURL, String category
-                    springboot.Product product = new Product(productIdString,productName, productStock, productDescription, productPrice, imageURL, category);
+                    springboot.Product product = new Product(productId,productName, productStock, productDescription, productPrice, imageURL, category);
                     products.add(product);
                 } else {
                     System.out.println("Item '" + itemName + "' is not in stock or does not exist.");
@@ -63,4 +72,47 @@ public class CartService {
 
         return products;
     }
+
+    public String checkAndUpdateStock(Cart cart) {
+        Connection conn = Setup.getDBConnection();
+        List<Product> cartItems = cart.getItems();
+
+        String updateSQL = "UPDATE PRODUCTS SET productStock = productStock - 1 WHERE productName = ? AND productStock > 0";
+
+        try (PreparedStatement statement = conn.prepareStatement(updateSQL)) {
+            for (Product item : cartItems) {
+                statement.setString(1, item.getProductName());
+                int rowsUpdated = statement.executeUpdate();
+                if (rowsUpdated == 0) {
+                    System.out.println("Item '" + item.getProductName() + "' is not in stock or does not exist.");
+                    return "f " + item.getProductName();
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error accessing database: " + e.getMessage());
+            return "f";
+        }
+
+        return "t";
+    }
+
+
+    public String parseStockResult(String result) {
+        boolean success;
+        //Returns T if in stock returns item out of stock if not
+        String successFactor = "";
+
+        if (result.startsWith("t")) {
+            successFactor = "t";
+        } else if (result.startsWith("f")) {
+            successFactor = result.substring(2);;
+        } else {
+            // Invalid result format
+            return null;
+        }
+
+        return successFactor;
+    }
+
+
 }

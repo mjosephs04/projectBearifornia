@@ -1,5 +1,5 @@
 package springboot;
-
+//CHanged Imports
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +7,10 @@ public class Cart {
     private List<Product> items;
 
     public Cart(List<Product> productItems) {
+        this.items = productItems;
+    }
+
+    public Cart() {
         this.items = new ArrayList<Product>();
     }
 
@@ -32,7 +36,7 @@ public class Cart {
             items.clear(); // Empty the cart after checkout
             System.out.println("Checkout completed successfully.");
         } else {
-            System.out.println("Cart is empty. Nothing to checkout.");
+            System.out.println("Cart is empty. Nothing to check out.");
         }
     }
     */
