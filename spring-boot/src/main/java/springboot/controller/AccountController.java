@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.LoggedIn;
 import springboot.UserType;
-import springboot.dto.UserDto;
 import springboot.service.AccountService;
 
 @RestController
@@ -37,10 +36,9 @@ public class AccountController {
     @GetMapping("/LOGGED-IN")
     public ResponseEntity<Boolean> loggedIn() {
         String username = LoggedIn.isLoggedIn();
-        if(username == null){
+        if (username == null) {
             return ResponseEntity.ok().body(false);
-        }
-        else{
+        } else {
             return ResponseEntity.ok(true);
         }
     }
@@ -48,10 +46,9 @@ public class AccountController {
     @GetMapping("/logOut")
     public ResponseEntity<Boolean> logOut() {
         LoggedIn.logIn(null, null);
-        if(LoggedIn.isLoggedIn() == null) {
+        if (LoggedIn.isLoggedIn() == null) {
             return ResponseEntity.ok(true);
-        }
-        else{
+        } else {
             return ResponseEntity.ok().body(false);
         }
     }
@@ -64,6 +61,19 @@ public class AccountController {
 
         if ("success".equalsIgnoreCase(message)) {
             return ResponseEntity.ok("Created guest account.");
+        } else {
+            return ResponseEntity.badRequest().body(message);
+        }
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody String[] payload) {
+        String username = payload[0];
+        String newPassword = payload[1];
+        String message = accountService.changePassword(username, newPassword);
+
+        if ("Password updated successfully.".equalsIgnoreCase(message)) {
+            return ResponseEntity.ok("Password changed successfully.");
         } else {
             return ResponseEntity.badRequest().body(message);
         }
