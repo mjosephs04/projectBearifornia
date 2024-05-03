@@ -6,6 +6,7 @@ import springboot.Room;
 import springboot.database.Setup;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 @Service
@@ -83,10 +84,12 @@ public class ReservationService {
     }
 
     public static String modifyReservation(String newStart, String newEnd, int roomNumber, String oldStart, String oldEnd) {
-        LocalDate updatedStart = Reservation.convertStringToDate(newStart);
-        LocalDate updatedEnd = Reservation.convertStringToDate(newEnd);
-        LocalDate oldS = Reservation.convertStringToDate(oldStart);
-        LocalDate oldE = Reservation.convertStringToDate(oldEnd);
+        // Define the date format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate updatedStart = LocalDate.parse(newStart, formatter);
+        LocalDate updatedEnd = LocalDate.parse(newEnd, formatter);
+        LocalDate oldS = LocalDate.parse(oldStart, formatter);
+        LocalDate oldE = LocalDate.parse(oldEnd, formatter);
 
         String updateQuery = "UPDATE RESERVATIONS SET STARTDATE = ?, ENDDATE = ? WHERE ROOMNUMBER = ? AND STARTDATE = ? AND ENDDATE = ?";
 

@@ -76,8 +76,8 @@ public class UserFunctions {
 
         return null;
     }
-
+/*
     public static void main(String[] args) {
         Setup.initialize();
-    }
+    }*/
 }
