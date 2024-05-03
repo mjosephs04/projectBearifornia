@@ -15,6 +15,20 @@ import java.sql.SQLException;
 public class testClass {
 
 
+    public static Product createAproduct (String name){
+        Product b = new Product();
+        b.setProductName(name);
+        return b;
+    }
+
+    public static Cart addAmountToCart (Product a, int amount, Cart C){
+        Cart testCart = C;
+        for (int i = 0; i < amount; i++){
+            testCart.addItem(a);
+        }
+        return testCart;
+    }
+
     public static void main(String[] args) throws SQLException {
 
         InitializeDatabase.main(args);
@@ -34,19 +48,24 @@ public class testClass {
 //        Category: "Default Category"
 
         CartService Thing = new CartService(new Setup());
-        Product a = new Product();
-        Product b = new Product();
-        ProductService.addProduct(a);
-        ProductService.addProduct(b);
-        b.setProductName("item2");
-        Cart testCart = new Cart();
-        int numberA = 1;
-        for (int i = 0; i < numberA; i++){
-            testCart.addItem(a);
-        }
-        testCart.addItem(b);
 
-        System.out.println("testing Cart: " + Thing.parseStockResult(Thing.checkAndUpdateStock(testCart)));
+
+
+
+        Cart testCart = new Cart();
+        Product apple = testClass.createAproduct("Apple");
+        Product banana = testClass.createAproduct("Banana");
+        ProductService.addProduct(apple);
+        ProductService.addProduct(banana);
+        banana.setProductPrice(100.00);
+        banana.setProductStock(3);
+
+        //                        Product   Amount  Cart
+        testClass.addAmountToCart(apple, 10, testCart);
+        testClass.addAmountToCart(banana, 10, testCart);
+
+        System.out.println("testing Cart For in Able to Purchase: " + Thing.parseStockResult(Thing.checkAndUpdateStock(testCart)));
+        System.out.println("If was able to purchase price would be: " + testCart.calculateTotalAmount());
 
 
 
