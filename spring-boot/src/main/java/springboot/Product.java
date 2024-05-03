@@ -1,14 +1,16 @@
+//Product
+
 package springboot;
 
 import springboot.database.Setup;
-
+//Changed Imports
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Product {
-    private final String productId;
+    private int productId;
     private String productName;
     private int productStock;
     private String productDescription;
@@ -16,7 +18,7 @@ public class Product {
     private final String imageURL;
     private final String category;
 
-    public Product(String productId, String productName, int productStock, String productDescription, double productPrice, String imageURL, String category) {
+    public Product(int productId, String productName, int productStock, String productDescription, double productPrice, String imageURL, String category) {
         this.productId = productId;
         this.productName = productName;
         this.productStock = productStock;
@@ -25,6 +27,17 @@ public class Product {
         this.imageURL = imageURL;
         this.category = category;
     }
+
+    public Product() {
+        this.productId = 0;
+        this.productName = "Default Item";
+        this.productStock = 10;
+        this.productDescription = "This is a default product.";
+        this.productPrice = 10.00;
+        this.imageURL = "https://example.com/default_image.jpg";
+        this.category = "Default Category";
+    }
+
 
 //    public static List<Product> getProductsFromDatabase() throws SQLException {
 //        List<Product> products = new ArrayList<>();
@@ -59,13 +72,13 @@ public class Product {
 
             for (Product item : cart.getItems()) {
                 // Get current stock for the product
-                selectStmt.setString(1, item.getProductId());
+                selectStmt.setInt(1, item.getProductId());
                 ResultSet rs = selectStmt.executeQuery();
                 if (rs.next()) {
                     int currentStock = rs.getInt("productStock");
                     int newStock = currentStock - 1; // Subtract 1 for each purchased product
                     updateStmt.setInt(1, newStock);
-                    updateStmt.setString(2, item.getProductId());
+                    updateStmt.setInt(2, item.getProductId());
                     updateStmt.executeUpdate();
                 }
             }
@@ -82,7 +95,7 @@ public class Product {
         String updateQuery = "UPDATE PRODUCTS SET productName = ? WHERE productId = ?";
         try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
             pstmt.setString(1, newName);
-            pstmt.setString(2, productId);
+            pstmt.setInt(2, productId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,11 +103,42 @@ public class Product {
         }
     }
 
+    public void updateProductId(int newProductId) {
+        String updateQuery = "UPDATE PRODUCTS SET productId = ? WHERE productId = ?";
+        try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+            pstmt.setInt(1, newProductId);
+            pstmt.setInt(2, productId);
+            pstmt.executeUpdate();
+            // Update the productId in the current object
+            this.productId = newProductId;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to update product ID in the database.");
+        }
+    }
+
+    public void updateProductIdFromDatabase() {
+        String selectQuery = "SELECT productId FROM PRODUCTS WHERE productName = ?";
+        try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(selectQuery)) {
+            pstmt.setString(1, this.productName);
+            ResultSet resultSet = pstmt.executeQuery();
+            if (resultSet.next()) {
+                int newProductId = resultSet.getInt("productId");
+                this.productId = newProductId;
+            } else {
+                System.out.println("Product ID not found in the database.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to update product ID from the database.");
+        }
+    }
+
     private void updateProductStockInDatabase(int newStock) {
         String updateQuery = "UPDATE PRODUCTS SET productStock = ? WHERE productId = ?";
         try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
             pstmt.setInt(1, newStock);
-            pstmt.setString(2, productId);
+            pstmt.setInt(2, productId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,7 +150,7 @@ public class Product {
         String updateQuery = "UPDATE PRODUCTS SET productDescription = ? WHERE productId = ?";
         try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
             pstmt.setString(1, newDescription);
-            pstmt.setString(2, productId);
+            pstmt.setInt(2, productId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,7 +162,7 @@ public class Product {
         String updateQuery = "UPDATE PRODUCTS SET productPrice = ? WHERE productId = ?";
         try (Connection conn = Setup.getDBConnection(); PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
             pstmt.setDouble(1, newPrice);
-            pstmt.setString(2, productId);
+            pstmt.setInt(2, productId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,7 +170,7 @@ public class Product {
         }
     }
 
-    public String getProductId() {
+    public int getProductId() {
         return productId;
     }
 
