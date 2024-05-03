@@ -29,8 +29,9 @@ public class ReservationService {
     }
     
     public static String deleteReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        LocalDate start = Reservation.convertStringToDate(checkIn);
-        LocalDate end = Reservation.convertStringToDate(checkOut);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate start = LocalDate.parse(checkIn, formatter);
+        LocalDate end = LocalDate.parse(checkOut, formatter);
 
         String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = ? AND STARTDATE = ? AND ENDDATE = ?";
 
