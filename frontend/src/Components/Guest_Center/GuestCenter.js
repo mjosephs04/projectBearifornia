@@ -30,6 +30,18 @@ const GuestCenter = (props) =>{
                     <img className='bedroomButton' src={bedroomButton}/>
                 </Link>
             </div>
+
+
+            <div className='inputContainer2Clerk'>
+                <p>Delete Reservation</p>
+            </div>
+            <div className='button'>
+                <Link to='/delete-reservation'>
+                    <img className='bedroomButton' src={bedroomButton}/>
+                </Link>
+            </div>
+
+
         </div>
     );
 

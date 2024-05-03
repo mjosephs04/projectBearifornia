@@ -118,9 +118,7 @@ const DateSelector = (props) => {
 
             {roomAvailable && (
                 <div>
-                    <h1 className='room-available-label'>Room Available, Cost: </h1>
-                    <h1 className='room-cost'>${roomCost}</h1>
-
+                    <h1 className='room-available-label'>Room Available, Cost:‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ {roomCost}</h1>
                     <br/><br/><br/><br/><br/>
                     <div className='inputContainer'>
 
@@ -132,9 +130,9 @@ const DateSelector = (props) => {
                         />
                     </div>
                     <br/>
-                    <div className={'inputContainer'}>
+                    <div className='centerMyBox'>
                         <Link to='/confirmation'>
-                            <input className={'inputButton'} type="button" onClick={ReserveRoom}
+                            <input className={'reserve-room-button'} type="button" onClick={ReserveRoom}
                                    value={'Reserve Now'}/>
                         </Link>
                     </div>
