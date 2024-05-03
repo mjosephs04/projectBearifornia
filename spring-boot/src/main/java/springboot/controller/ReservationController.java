@@ -24,9 +24,11 @@ public class ReservationController {
     private ReservationService reservationService;
 
     //CREATE RESERVATION -- payload should contain this info IN THIS ORDER!!!
-    //checkIn, checkOut, roomNumber, USERNAME!!!!!!----> this is only passed if a clerk is making
-    //                                              a reservation on behalf of a guest, then it should be the
-                                                        //guest's username
+    //checkIn, checkOut, roomNumber, USERNAME!!!!!!----> username is only passed if a clerk is making
+    //                                              a reservation on behalf of a guest, and in that case
+    //                                              then it should be the guest's username
+                                                    //if a guest is logged in, you DO NOT NEED TO PASS
+    //                                              A FOURTH STRING
     // adds reservation to database if it does not already exist
     @PostMapping("/create")
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {

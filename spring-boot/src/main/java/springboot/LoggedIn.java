@@ -1,5 +1,6 @@
 package springboot;
 
+
 public class LoggedIn {
     public static String username = null;
     public static UserType type = null;

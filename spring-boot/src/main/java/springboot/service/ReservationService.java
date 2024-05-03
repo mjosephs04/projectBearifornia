@@ -27,12 +27,11 @@ public class ReservationService {
     }
     
     public static String deleteReservation(String checkIn, String checkOut, int roomNumber, String name) {
-        LocalDate start = Reservation.convertStringToDate(checkIn);
-        LocalDate end = Reservation.convertStringToDate(checkOut);
-        String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = " + roomNumber +
-                            " AND USERNAME = " + name +
-                            " AND STARTDATE = " + Date.valueOf(start)
-                            + " AND ENDDATE = " + Date.valueOf(end);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate start = LocalDate.parse(checkIn, formatter);
+        LocalDate end = LocalDate.parse(checkOut, formatter);
+
+        String deleteRes = "DELETE FROM RESERVATIONS WHERE ROOMNUMBER = ? AND STARTDATE = ? AND ENDDATE = ?";
         Connection conn = Setup.getDBConnection();
         Reservation res = getReservation(checkIn, checkOut, roomNumber, name);
         if(res != null) {

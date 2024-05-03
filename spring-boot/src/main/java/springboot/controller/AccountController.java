@@ -32,7 +32,6 @@ public class AccountController {
             return ResponseEntity.badRequest().body(message);
         }
     }
-
     //payload contains: name, username, password, USERTYPE
     @PostMapping("/createGuest")
     public ResponseEntity<String> createGuest(@RequestBody String[] payload) {

@@ -133,3 +133,19 @@ body {
 .title-color{
     color: white;
 }
+
+.log-out-button{
+
+    position: absolute;
+    right: 20px;
+    background-color: white;
+    font-family: Helvetica;
+    font-weight: bold;
+    color: black;
+    border-radius: 5px;
+    border: 3px solid transparent; /* Add a transparent border */
+    border-color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
