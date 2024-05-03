@@ -7,6 +7,10 @@ public class Cart {
     private List<Product> items;
 
     public Cart(List<Product> productItems) {
+        this.items = productItems;
+    }
+
+    public Cart() {
         this.items = new ArrayList<Product>();
     }
 

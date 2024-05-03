@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.UserType;
-import springboot.dto.Product;
 import springboot.service.CartService;
 import springboot.service.ProductService;
 
@@ -28,6 +27,16 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         } else {
             return ResponseEntity.ok(result);
+        }
+    }
+
+    @GetMapping("/shopCheckout")
+    public ResponseEntity<String> shopCheckout(@RequestBody String[] payload) {
+        String result = CartService.shopCheckout(payload);
+        if (result.equals("t")) {
+            return ResponseEntity.ok("success");
+        } else{
+            return ResponseEntity.ok("Failed to complete purchase " + result + " is out of stock.");
         }
     }
 
