@@ -6,7 +6,7 @@ import java.util.List;
 public class Cart {
     private List<Product> items;
 
-    public Cart() {
+    public Cart(List<Product> productItems) {
         this.items = new ArrayList<Product>();
     }
 
@@ -37,7 +37,7 @@ public class Cart {
     }
     */
 
-    private double calculateTotalAmount() {
+    public double calculateTotalAmount() {
         double totalAmount = 0.0;
         for (Product item : items) {
             totalAmount += item.getProductPrice() ; // Assuming each product costs the same as its stock

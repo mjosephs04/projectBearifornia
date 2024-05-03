@@ -61,7 +61,7 @@ public class RoomController {
     // AND!!!!: ONLY GUESTS CAN MODIFY RESERVATIONS, SO THEY SHOULD BE LOGGED IN BEFORE DOING SO
     //AND!!! DO NOT PASS USERNAME TO BACKEND OR ANYTHING
 
-    // --roomNumber of room you are trying to modify
+    // roomNumber of room you are trying to modify
     // Double newCost,
     // String New roomType,
     // Integer New numBed,
