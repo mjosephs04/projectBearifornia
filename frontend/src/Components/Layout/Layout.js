@@ -4,10 +4,12 @@ import DropdownMenu from "../dropdownMenu/dropdownMenu";
 import './Layout.css'
 import {Link} from "react-router-dom";
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const Layout = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
     const checkLoggedIn = () => {
         axios.get('http://localhost:8080/api/register/LOGGED-IN')
@@ -25,13 +27,18 @@ const Layout = () => {
     }, []); // Empty dependency array ensures useEffect runs only once on mount
 
     const logOut = () => {
-        axios.post('http://localhost:8080/api/register/LOGGED-IN')
+        axios.get('http://localhost:8080/api/register/logOut')
             .then(response =>{
-                setIsLoggedIn(false);
+                checkLoggedIn();
                 return response.data;
             }).catch(error => {
             console.log("Error: " + error);
         })
+    }
+
+    const logOut1 = () => {
+        logOut();
+        navigate('/');
     }
 
     return (
@@ -76,7 +83,7 @@ const Layout = () => {
 
             {isLoggedIn && (
                 <div>
-                    <button className='log-out-button' onClick=>Log Out</button>
+                    <button className='log-out-button' onClick={logOut1}>Log Out</button>
                 </div>
             )}
 

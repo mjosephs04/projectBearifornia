@@ -38,7 +38,7 @@ public class AccountController {
     public ResponseEntity<Boolean> loggedIn() {
         String username = LoggedIn.isLoggedIn();
         if(username == null){
-            return ResponseEntity.badRequest().body(false);
+            return ResponseEntity.ok().body(false);
         }
         else{
             return ResponseEntity.ok(true);
@@ -52,7 +52,7 @@ public class AccountController {
             return ResponseEntity.ok(true);
         }
         else{
-            return ResponseEntity.badRequest().body(false);
+            return ResponseEntity.ok().body(false);
         }
     }
 
