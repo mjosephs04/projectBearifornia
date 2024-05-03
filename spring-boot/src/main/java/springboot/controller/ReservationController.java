@@ -166,6 +166,7 @@ public class ReservationController {
     }
 
     //payload should contain:
+    //yyyy-mm-dd is how the dates are passed
     // String newStartDate, String newEndDate, int roomNumber, String oldStartDate, String oldEndDate
     @PatchMapping("/updateRes")
     public ResponseEntity<String> updateReservation(@RequestBody String[] payload) {
@@ -179,6 +180,9 @@ public class ReservationController {
         }
     }
 
+
+    //payload should contain
+    //yyyy-mm-dd is how the dates are passed
     //payload contains: String checkInDate, String checkOutDate, int roomNumber
     @GetMapping("/deleteRes")
     public ResponseEntity<String> deleteReservation(String[] payload) {
@@ -199,12 +203,13 @@ public class ReservationController {
     }
 
 
-/*
+
     public static void main(String[] args) {
         InitializeDatabase.main(args);
 
         LoggedIn.logIn("catherine", UserType.GUEST);
         AccountController create = new AccountController(new AccountService(new Setup()));
+
         create.createGuest(new String[]{
                 "cate", "catherine", "password", "GUEST"
         });
@@ -218,34 +223,32 @@ public class ReservationController {
         }));
         //this works ^^
 
-        x.showMyReservations().getBody().forEach(res -> System.out.println(res.getRoom().getRoomNumber()));
+        System.out.println(x.showMyReservations().getBody().getRoom().getRoomNumber());
         //this works ^^
 
-
+//----------------------
         //the functions im testing after this require an admin to execute
-        LoggedIn.logIn("admin", UserType.ADMIN);
+        //LoggedIn.logIn("admin", UserType.ADMIN);//-------------------------------
 
-
-        x.getAllGuests().getBody().forEach(guest -> System.out.println(guest.getUsername()));
+        //x.getAllGuests().getBody().forEach(guest -> System.out.println(guest.getUsername()));
         //this works ^^
-
 
         System.out.println(x.updateReservation(new String[] {
-                            "2024-05-03T14:00:00.000Z",
-                            "2024-05-07T11:00:00.000Z",
+                            "2024-05-03",
+                            "2024-05-07",
                             "101",
-                            "2024-05-01T14:00:00.000Z",
-                            "2024-05-03T11:00:00.000Z"
+                            "2024-05-01",
+                            "2024-05-03"
         }).getBody());
         //this works^^^
 
-
+/*
         //payload contains: String checkInDate, String checkOutDate, int roomNumber
         System.out.println(x.deleteReservation(new String[]{
                 "2024-05-03T14:00:00.000Z",
                 "2024-05-07T11:00:00.000Z",
                 "101"
-        }).getBody());
+        }).getBody());*/
     }
-    */
+
 }
