@@ -31,15 +31,15 @@
     position: absolute;
 }
 
-.inputContainer3Clerk {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    /*top: 40%;*/
-    left: 650px;
-    position: absolute;
-}
+/*.inputContainer3Clerk {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: flex-start;*/
+/*    justify-content: center;*/
+/*    !*top: 40%;*!*/
+/*    left: 650px;*/
+/*    position: absolute;*/
+/*}*/
 
 .inputContainer > .errorLabel {
     color: red;

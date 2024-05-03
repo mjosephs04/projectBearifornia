@@ -23,6 +23,7 @@ import AdminCreate from "./Components/Admin_Clerk_Create/AdminCreate";
 import ViewBill from "./Components/ViewBill/ViewBill";
 import GuestCenter from "./Components/Guest_Center/GuestCenter"
 import ModifyReservation from "./Components/ModifyReservation/ModifyReservation"
+import DeleteReservation from "./Components/DeleteReservation/DeleteReservation";
 const App = () => {
     return (
         <>
@@ -49,6 +50,7 @@ const App = () => {
                 <Route exact path='/view-bill' element={<ViewBill/>}/>
                 <Route exact path='/guest-center' element={<GuestCenter/>}/>
                 <Route exact path='/modify-reservation' element={<ModifyReservation/>}/>
+                <Route exact path='/delete-reservation' element={<DeleteReservation/>}/>
             </Routes>
         </>
     );
