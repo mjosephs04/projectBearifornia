@@ -46,4 +46,22 @@ public class AccountService {
             return "Could not insert user into database: " + e.getMessage();
         }
     }
+
+    public String changePassword(String username, String newPassword) {
+        Connection conn = Setup.getDBConnection();
+        String updateSQL = "UPDATE USERS SET PASSWORD = ? WHERE USERNAME = ?";
+
+        try (PreparedStatement statement = conn.prepareStatement(updateSQL)) {
+            statement.setString(1, newPassword);
+            statement.setString(2, username);
+            int updated = statement.executeUpdate();
+            if (updated > 0) {
+                return "Password updated successfully.";
+            } else {
+                return "User not found.";
+            }
+        } catch (SQLException e) {
+            return "Error updating password: " + e.getMessage();
+        }
+    }
 }
