@@ -16,7 +16,7 @@ const CheckIn = (props) =>{
 
             <input
                 className='room-number-input'
-                placeholder="Enter Username"
+                placeholder="Enter Guest Username"
                 className={'inputBox'}
                 onChange={evt => setUsername(evt.target.value)}
             />

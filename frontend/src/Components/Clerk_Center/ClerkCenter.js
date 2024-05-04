@@ -25,11 +25,11 @@ const ClerkCenter = (props) =>{
             <div className='inputContainer1Clerk'>
                 <p>Add Room</p>
             </div>
-            <div className='inputContainer2Clerk'>
-                <p>Check In/Out</p>
+            <div className='inputContainer2Clerk'style={{ textAlign: 'center' }}>
+                <p>Check In/Check Out</p>
             </div>
             <div className='inputContainer3Clerk'>
-                <p>Modify Information</p>
+                <p>Modify Profile Information</p>
             </div>
             <div className='button'>
                 <Link to='/add-room'>
