@@ -1,8 +1,10 @@
 package springboot.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import springboot.DateParsing;
 import springboot.Reservation;
+import springboot.Room;
 import springboot.database.Setup;
 import java.sql.*;
 import java.time.LocalDate;
@@ -101,5 +103,27 @@ public class ReservationService {
         } catch (SQLException e) {
             return "Failed to modify reservation: " + e.getMessage();
         }
+    }
+
+    public static Double calculateCost(String checkIn, String checkOut, int roomNumber){
+        Room room;
+        Double cost = 0.0;
+        // Extract the LocalDate part from the string
+        LocalDate startDate = DateParsing.convertStringToDate(checkIn);
+        LocalDate endDate = DateParsing.convertStringToDate(checkOut);
+
+        //try to find room associated with the roomNumber
+        room = Room.findRoom(roomNumber);
+
+        //if we found the room, check the cost!
+        if(room != null && startDate != null && endDate != null){
+            Reservation r = new Reservation(room, startDate, endDate);
+            cost = r.calculateCost();
+        }
+        if(cost > 0){
+            return cost;
+        }
+        //return null bc we couldnt find room or parsing date didnt work
+        return null;
     }
 }

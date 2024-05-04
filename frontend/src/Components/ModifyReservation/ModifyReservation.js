@@ -14,7 +14,20 @@ const ModifyReservation = (props) =>{
     const [reservationData, setReservationData] = useState([]);
     const [room, setRoom] = useState([]);
 
-    const onButtonClick = () => {
+
+    // const handleCheckInDateChange = (date, index) => {
+    //     const newCheckInDates = [...checkInDates];
+    //     newCheckInDates[index] = date;
+    //     setCheckInDates(newCheckInDates);
+    // };
+    //
+    // const handleCheckOutDateChange = (date, index) => {
+    //     const newCheckOutDates = [...checkOutDates];
+    //     newCheckOutDates[index] = date;
+    //     setCheckOutDates(newCheckOutDates);
+    // };
+
+    const onButtonClick = (data, room) => {
         // Parsing dates to yyyy-mm-dd format
         var parsedStartDate = new Date(checkInDate).toISOString().split('T')[0];
         var parsedEndDate = new Date(checkOutDate).toISOString().split('T')[0];
@@ -26,8 +39,8 @@ const ModifyReservation = (props) =>{
             parsedStartDate,
             parsedEndDate,
             roomNum,
-            reservationData.startDay,
-            reservationData.endDay
+            data.startDay,
+            data.endDay
         ]
         console.log(payload);
         axios.patch('http://localhost:8080/api/reservations/updateRes', payload)
@@ -52,7 +65,8 @@ const ModifyReservation = (props) =>{
                     throw Error("Network error");
                 }
                 setReservationData(response.data);
-                setRoom(response.data.room)
+                response.data.forEach()
+                setRoom(response.data.room);
                 console.log(response);
                 return response.data;
             }).catch(error => {
@@ -76,7 +90,7 @@ const ModifyReservation = (props) =>{
                     <p>Start Date: {data.startDay}</p>
                     <p>End Date: {data.endDay}</p>
                     <div className="form-group">
-                        <label htmlFor="start-date">Modify Start Date:</label>
+                        <label htmlFor={`start-date-${index}`}>Modify Start Date:</label>
                         <DatePicker
                             placeholderText={data.startDay}
                             selected={checkInDate}
@@ -85,7 +99,7 @@ const ModifyReservation = (props) =>{
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="end-date">Modify End Date:</label>
+                        <label htmlFor={`end-date-${index}`}>Modify End Date:</label>
                         <DatePicker
                             placeholderText={data.endDay}
                             selected={checkOutDate}
@@ -94,7 +108,7 @@ const ModifyReservation = (props) =>{
                         />
                     </div>
                     <Link to='/confirmation'>
-                        <button className='modifyReservationButton' onClick={onButtonClick}>Modify Reservation</button>
+                        <button className='modifyReservationButton' onClick={() => onButtonClick(data, data.room)}>Modify Reservation</button>
                     </Link>
                 </div>
             ))}
