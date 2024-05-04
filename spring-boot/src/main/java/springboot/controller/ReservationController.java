@@ -19,9 +19,6 @@ import java.util.List;
 @RequestMapping("/api/reservations")
 public class ReservationController {
 
-    @Autowired
-    private ReservationService reservationService;
-
     //CREATE RESERVATION -- payload should contain this info IN THIS ORDER!!!
     //checkIn, checkOut, roomNumber, USERNAME!!!!!!----> username is only passed if a clerk is making
     //                                              a reservation on behalf of a guest, and in that case
@@ -93,6 +90,7 @@ public class ReservationController {
     }
 
 
+
     @PostMapping("/checkCost")
     //checkIn and checkOut must be in zonedDate format
     //**this function returns either
@@ -100,28 +98,12 @@ public class ReservationController {
                                  String checkIn,
                                  @RequestBody String checkOut,
                                  @RequestBody Integer roomNumber){
-        Room room;
-        Double cost = 0.0;
-        // Extract the LocalDate part from the ZonedDateTime
-        LocalDate startDate = DateParsing.convertStringToDate(checkIn);
-        LocalDate endDate = DateParsing.convertStringToDate(checkOut);
-
-        //try to find room associated with the roomNumber
-        room = Room.findRoom(roomNumber);
-
-        //if we found the room, check the cost!
-        if(room != null){
-            Reservation r = new Reservation(room, startDate, endDate);
-            cost = r.calculateCost();
-        }
-
-        //if the cost is less than 0, something went wrong
-        if (cost <= 0.0){
-            return ResponseEntity.badRequest().body(cost);
-        }
-        //otherwise successsss!!!!!!!!!!!!!!!!!!!!!!
-        else{
+        Double cost = ReservationService.calculateCost(checkIn, checkOut, roomNumber);
+        if( cost != null){
             return ResponseEntity.ok(cost);
+        }
+        else{
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
