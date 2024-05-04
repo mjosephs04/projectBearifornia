@@ -26,7 +26,7 @@ public class testClass {
             Cart.addItem(a);
         }
     }
-
+/*
     public static void main(String[] args) throws SQLException {
 
         InitializeDatabase.main(args);
@@ -65,7 +65,5 @@ public class testClass {
         System.out.println("testing Cart For in Able to Purchase: " + Thing.shopCheckout(Cart.getItems()));
         System.out.println("If was able to purchase price would be: " + Thing.getPriceCart());
 
-
-
-    }
+    }*/
 }

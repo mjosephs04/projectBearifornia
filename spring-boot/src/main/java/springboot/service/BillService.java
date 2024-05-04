@@ -13,25 +13,19 @@ import java.util.List;
 
 @Service
 public class BillService {
-    private final Setup setup;
-
-    @Autowired
-    public BillService(Setup setup) {
-        this.setup = setup;
-    }
 
 
-    public String getAccountNameFromUser(){
+    public static String getAccountNameFromUser(){
         User JohnDoe = UserFunctions.findUser(LoggedIn.getUsername());
         return JohnDoe.getName();
     }
 
 
-    public Double getTax(Double Room, Double Shop){
+    public static Double getTax(Double Room, Double Shop){
         return 0.08 * (Room + Shop);
     }
 
-    public Double getPriceFinal(Double Room, Double Shop){
+    public static Double getPriceFinal(Double Room, Double Shop){
         return ((0.08 * (Room + Shop)) + (Room + Shop));
     }
 

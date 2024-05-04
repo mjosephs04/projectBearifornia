@@ -14,16 +14,9 @@ import springboot.service.ProductService;
 @RequestMapping("api/products")
 public class ProductController {
 
-    private final ProductService productService;
-
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
-
     @GetMapping("/{productName}")
     public ResponseEntity<?> getProduct(@PathVariable String productName) {
-        Product product = productService.getProductByName(productName);
+        Product product = ProductService.getProductByName(productName);
         if (product != null) {
             return ResponseEntity.ok(product);
         } else {

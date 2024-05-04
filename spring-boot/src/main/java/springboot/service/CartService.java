@@ -18,14 +18,6 @@ import java.util.List;
 @Service
 public class CartService {
 
-    private final Setup setup;
-
-    @Autowired
-    public CartService(Setup setup) {
-        this.setup = setup;
-    }
-
-
     public static double getPriceCart(){
         return Cart.calculateTotalAmount();
     }
@@ -33,9 +25,9 @@ public class CartService {
 
 
     //Where the Checkout Magic Happens
-    public String shopCheckout(List<Product> myCart){
+    public String shopCheckout(){
         String result = "";
-        result = parseStockResult(checkAndUpdateStock(Cart.getInstance()));
+        result = parseStockResult(checkAndUpdateStock());
         return result;
 
     }
@@ -114,9 +106,9 @@ public class CartService {
         return products;
     }
 
-    public String checkAndUpdateStock(Cart cart) {
+    public String checkAndUpdateStock() {
         Connection conn = Setup.getDBConnection();
-        List<Product> cartItems = cart.getItems();
+        List<Product> cartItems = Cart.getItems();
 
         String updateSQL = "UPDATE PRODUCTS SET productStock = productStock - 1 WHERE productName = ? AND productStock > 0";
 
@@ -139,7 +131,6 @@ public class CartService {
 
 
     public String parseStockResult(String result) {
-        boolean success;
         //Returns T if in stock returns item out of stock if not
         String successFactor = "";
 

@@ -19,17 +19,10 @@ import java.time.LocalDate;
 @RequestMapping("/api/bill")
 public class BillController {
 
-    private final BillService billService;
-
-    @Autowired
-    public BillController(BillService billService) {
-        this.billService = billService;
-    }
-
     @GetMapping("/getAccountName")
     public ResponseEntity<String> getAccountName() {
         if (LoggedIn.isLoggedIn()) {
-            String accountName = billService.getAccountNameFromUser();
+            String accountName = BillService.getAccountNameFromUser();
             return ResponseEntity.ok(accountName != null ? accountName : "No Name found on File");
         } else {
             return ResponseEntity.badRequest().body("You are not logged in.");
@@ -85,7 +78,7 @@ public class BillController {
             if (costRoom == null || costShop == null) {
                 return null;
             }
-            Double cost = billService.getTax(costRoom,costShop);
+            Double cost = BillService.getTax(costRoom,costShop);
             return ResponseEntity.ok(cost);
         } else {
             return null;
@@ -103,7 +96,7 @@ public class BillController {
             if (costRoom == null || costShop == null) {
                 return null;
             }
-            Double cost = billService.getPriceFinal(costRoom,costShop);
+            Double cost = BillService.getPriceFinal(costRoom,costShop);
             return ResponseEntity.ok(cost);
         } else {
             return null;

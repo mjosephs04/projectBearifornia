@@ -4,15 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
-    public static Cart instance = null;
     private static List<Product> items = new ArrayList<>();
-
-    public static Cart getInstance() {
-        if (instance == null) {
-            instance = new Cart(); // Create a new instance if it doesn't exist
-        }
-        return instance;
-    }
 
 
     public static void addItem(Product product) {

@@ -24,16 +24,17 @@ public class CartController {
 
     @Autowired
     public CartController(CartService CartService) {
+
         this.CartService = CartService;
     }
 
     @GetMapping("/cartTotal")
-    public ResponseEntity<?> getCartTotal() {
+    public ResponseEntity<Double> getCartTotal() {
         double result = CartService.getPriceCart();
         if(LoggedIn.isLoggedIn()) {
                 return ResponseEntity.ok(result);
         }else{
-            return ResponseEntity.badRequest().body("You are not logged in");
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
@@ -44,7 +45,7 @@ public class CartController {
     //Returns You are Not logged in if your not logged in
     @GetMapping("/shopCheckout")
     public ResponseEntity<String> shopCheckout() {
-        String result = CartService.shopCheckout(Cart.getItems());
+        String result = CartService.shopCheckout();
         if(LoggedIn.isLoggedIn()) {
             if (result.equals("t")) {
                 return ResponseEntity.ok("success");
