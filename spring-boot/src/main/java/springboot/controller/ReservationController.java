@@ -19,9 +19,6 @@ import java.util.List;
 @RequestMapping("/api/reservations")
 public class ReservationController {
 
-    @Autowired
-    private ReservationService reservationService;
-
     //CREATE RESERVATION -- payload should contain this info IN THIS ORDER!!!
     //checkIn, checkOut, roomNumber, USERNAME!!!!!!----> username is only passed if a clerk is making
     //                                              a reservation on behalf of a guest, and in that case
@@ -93,6 +90,7 @@ public class ReservationController {
     }
 
 
+
     @PostMapping("/checkCost")
     //checkIn and checkOut must be in zonedDate format
     //**this function returns either
@@ -113,6 +111,10 @@ public class ReservationController {
         if(room != null){
             Reservation r = new Reservation(room, startDate, endDate);
             cost = r.calculateCost();
+        }
+        //return bad request bc we couldnt find room
+        else {
+            return ResponseEntity.badRequest().body(null);
         }
 
         //if the cost is less than 0, something went wrong
