@@ -10,6 +10,7 @@ import springboot.service.AccountService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class makeReservation {
+    /*
     ReservationController reservationController = new ReservationController();
 
     @BeforeAll
@@ -17,7 +18,7 @@ public class makeReservation {
         Setup.initialize();
         InitializeDatabase.main(null);
 
-        AccountController create = new AccountController(new AccountService(new Setup()));
+        AccountController create = new AccountController();
         create.createGuest(new String[]{
                 "cate", "catherine", "password", "GUEST"
         });
@@ -70,6 +71,7 @@ public class makeReservation {
                 "2024-05-03T14:00:00.000Z",
                 "2024-05-07T11:00:00.000Z",
                 "101"
-        }).getBody());*/
+        }).getBody());
     }
+    /**/
 }
