@@ -181,7 +181,7 @@ public class ReservationController {
     //payload contains: String checkInDate, String checkOutDate, int roomNumber
     @PostMapping("/deleteRes")
     public ResponseEntity<String> deleteReservation(@RequestBody String[] payload) {
-        String username = LoggedIn.isLoggedIn();
+        String username = LoggedIn.getUsername();
 
         if(username != null) {
             String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), username);
