@@ -138,6 +138,19 @@ public class ReservationController {
         return ResponseEntity.badRequest().body(null);
     }
 
+    //returns the current users reservations
+    @GetMapping("/showAllMyReservations")
+    public ResponseEntity<List<Reservation>> showAllMyReservations(){
+        String username = LoggedIn.getUsername();
+
+        if(username != null && LoggedIn.type.equals(UserType.GUEST)) {
+            //otherwise, if the username is associated with a guest account, returns all reservations
+            return ResponseEntity.ok().body(Guest.getMyReservations(username));
+        }
+
+        return ResponseEntity.badRequest().body(null);
+    }
+
 
     //pass the username of the admin/user trying to display all guests.
     //this function will check that the username really is associated with an
