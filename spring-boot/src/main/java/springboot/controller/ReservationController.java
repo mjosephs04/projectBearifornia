@@ -46,10 +46,9 @@ public class ReservationController {
             Room room = Room.findRoom(Integer.parseInt(payload[2]));
 
             if(room != null) {
-                return ResponseEntity.ok().body(Reservation.addToDatabase(DateParsing.convertStringToDate(payload[0]),
-                        DateParsing.convertStringToDate(payload[1]),
-                        room.getRoomNumber(),
-                        username));
+                return ResponseEntity.ok().body(ReservationService.createReservation(
+                            payload[0], payload[1], room.getRoomNumber(), username
+                ));
             }
             else{
                 return ResponseEntity.badRequest().body("room does not exist");
@@ -94,7 +93,7 @@ public class ReservationController {
     }
 
 
-    @PostMapping("/checkCost") //do i need to add this?
+    @PostMapping("/checkCost")
     //checkIn and checkOut must be in zonedDate format
     //**this function returns either
     public ResponseEntity<Double> calculateCost(@RequestBody
