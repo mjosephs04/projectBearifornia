@@ -18,18 +18,9 @@ import java.sql.SQLException;
 @Service
 public class ProductService {
 
-    private final Setup setup;
-
-    @Autowired
-    public ProductService(Setup setup) {
-        this.setup = setup;
-    }
-
-
-
-    public Product getProductByName(String productName) {
+    public static Product getProductByName(String productName) {
         String sql = "SELECT productId, productStock, category, productPrice, productDescription, imageURL FROM PRODUCTS WHERE productName = ?";
-        try (Connection conn = setup.getDBConnection();
+        try (Connection conn = Setup.getDBConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, productName);
             try (ResultSet resultSet = statement.executeQuery()) {

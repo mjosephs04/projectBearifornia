@@ -18,26 +18,59 @@ import java.util.List;
 @Service
 public class CartService {
 
-    private final Setup setup;
-
-    @Autowired
-    public CartService(Setup setup) {
-        this.setup = setup;
+    public static double getPriceCart(){
+        return Cart.calculateTotalAmount();
     }
 
-    public String getPriceCart(String [] items){
-        Cart shopCart = new Cart(createProductItems(items));
-        double price = shopCart.calculateTotalAmount();
-        return String.valueOf(price);
-    }
 
-    public String shopCheckout(String [] items){
+
+    //Where the Checkout Magic Happens
+    public String shopCheckout(){
         String result = "";
-        Cart cart = new Cart(createProductItems(items));
-        result = parseStockResult(checkAndUpdateStock(cart));
+        result = parseStockResult(checkAndUpdateStock());
         return result;
 
     }
+
+
+    //This will not be able to check Stock
+    public String addToCart(String item){
+        String result = "";
+        Product addedItem = createProductItem(item);
+        result = Cart.addItemS(addedItem);
+        return result;
+
+    }
+
+    // Method to check if a product is in stock and create a product item for the first one found in stock
+    private Product createProductItem(String itemName) {
+        Connection conn = Setup.getDBConnection();
+        String selectSQL = "SELECT * FROM PRODUCTS WHERE productName = ? AND productStock > 0";
+        Product product = null;
+
+        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
+            statement.setString(1, itemName);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int productId = resultSet.getInt("productId");
+                String productName = resultSet.getString("productName");
+                int productStock = resultSet.getInt("productStock");
+                String productDescription = resultSet.getString("productDescription");
+                double productPrice = resultSet.getDouble("productPrice");
+                String imageURL = resultSet.getString("imageURL");
+                String category = resultSet.getString("category");
+                // Create the product object
+                product = new Product(productId, productName, productStock, productDescription, productPrice, imageURL, category);
+            } else {
+                System.out.println("Item '" + itemName + "' is not in stock or does not exist.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error accessing database: " + e.getMessage());
+        }
+
+        return product;
+    }
+
 
 
     // Method to check if a product is in stock and create product items for those in stock
@@ -73,9 +106,9 @@ public class CartService {
         return products;
     }
 
-    public String checkAndUpdateStock(Cart cart) {
+    public String checkAndUpdateStock() {
         Connection conn = Setup.getDBConnection();
-        List<Product> cartItems = cart.getItems();
+        List<Product> cartItems = Cart.getItems();
 
         String updateSQL = "UPDATE PRODUCTS SET productStock = productStock - 1 WHERE productName = ? AND productStock > 0";
 
@@ -98,7 +131,6 @@ public class CartService {
 
 
     public String parseStockResult(String result) {
-        boolean success;
         //Returns T if in stock returns item out of stock if not
         String successFactor = "";
 

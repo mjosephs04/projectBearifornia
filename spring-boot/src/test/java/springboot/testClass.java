@@ -9,6 +9,7 @@ import springboot.database.Setup;
 import springboot.service.AccountService;
 import springboot.service.CartService;
 import springboot.service.ProductService;
+
 import java.sql.SQLException;
 
 public class testClass {
@@ -20,19 +21,17 @@ public class testClass {
         return b;
     }
 
-    public static Cart addAmountToCart (Product a, int amount, Cart C){
-        Cart testCart = C;
+    public static void addAmountToCart (Product a, int amount){
         for (int i = 0; i < amount; i++){
-            testCart.addItem(a);
+            Cart.addItem(a);
         }
-        return testCart;
     }
-
-    public static void main(String[] args) {
 /*
+    public static void main(String[] args) throws SQLException {
+
         InitializeDatabase.main(args);
         LoggedIn.logIn("catherine", UserType.GUEST);
-        AccountController create = new AccountController();
+        AccountController create = new AccountController(new AccountService(new Setup()));
         create.createGuest(new String[]{
                 "cate", "catherine", "password", "GUEST"
         });
@@ -49,6 +48,9 @@ public class testClass {
         CartService Thing = new CartService(new Setup());
 
 
+
+
+
         Product apple = testClass.createAproduct("Apple");
         Product banana = testClass.createAproduct("Banana");
         ProductService.addProduct(apple);
@@ -57,13 +59,11 @@ public class testClass {
         banana.setProductStock(3);
 
         //                        Product   Amount  Cart
-        testClass.addAmountToCart(apple, 10, testCart);
-        testClass.addAmountToCart(banana, 10, testCart);
+        testClass.addAmountToCart(apple, 10);
+        testClass.addAmountToCart(banana, 10);
 
-        System.out.println("testing Cart For in Able to Purchase: " + Thing.parseStockResult(Thing.checkAndUpdateStock(testCart)));
-        System.out.println("If was able to purchase price would be: " + testCart.calculateTotalAmount());
+        System.out.println("testing Cart For in Able to Purchase: " + Thing.shopCheckout(Cart.getItems()));
+        System.out.println("If was able to purchase price would be: " + Thing.getPriceCart());
 
-*/
-
-    }
+    }*/
 }
