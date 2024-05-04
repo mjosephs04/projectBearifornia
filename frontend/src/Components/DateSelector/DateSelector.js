@@ -53,8 +53,7 @@ const DateSelector = (props) => {
         const payload = [
             checkInDate,
             checkOutDate,
-            roomNumber,
-            name
+            roomNumber
         ]
 
         axios.post('http://localhost:8080/api/reservations/create', payload)
@@ -120,15 +119,15 @@ const DateSelector = (props) => {
                 <div>
                     <h1 className='room-available-label'>Room Available, Cost:‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ {roomCost}</h1>
                     <br/><br/><br/><br/><br/>
-                    <div className='inputContainer'>
+                    {/*<div className='inputContainer'>*/}
 
-                        <input
-                            // //value={email}
-                            placeholder="Enter your name here"
-                            className={'inputBox'}
-                            onChange={evt => setName(evt.target.value)}
-                        />
-                    </div>
+                    {/*    <input*/}
+                    {/*        // //value={email}*/}
+                    {/*        placeholder="Enter your name here"*/}
+                    {/*        className={'inputBox'}*/}
+                    {/*        onChange={evt => setName(evt.target.value)}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <br/>
                     <div className='centerMyBox'>
                         <Link to='/confirmation'>
