@@ -1,6 +1,5 @@
 package springboot.controller;
 
-import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +8,7 @@ import springboot.database.InitializeDatabase;
 import springboot.database.Setup;
 import springboot.service.AccountService;
 import springboot.service.ReservationService;
-import java.io.IOException;
+
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -47,8 +46,8 @@ public class ReservationController {
             Room room = Room.findRoom(Integer.parseInt(payload[2]));
 
             if(room != null) {
-                return ResponseEntity.ok().body(Reservation.addToDatabase(Reservation.convertStringToDate(payload[0]),
-                        Reservation.convertStringToDate(payload[1]),
+                return ResponseEntity.ok().body(Reservation.addToDatabase(DateParsing.convertStringToDate(payload[0]),
+                        DateParsing.convertStringToDate(payload[1]),
                         room.getRoomNumber(),
                         username));
             }
@@ -104,14 +103,9 @@ public class ReservationController {
                                  @RequestBody Integer roomNumber){
         Room room;
         Double cost = 0.0;
-
-        // Parse the string into a ZonedDateTime
-        ZonedDateTime startD = ZonedDateTime.parse(checkIn);
-        ZonedDateTime endD = ZonedDateTime.parse(checkOut);
-
         // Extract the LocalDate part from the ZonedDateTime
-        LocalDate startDate = startD.toLocalDate();
-        LocalDate endDate = endD.toLocalDate();
+        LocalDate startDate = DateParsing.convertStringToDate(checkIn);
+        LocalDate endDate = DateParsing.convertStringToDate(checkOut);
 
         //try to find room associated with the roomNumber
         room = Room.findRoom(roomNumber);
@@ -225,7 +219,9 @@ public class ReservationController {
         }));
         //this works ^^
 
-        System.out.println(x.showMyReservations().getBody().getRoom().getRoomNumber());
+        Reservation result = x.showMyReservations().getBody();
+        System.out.println(result.getRoom().getRoomNumber() + " " +
+                            result.getStartDay() + " " + result.getEndDay());
         //this works ^^
 
 //----------------------
@@ -242,15 +238,21 @@ public class ReservationController {
                             "2024-05-01",
                             "2024-05-03"
         }).getBody());
+
+        result = x.showMyReservations().getBody();
+        System.out.println(result.getRoom().getRoomNumber() + " " +
+                result.getStartDay() + " " + result.getEndDay());
         //this works^^^
 
-/*
+
         //payload contains: String checkInDate, String checkOutDate, int roomNumber
         System.out.println(x.deleteReservation(new String[]{
                 "2024-05-03T14:00:00.000Z",
                 "2024-05-07T11:00:00.000Z",
                 "101"
-        }).getBody());*/
+        }).getBody());
+
+
     }
 
 }

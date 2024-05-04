@@ -99,20 +99,6 @@ public class Reservation {
         return result;
     }
 
-    public static LocalDate convertStringToDate(String x){
-        // Extract the LocalDate part from the ZonedDateTime
-        return ZonedDateTime.parse(x).toLocalDate();
-    }
-
-    //returns either a failure message or "success"
-    //the strings will be zoned dates
-    //calls createReservation(reservation) which then adds it to csv
-    public static String addToDatabase(String checkIn, String checkOut, int roomNumber, String name) {
-        LocalDate checkInDate = convertStringToDate(checkIn);
-        LocalDate checkOutDate = convertStringToDate(checkOut);
-        return addToDatabase(checkInDate, checkOutDate, roomNumber, name);
-    }
-
     public static String addToDatabase(LocalDate checkInDate, LocalDate checkOutDate, int roomNumber, String name) {
         Room room = Room.findRoom(roomNumber);
 
