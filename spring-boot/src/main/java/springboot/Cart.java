@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
-    private List<Product> items;
+    private static List<Product> items = new ArrayList<>();
 
     public Cart(List<Product> productItems) {
-        this.items = productItems;
+        items = productItems;
     }
 
     public Cart() {
-        this.items = new ArrayList<Product>();
+        items = new ArrayList<Product>();
     }
 
-    public void addItem(Product product) {
+    public static void addItem(Product product) {
         if (isStockAvailable(product)) {
             items.add(product);
             System.out.println(product.getProductName() + " added to cart.");
@@ -23,7 +23,17 @@ public class Cart {
         }
     }
 
-    private boolean isStockAvailable(Product product) {
+    public static String addItemS(Product product) {
+        if (isStockAvailable(product)) {
+            items.add(product);
+            return "success";
+        } else {
+            return "f";
+        }
+    }
+
+
+    private static boolean isStockAvailable(Product product) {
         return product.getProductStock() > 0;
     }
 
@@ -49,7 +59,7 @@ public class Cart {
         return totalAmount;
     }
 
-    public List<Product> getItems() {
+    public static List<Product> getItems() {
         return items;
     }
 }
