@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import springboot.LoggedIn;
 import springboot.UserType;
 import springboot.service.AccountService;
+import springboot.service.CheckingInGuestService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,7 +17,7 @@ public class AccountController {
     //payload should contain: checkIn, checkOut, roomNumber
     @PostMapping("/checkIn")
     public ResponseEntity<Boolean> checkIn(@RequestBody String[] payload){
-        String message = AccountService.checkIn(payload[0], payload[1], Integer.parseInt(payload[2]));
+        String message = CheckingInGuestService.checkIn(payload[0], payload[1], Integer.parseInt(payload[2]));
 
         if(message.equalsIgnoreCase("success")){
             return ResponseEntity.ok(true);
@@ -29,7 +30,7 @@ public class AccountController {
     //payload should contain: checkIn, checkOut, roomNumber
     @PostMapping("/checkOut")
     public ResponseEntity<Boolean> checkOut(@RequestBody String[] payload){
-        String message = AccountService.checkOut(payload[0], payload[1], Integer.parseInt(payload[2]));
+        String message = CheckingInGuestService.checkOut(payload[0], payload[1], Integer.parseInt(payload[2]));
 
         if(message.equalsIgnoreCase("success")){
             return ResponseEntity.ok(true);
