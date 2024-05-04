@@ -1,0 +1,35 @@
+.room-number-input{
+    position: absolute;
+    left: 40%;
+
+}
+
+.checkIn-button{
+    position: absolute;
+    left: 45%;
+    top: 25%;
+    width: 120px;
+    height: 40px;
+    color: white;
+    background-color: darkgreen;
+    border: none;
+
+    &:hover{
+        background-color: #003a00;
+    }
+}
+
+.checkOut-button{
+    position: absolute;
+    left: 45%;
+    top: 30%;
+    width: 120px;
+    height: 40px;
+    color: white;
+    background-color: darkgreen;
+    border: none;
+
+    &:hover{
+        background-color: #003a00;
+    }
+}

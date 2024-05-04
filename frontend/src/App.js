@@ -24,6 +24,7 @@ import ViewBill from "./Components/ViewBill/ViewBill";
 import GuestCenter from "./Components/Guest_Center/GuestCenter"
 import ModifyReservation from "./Components/ModifyReservation/ModifyReservation"
 import DeleteReservation from "./Components/DeleteReservation/DeleteReservation";
+import CheckIn from "./Components/CheckIn/CheckIn"
 const App = () => {
     return (
         <>
@@ -51,6 +52,7 @@ const App = () => {
                 <Route exact path='/guest-center' element={<GuestCenter/>}/>
                 <Route exact path='/modify-reservation' element={<ModifyReservation/>}/>
                 <Route exact path='/delete-reservation' element={<DeleteReservation/>}/>
+                <Route exact path='/check-in' element={<CheckIn/>}/>
             </Routes>
         </>
     );
