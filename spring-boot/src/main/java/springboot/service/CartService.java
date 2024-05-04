@@ -25,34 +25,17 @@ public class CartService {
         this.setup = setup;
     }
 
-    public String getPriceCart(String [] items){
-        Cart shopCart = new Cart(createProductItems(items));
-        double price = shopCart.calculateTotalAmount();
-        return String.valueOf(price);
+
+    public double getPriceCart(){
+        return Cart.calculateTotalAmount();
     }
 
-    public String getPriceCart(List<Product> myCart){
-        Cart shopCart = new Cart(myCart);
-        double price = shopCart.calculateTotalAmount();
-        return String.valueOf(price);
-    }
-
-
-    // SShouldn't be needed keep as sample template
-    public String shopCheckout(String [] items){
-        String result = "";
-        Cart cart = new Cart(createProductItems(items));
-        result = parseStockResult(checkAndUpdateStock(cart));
-        return result;
-
-    }
 
 
     //Where the Checkout Magic Happens
     public String shopCheckout(List<Product> myCart){
         String result = "";
-        Cart cart = new Cart(myCart);
-        result = parseStockResult(checkAndUpdateStock(cart));
+        result = parseStockResult(checkAndUpdateStock(Cart.getInstance()));
         return result;
 
     }

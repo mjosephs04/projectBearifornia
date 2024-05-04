@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
+    public static Cart instance = null;
     private static List<Product> items = new ArrayList<>();
 
-    public Cart(List<Product> productItems) {
-        items = productItems;
+    public static Cart getInstance() {
+        if (instance == null) {
+            instance = new Cart(); // Create a new instance if it doesn't exist
+        }
+        return instance;
     }
 
-    public Cart() {
-        items = new ArrayList<Product>();
-    }
 
     public static void addItem(Product product) {
         if (isStockAvailable(product)) {
@@ -51,7 +52,7 @@ public class Cart {
     }
     */
 
-    public double calculateTotalAmount() {
+    public static double calculateTotalAmount() {
         double totalAmount = 0.0;
         for (Product item : items) {
             totalAmount += item.getProductPrice() ; // Assuming each product costs the same as its stock
