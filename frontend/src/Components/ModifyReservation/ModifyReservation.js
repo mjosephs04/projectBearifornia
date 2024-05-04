@@ -11,8 +11,8 @@ const ModifyReservation = (props) =>{
     const [checkOutDate, setCheckOutDate] = useState('');
     const navigate = useNavigate();
     const [roomNumber, setRoomNumber] = useState(-1);
-    const [reservationData, setReservationData] = useState([])
-    const [room, setRoom] = useState([])
+    const [reservationData, setReservationData] = useState([]);
+    const [room, setRoom] = useState([]);
 
     const onButtonClick = () => {
         // Parsing dates to yyyy-mm-dd format
@@ -67,11 +67,13 @@ const ModifyReservation = (props) =>{
     return (
         <div>
             <Layout/>
+            <h1>Modify reservation</h1>
             <div className="modifyReservationContainer">
-                <h1>Modify reservation</h1>
                 <h2>Room Number: {room.roomNumber}</h2>
+                <p>Start Date: {reservationData.startDay}</p>
+                <p>End Date: {reservationData.endDay}</p>
                 <div className="form-group">
-                    <label htmlFor="start-date">Start Date:</label>
+                    <label htmlFor="start-date">Modify Start Date:</label>
                     <DatePicker
                         placeholderText={reservationData.startDay}
                         selected={checkInDate}
@@ -79,7 +81,7 @@ const ModifyReservation = (props) =>{
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="end-date">End Date:</label>
+                    <label htmlFor="end-date">Modify End Date:</label>
                     <DatePicker
                         placeholderText={reservationData.endDay}
                         selected={checkOutDate}
