@@ -39,10 +39,10 @@ const ProductDetails = (props) =>{
             })
             .then(data => {
                 setImgURL(data.imageURL);
-                setProductName(data.name);
-                setInStock(data.stock);
-                setPrice(data.price);
-                setDescription(data.description);
+                setProductName(data.productName);
+                setInStock(data.productStock);
+                setPrice(data.productPrice);
+                setDescription(data.productDescription);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
