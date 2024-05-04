@@ -37,7 +37,7 @@ public class ReservationController {
         //if payload is length three, then they should be trying to make a reservation
         //for the current user that is logged in
         if(payload.length == 3) {
-            username = LoggedIn.isLoggedIn();
+            username = LoggedIn.getUsername();
         } else if(payload.length >= 4) {
             username = payload[3];
         }
@@ -128,7 +128,7 @@ public class ReservationController {
     //returns the current users reservations
     @GetMapping("/showMyReservations")
     public ResponseEntity<Reservation> showMyReservations(){
-        String username = LoggedIn.isLoggedIn();
+        String username = LoggedIn.getUsername();
 
         if(username != null && LoggedIn.type.equals(UserType.GUEST)) {
             //otherwise, if the username is associated with a guest account, returns all reservations
@@ -144,7 +144,7 @@ public class ReservationController {
     //admin account and then will return all guests accordingly.
     @PostMapping("/getAllGuests")
     public ResponseEntity<List<User>> getAllGuests(){
-        String username = LoggedIn.isLoggedIn();
+        String username = LoggedIn.getUsername();
 
         if(username != null && LoggedIn.type.equals(UserType.ADMIN)) {
             List<User> list;
@@ -181,7 +181,7 @@ public class ReservationController {
     //payload contains: String checkInDate, String checkOutDate, int roomNumber
     @GetMapping("/deleteRes")
     public ResponseEntity<String> deleteReservation(String[] payload) {
-        String username = LoggedIn.isLoggedIn();
+        String username = LoggedIn.getUsername();
         if(username != null) {
             String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), username);
 

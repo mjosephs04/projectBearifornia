@@ -1,5 +1,6 @@
 package springboot.controller;
 
+import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,18 +36,23 @@ public class AccountController {
 
     @GetMapping("/LOGGED-IN")
     public ResponseEntity<Boolean> loggedIn() {
-        String username = LoggedIn.isLoggedIn();
-        if (username == null) {
-            return ResponseEntity.ok().body(false);
-        } else {
-            return ResponseEntity.ok(true);
-        }
+        return ResponseEntity.ok(LoggedIn.isLoggedIn());
+    }
+
+
+    //userType backend:
+    //return null if not logged in
+    //otherwise, return type of user
+    @GetMapping("/getUserType")
+    public ResponseEntity<UserType> getUserType() {
+        return ResponseEntity.ok(LoggedIn.getType());
     }
 
     @GetMapping("/logOut")
     public ResponseEntity<Boolean> logOut() {
         LoggedIn.logIn(null, null);
-        if (LoggedIn.isLoggedIn() == null) {
+
+        if (LoggedIn.isLoggedIn()) {
             return ResponseEntity.ok(true);
         } else {
             return ResponseEntity.ok().body(false);
