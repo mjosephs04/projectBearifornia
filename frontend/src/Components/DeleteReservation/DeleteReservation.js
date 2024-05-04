@@ -24,7 +24,7 @@ const DeleteReservation = (props) =>{
             roomNum
         ]
         console.log(payload);
-        axios.get('http://localhost:8080/api/reservations/deleteRes', payload)
+        axios.post('http://localhost:8080/api/reservations/deleteRes', payload)
             .then(response =>{
                 if(response.status !== 200){
                     throw Error("Network error");
