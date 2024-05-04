@@ -10,18 +10,11 @@ import springboot.service.RoomService;
 @RequestMapping("/api")
 public class AddRoomController {
 
-    private final RoomService roomService;
-
-    @Autowired
-    public AddRoomController(RoomService roomService) {
-        this.roomService = roomService;
-    }
-
     @PostMapping("/addRoom")
     public ResponseEntity<String> addRoom(@RequestBody String[] roomDetails) {
         String message = null;
         try {
-            message = roomService.addRoom(roomDetails);
+            message = RoomService.addRoom(roomDetails);
             return ResponseEntity.ok("Room successfully added to CSV.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Invalid request: " + message + " " + e.getMessage());

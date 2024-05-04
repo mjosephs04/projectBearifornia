@@ -9,7 +9,6 @@ import springboot.database.Setup;
 import springboot.service.AccountService;
 import springboot.service.CartService;
 import springboot.service.ProductService;
-
 import java.sql.SQLException;
 
 public class testClass {
@@ -29,11 +28,11 @@ public class testClass {
         return testCart;
     }
 
-    public static void main(String[] args) throws SQLException {
-
+    public static void main(String[] args) {
+/*
         InitializeDatabase.main(args);
         LoggedIn.logIn("catherine", UserType.GUEST);
-        AccountController create = new AccountController(new AccountService(new Setup()));
+        AccountController create = new AccountController();
         create.createGuest(new String[]{
                 "cate", "catherine", "password", "GUEST"
         });
@@ -50,9 +49,6 @@ public class testClass {
         CartService Thing = new CartService(new Setup());
 
 
-
-
-        Cart testCart = new Cart();
         Product apple = testClass.createAproduct("Apple");
         Product banana = testClass.createAproduct("Banana");
         ProductService.addProduct(apple);
@@ -67,7 +63,7 @@ public class testClass {
         System.out.println("testing Cart For in Able to Purchase: " + Thing.parseStockResult(Thing.checkAndUpdateStock(testCart)));
         System.out.println("If was able to purchase price would be: " + testCart.calculateTotalAmount());
 
-
+*/
 
     }
 }
