@@ -25,6 +25,7 @@ import GuestCenter from "./Components/Guest_Center/GuestCenter"
 import ModifyReservation from "./Components/ModifyReservation/ModifyReservation"
 import DeleteReservation from "./Components/DeleteReservation/DeleteReservation";
 import ErrorPage from "./Components/Error_Page/ErrorPage"
+import CheckIn from "./Components/CheckIn/CheckIn"
 const App = () => {
     return (
         <>
@@ -53,6 +54,7 @@ const App = () => {
                 <Route exact path='/modify-reservation' element={<ModifyReservation/>}/>
                 <Route exact path='/delete-reservation' element={<DeleteReservation/>}/>
                 <Route exact path='/error' element={<ErrorPage/>}/>
+                <Route exact path='/check-in' element={<CheckIn/>}/>
             </Routes>
         </>
     );

@@ -70,7 +70,7 @@ public class RoomController {
     // boolean New smoking
     @PatchMapping("/updateRoom")
     public ResponseEntity<String> modifyRoom(String[] payload){
-        String username = LoggedIn.isLoggedIn();
+        String username = LoggedIn.getUsername();
         UserType type = LoggedIn.type;
         Integer roomNum =Integer.parseInt(payload[0]);
 

@@ -37,7 +37,9 @@ const ClerkCenter = (props) =>{
                 </Link>
             </div>
             <div className='button'>
-                <img className='bedroomButton' src={checkinoutButton}/>
+                <Link to='/check-in'>
+                    <img className='bedroomButton' src={checkinoutButton}/>
+                </Link>
             </div>
             <div className='button'>
                 <Link to='/modify-info'>
