@@ -2,39 +2,29 @@ package springboot.service;
 
 import org.springframework.stereotype.Service;
 import springboot.DateParsing;
-import springboot.Reservation;
 import springboot.UserType;
 import springboot.database.Setup;
-
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AccountService {
 
-    private final Setup setup;
-
-    public AccountService(Setup setup) {
-        this.setup = setup;
-    }
-
-    public String createClerk(String name, String username, String password, UserType userType) {
+    public static String createClerk(String name, String username, String password, UserType userType) {
         if (!userType.equals(UserType.ADMIN)) {
             return "Failure: Only admins can create clerk accounts.";
         }
         return addUser(name, username, password, UserType.CLERK.toString());
     }
 
-    public String createGuest(String name, String username, String password, UserType userType) {
+    public static String createGuest(String name, String username, String password, UserType userType) {
         if (!userType.equals(UserType.CLERK) && !userType.equals(UserType.GUEST)) {
             return "Failure: Only clerks and guests can create guest accounts.";
         }
         return addUser(name, username, password, UserType.GUEST.toString());
     }
 
-    private String addUser(String name, String username, String password, String userType) {
+    private static String addUser(String name, String username, String password, String userType) {
         Connection conn = Setup.getDBConnection();
         String insertSQL = "INSERT INTO USERS (NAME, USERNAME, PASSWORD, USERTYPE) VALUES (?, ?, ?, ?)";
 
@@ -50,7 +40,7 @@ public class AccountService {
         }
     }
 
-    public String changePassword(String username, String newPassword) {
+    public static String changePassword(String username, String newPassword) {
         Connection conn = Setup.getDBConnection();
         String updateSQL = "UPDATE USERS SET PASSWORD = ? WHERE USERNAME = ?";
 

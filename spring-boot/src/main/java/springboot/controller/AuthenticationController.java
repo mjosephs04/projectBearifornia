@@ -18,14 +18,11 @@ import java.util.ArrayList;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    @Autowired
-    private AuthenticationService authenticationService;
-
     //data should contain username, password
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody String[] data) {
 
-        UserType userType = authenticationService.authenticate(data[0], data[1]);
+        UserType userType = AuthenticationService.authenticate(data[0], data[1]);
 
         if (userType == null) {
             return ResponseEntity.badRequest().body("Invalid username or password.");

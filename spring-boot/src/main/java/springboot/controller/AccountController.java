@@ -13,14 +13,6 @@ import springboot.service.AccountService;
 @RequestMapping("/api/register")
 public class AccountController {
 
-    private final AccountService accountService;
-
-    @Autowired
-    public AccountController(AccountService accountService) {
-
-        this.accountService = accountService;
-    }
-
     //payload should contain: checkIn, checkOut, roomNumber
     @PostMapping("/checkIn")
     public ResponseEntity<Boolean> checkIn(@RequestBody String[] payload){
@@ -51,7 +43,7 @@ public class AccountController {
     @PostMapping("/createClerk")
     public ResponseEntity<String> createClerk(@RequestBody String[] payload) {
         UserType userType = UserType.valueOf(payload[3]);
-        String message = accountService.createClerk(payload[0], payload[1], payload[2], userType);
+        String message = AccountService.createClerk(payload[0], payload[1], payload[2], userType);
 
         if ("success".equalsIgnoreCase(message)) {
             return ResponseEntity.ok("Created clerk account.");
@@ -89,7 +81,7 @@ public class AccountController {
     @PostMapping("/createGuest")
     public ResponseEntity<String> createGuest(@RequestBody String[] payload) {
         UserType userType = UserType.valueOf(payload[3]);
-        String message = accountService.createGuest(payload[0], payload[1], payload[2], userType);
+        String message = AccountService.createGuest(payload[0], payload[1], payload[2], userType);
 
         if ("success".equalsIgnoreCase(message)) {
             return ResponseEntity.ok("Created guest account.");
@@ -102,7 +94,7 @@ public class AccountController {
     public ResponseEntity<String> changePassword(@RequestBody String[] payload) {
         String username = payload[0];
         String newPassword = payload[1];
-        String message = accountService.changePassword(username, newPassword);
+        String message = AccountService.changePassword(username, newPassword);
 
         if ("Password updated successfully.".equalsIgnoreCase(message)) {
             return ResponseEntity.ok("Password changed successfully.");

@@ -46,34 +46,43 @@ public class UserFunctions {
 
     //returns the guest info associated with a username, or null if there is no user associated w it
     public static User findUser(String username) {
-        //                "CREATE TABLE USERS (Id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name VARCHAR(255), username VARCHAR(255) NOT NULL, password VARCHAR(255), userType VARCHAR(255) NOT NULL)",
-        String find = "SELECT * FROM USERS WHERE username = " + username;
-        Connection conn = Setup.getDBConnection();
-        try {
-            ResultSet resultSet = conn.createStatement().executeQuery(find);
-            if (resultSet.next()) {//if the room was found, make a new room w its info
-                UserType type = UserType.valueOf(resultSet.getString("userType"));
-                if(type == UserType.ADMIN) {
-                    return new Admin(resultSet.getString("name"),
-                            resultSet.getString("username"),
-                            resultSet.getString("password"));
-                }
-                else if(type == UserType.GUEST) {
-                    return new Guest(resultSet.getString("name"),
-                            resultSet.getString("username"),
-                            resultSet.getString("password"));
-                }
-                else if(type == UserType.CLERK) {
-                    return new Clerk(resultSet.getString("name"),
-                            resultSet.getString("username"),
-                            resultSet.getString("password"));
+        String find = "SELECT * FROM USERS WHERE username = ?";
+        try (Connection conn = Setup.getDBConnection();
+             PreparedStatement pstmt = conn.prepareStatement(find)) {
+            pstmt.setString(1, username);
+
+            try (ResultSet resultSet = pstmt.executeQuery()) {
+                if (resultSet.next()) {
+                    UserType type = UserType.valueOf(resultSet.getString("userType"));
+                    switch (type) {
+                        case ADMIN:
+                            return new Admin(
+                                    resultSet.getString("name"),
+                                    resultSet.getString("username"),
+                                    resultSet.getString("password")
+                            );
+                        case GUEST:
+                            return new Guest(
+                                    resultSet.getString("name"),
+                                    resultSet.getString("username"),
+                                    resultSet.getString("password")
+                            );
+                        case CLERK:
+                            return new Clerk(
+                                    resultSet.getString("name"),
+                                    resultSet.getString("username"),
+                                    resultSet.getString("password")
+                            );
+                    }
                 }
             }
         }
-        catch(SQLException e) {
-            return null;
+        catch (SQLException e) {
+            e.printStackTrace();
         }
 
+        //returns null if the SQL statement didnt work or if the
+        //user was not found
         return null;
     }
 /*
