@@ -180,8 +180,8 @@ public class ReservationController {
     //payload should contain
     //yyyy-mm-dd is how the dates are passed
     //payload contains: String checkInDate, String checkOutDate, int roomNumber
-    @GetMapping("/deleteRes")
-    public ResponseEntity<String> deleteReservation(String[] payload) {
+    @PostMapping("/deleteRes")
+    public ResponseEntity<String> deleteReservation(@RequestBody String[] payload) {
         String username = LoggedIn.isLoggedIn();
         if(username != null) {
             String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), username);
