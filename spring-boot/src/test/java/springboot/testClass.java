@@ -26,16 +26,15 @@ public class testClass {
             Cart.addItem(a);
         }
     }
-/*
+
     public static void main(String[] args) throws SQLException {
 
         InitializeDatabase.main(args);
         LoggedIn.logIn("catherine", UserType.GUEST);
-        AccountController create = new AccountController(new AccountService(new Setup()));
+        AccountController create = new AccountController();
         create.createGuest(new String[]{
                 "cate", "catherine", "password", "GUEST"
         });
-        CartController cartServe = new CartController(new CartService(new Setup()));
 
 //        Product ID: "defaultProductId"
 //        Product Name: "Default Item"
@@ -45,7 +44,6 @@ public class testClass {
 //        Image URL: "https://example.com/default_image.jpg"
 //        Category: "Default Category"
 
-        CartService Thing = new CartService(new Setup());
 
 
 
@@ -62,8 +60,8 @@ public class testClass {
         testClass.addAmountToCart(apple, 10);
         testClass.addAmountToCart(banana, 10);
 
-        System.out.println("testing Cart For in Able to Purchase: " + Thing.shopCheckout(Cart.getItems()));
-        System.out.println("If was able to purchase price would be: " + Thing.getPriceCart());
+        System.out.println("testing Cart For in Able to Purchase: " + CartService.shopCheckout());
+        System.out.println("If was able to purchase price would be: " + CartService.getPriceCart());
 
-    }*/
+    }
 }
