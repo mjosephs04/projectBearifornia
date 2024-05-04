@@ -21,6 +21,32 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    //payload should contain: checkIn, checkOut, roomNumber
+    @PostMapping("/checkIn")
+    public ResponseEntity<Boolean> checkIn(@RequestBody String[] payload){
+        String message = AccountService.checkIn(payload[0], payload[1], Integer.parseInt(payload[2]));
+
+        if(message.equalsIgnoreCase("success")){
+            return ResponseEntity.ok(true);
+        }
+        else{
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
+
+    //payload should contain: checkIn, checkOut, roomNumber
+    @PostMapping("/checkOut")
+    public ResponseEntity<Boolean> checkOut(@RequestBody String[] payload){
+        String message = AccountService.checkOut(payload[0], payload[1], Integer.parseInt(payload[2]));
+
+        if(message.equalsIgnoreCase("success")){
+            return ResponseEntity.ok(true);
+        }
+        else{
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
+
     //payload should contain name, username, password, userType
     @PostMapping("/createClerk")
     public ResponseEntity<String> createClerk(@RequestBody String[] payload) {
