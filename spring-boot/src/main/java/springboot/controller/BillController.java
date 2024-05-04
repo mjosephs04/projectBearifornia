@@ -1,6 +1,7 @@
 package springboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.DateParsing;
@@ -9,6 +10,7 @@ import springboot.Reservation;
 import springboot.Room;
 import springboot.service.BillService;
 import springboot.service.CartService;
+import springboot.service.ReservationService;
 
 import java.time.LocalDate;
 
@@ -18,12 +20,10 @@ import java.time.LocalDate;
 public class BillController {
 
     private final BillService billService;
-    CartController cartController;
 
     @Autowired
-    public BillController(BillService billService, CartService cartService) {
+    public BillController(BillService billService) {
         this.billService = billService;
-        CartController cartController = new CartController(cartService);
     }
 
     @GetMapping("/getAccountName")
@@ -43,22 +43,75 @@ public class BillController {
     }
 
 
-    //Returns Double or String
+    //Returns Double price success
+    //Returns badRequest you are not logged in if not logged in
     @GetMapping("/cartTotal")
-    public ResponseEntity<?> getCartTotal() {
-        return cartController.getCartTotal();
-
+    public ResponseEntity<Double> getCartTotal() {
+        if (LoggedIn.isLoggedIn()) {
+            Double total = CartService.getPriceCart();
+            return ResponseEntity.ok(total);
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
-    @PostMapping("/checkCost")
-    //checkIn and checkOut must be in zonedDate format
-    //**this function returns either
-    public ResponseEntity<Double> calculateCost(@RequestBody
-                                                String checkIn,
+    @PostMapping("/checkCostReservation")
+    public ResponseEntity<Double> calculateCost(@RequestBody String checkIn,
                                                 @RequestBody String checkOut,
-                                                @RequestBody Integer roomNumber){
-
+                                                @RequestBody Integer roomNumber) {
+        if (LoggedIn.isLoggedIn()) {
+            Double cost = ReservationService.calculateCost(checkIn, checkOut, roomNumber);
+            if (cost != null) {
+                return ResponseEntity.ok(cost);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
+
+
+    //Return Double Tax if Works
+    //Return Null if any errors with either costRoom or CostShop or if not logged in
+    @PostMapping("/getTax")
+    public ResponseEntity<Double> getTax(@RequestBody String checkIn,
+                                         @RequestBody String checkOut,
+                                         @RequestBody Integer roomNumber) {
+        if (LoggedIn.isLoggedIn()) {
+            Double costRoom = ReservationService.calculateCost(checkIn, checkOut, roomNumber);
+            Double costShop = CartService.getPriceCart();
+
+            if (costRoom == null || costShop == null) {
+                return null;
+            }
+            Double cost = billService.getTax(costRoom,costShop);
+            return ResponseEntity.ok(cost);
+        } else {
+            return null;
+        }
+    }
+
+
+    @PostMapping("/getTotalBill")
+    public ResponseEntity<Double> getTotalBill(@RequestBody String checkIn,
+                                         @RequestBody String checkOut,
+                                         @RequestBody Integer roomNumber) {
+        if (LoggedIn.isLoggedIn()) {
+            Double costRoom = ReservationService.calculateCost(checkIn, checkOut, roomNumber);
+            Double costShop = CartService.getPriceCart();
+            if (costRoom == null || costShop == null) {
+                return null;
+            }
+            Double cost = billService.getPriceFinal(costRoom,costShop);
+            return ResponseEntity.ok(cost);
+        } else {
+            return null;
+        }
+    }
+
+
+
 
 
 }

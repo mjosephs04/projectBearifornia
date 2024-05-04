@@ -27,6 +27,15 @@ public class BillService {
     }
 
 
+    public Double getTax(Double Room, Double Shop){
+        return 0.08 * (Room + Shop);
+    }
+
+    public Double getPriceFinal(Double Room, Double Shop){
+        return ((0.08 * (Room + Shop)) + (Room + Shop));
+    }
+
+
 
 
 }

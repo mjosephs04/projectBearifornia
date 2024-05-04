@@ -26,7 +26,7 @@ public class CartService {
     }
 
 
-    public double getPriceCart(){
+    public static double getPriceCart(){
         return Cart.calculateTotalAmount();
     }
 
