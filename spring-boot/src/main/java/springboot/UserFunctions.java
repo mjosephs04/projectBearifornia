@@ -85,8 +85,4 @@ public class UserFunctions {
         //user was not found
         return null;
     }
-/*
-    public static void main(String[] args) {
-        Setup.initialize();
-    }*/
 }
