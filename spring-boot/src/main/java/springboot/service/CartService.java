@@ -25,7 +25,7 @@ public class CartService {
 
 
     //Where the Checkout Magic Happens
-    public String shopCheckout(){
+    public static String shopCheckout(){
         String result = "";
         result = parseStockResult(checkAndUpdateStock());
         return result;
@@ -106,7 +106,7 @@ public class CartService {
         return products;
     }
 
-    public String checkAndUpdateStock() {
+    public static String checkAndUpdateStock() {
         Connection conn = Setup.getDBConnection();
         List<Product> cartItems = Cart.getItems();
 
@@ -130,7 +130,7 @@ public class CartService {
     }
 
 
-    public String parseStockResult(String result) {
+    public static String parseStockResult(String result) {
         //Returns T if in stock returns item out of stock if not
         String successFactor = "";
 
