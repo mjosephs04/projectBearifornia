@@ -6,7 +6,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class Guest implements User {
@@ -72,8 +71,8 @@ public class Guest implements User {
 
     public String reserveRoom(Room reservedRoom, String start, String end) {
         return reserveRoom(reservedRoom,
-                Reservation.convertStringToDate(start),
-                Reservation.convertStringToDate(end));
+                DateParsing.convertStringToDate(start),
+                DateParsing.convertStringToDate(end));
     }
 
 
