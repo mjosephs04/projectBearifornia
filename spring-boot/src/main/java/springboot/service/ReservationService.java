@@ -14,6 +14,13 @@ import java.time.format.DateTimeParseException;
 @Service
 public class ReservationService {
 
+    public static String createReservation(String checkIn, String checkOut, Integer roomNum, String username) {
+        return Reservation.addToDatabase(DateParsing.convertStringToDate(checkIn),
+                DateParsing.convertStringToDate(checkOut),
+                roomNum,
+                username);
+    }
+
     public static String deleteReservation(String checkIn, String checkOut, int roomNumber, String name) {
         LocalDate start = DateParsing.convertStringToDate(checkIn);
         LocalDate end = DateParsing.convertStringToDate(checkOut);
@@ -36,7 +43,7 @@ public class ReservationService {
                     return "failure -- no matching reservation found";
                 }
             } catch (SQLException e) {
-                return "failure " + e.getMessage();
+                return "failure -- " + e.getMessage();
             }
         }
         return "failure -- reservation does not exist";

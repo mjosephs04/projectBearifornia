@@ -37,7 +37,7 @@ public class ReservationController {
         //if payload is length three, then they should be trying to make a reservation
         //for the current user that is logged in
         if(payload.length == 3) {
-            username = LoggedIn.isLoggedIn();
+            username = LoggedIn.getUsername();
         } else if(payload.length >= 4) {
             username = payload[3];
         }
@@ -46,10 +46,9 @@ public class ReservationController {
             Room room = Room.findRoom(Integer.parseInt(payload[2]));
 
             if(room != null) {
-                return ResponseEntity.ok().body(Reservation.addToDatabase(DateParsing.convertStringToDate(payload[0]),
-                        DateParsing.convertStringToDate(payload[1]),
-                        room.getRoomNumber(),
-                        username));
+                return ResponseEntity.ok().body(ReservationService.createReservation(
+                            payload[0], payload[1], room.getRoomNumber(), username
+                ));
             }
             else{
                 return ResponseEntity.badRequest().body("room does not exist");
@@ -94,7 +93,7 @@ public class ReservationController {
     }
 
 
-    @PostMapping("/checkCost") //do i need to add this?
+    @PostMapping("/checkCost")
     //checkIn and checkOut must be in zonedDate format
     //**this function returns either
     public ResponseEntity<Double> calculateCost(@RequestBody
@@ -129,7 +128,7 @@ public class ReservationController {
     //returns the current users reservations
     @GetMapping("/showMyReservations")
     public ResponseEntity<Reservation> showMyReservations(){
-        String username = LoggedIn.isLoggedIn();
+        String username = LoggedIn.getUsername();
 
         if(username != null && LoggedIn.type.equals(UserType.GUEST)) {
             //otherwise, if the username is associated with a guest account, returns all reservations
@@ -145,7 +144,7 @@ public class ReservationController {
     //admin account and then will return all guests accordingly.
     @PostMapping("/getAllGuests")
     public ResponseEntity<List<User>> getAllGuests(){
-        String username = LoggedIn.isLoggedIn();
+        String username = LoggedIn.getUsername();
 
         if(username != null && LoggedIn.type.equals(UserType.ADMIN)) {
             List<User> list;
@@ -183,6 +182,7 @@ public class ReservationController {
     @PostMapping("/deleteRes")
     public ResponseEntity<String> deleteReservation(@RequestBody String[] payload) {
         String username = LoggedIn.isLoggedIn();
+
         if(username != null) {
             String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), username);
 

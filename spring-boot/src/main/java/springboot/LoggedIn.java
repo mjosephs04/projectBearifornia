@@ -10,8 +10,17 @@ public class LoggedIn {
         type = p;
     }
 
-    //returns null if not logged in
-    public static String isLoggedIn(){
+    //returns null if not logged in, otherwise returns username
+    public static boolean isLoggedIn(){
+        return username != null;
+    }
+
+    //returns null if not logged in, otherwise returns username
+    public static String getUsername(){
         return username;
+    }
+
+    public static UserType getType(){
+        return type;
     }
 }
