@@ -38,5 +38,4 @@ sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,react
 
-target/
 spring-boot/target/
