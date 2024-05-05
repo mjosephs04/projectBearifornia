@@ -1,0 +1,16 @@
+﻿roomNumber,cost,roomType,numOfBeds,qualityLevel,bedType,smokingAllowed
+101,437.46,Nature Retreat,1,4,Single,true
+102,236.74,Nature Retreat,2,5,Double,true
+103,653.64,Nature Retreat,3,4,Family,true
+104,706.56,Nature Retreat,3,4,Family,true
+105,837.65,Nature Retreat,3,5,Family,true
+201,437.46,Urban Elegance,1,4,Single,false
+202,236.74,Urban Elegance,2,4,Double,false
+203,653.64,Urban Elegance,3,4,Family,false
+204,706.56,Urban Elegance,3,5,Family,false
+205,837.65,Urban Elegance,3,5,Family,false
+301,437.46,Vintage Charm,1,5,Single,true
+302,236.74,Vintage Charm,2,4,Double,true
+303,653.64,Vintage Charm,3,4,Family,true
+304,706.56,Vintage Charm,3,4,Family,true
+305,837.65,Vintage Charm,3,5,Family,true
