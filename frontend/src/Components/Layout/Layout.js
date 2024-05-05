@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Layout = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userType, setUserType] = useState('');
     const navigate = useNavigate();
 
     const checkLoggedIn = () => {
@@ -24,12 +25,23 @@ const Layout = () => {
 
     useEffect(() => {
         checkLoggedIn();
+        getUserType();
     }, []); // Empty dependency array ensures useEffect runs only once on mount
 
     const logOut = () => {
         axios.get('http://localhost:8080/api/register/logOut')
             .then(response =>{
                 checkLoggedIn();
+                return response.data;
+            }).catch(error => {
+            console.log("Error: " + error);
+        })
+    }
+
+    const getUserType = () => {
+        axios.get('http://localhost:8080/api/register/getUserType')
+            .then(response =>{
+                setUserType(response.data);
                 return response.data;
             }).catch(error => {
             console.log("Error: " + error);
@@ -76,6 +88,30 @@ const Layout = () => {
                     View Bill
                 </Link>
             </div>
+
+            {userType !== null && userType == "GUEST" &&
+                <div className='center-link-layout'>
+                    <Link to='/guest-center'>
+                        Guest Center
+                    </Link>
+                </div>
+            }
+
+            {userType !== null && userType == "ADMIN" &&
+                <div className='center-link-layout'>
+                    <Link to='/admin-center'>
+                        Admin Center
+                    </Link>
+                </div>
+            }
+
+            {userType !== null && userType == "CLERK" &&
+                <div className='center-link-layout'>
+                    <Link to='/clerk-center'>
+                        Clerk Center
+                    </Link>
+                </div>
+            }
 
             {!isLoggedIn && (
                 <div className="login-drop"><DropdownMenu/></div>
