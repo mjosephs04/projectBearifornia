@@ -1,15 +1,13 @@
 package springboot.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.LoggedIn;
 import springboot.User;
-import springboot.UserFunctions;
+import springboot.service.AccountService;
 import springboot.service.AuthenticationService;
 import springboot.UserType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -35,7 +33,7 @@ public class AuthenticationController {
     @GetMapping("/getAllUsers")
     public ResponseEntity<?> getAllUsers() {
         ArrayList<User> users = null;
-            users = (ArrayList<User>) UserFunctions.readInAllUsers();
+            users = (ArrayList<User>) AccountService.readInAllUsers();
 
         return ResponseEntity.ok(users);
 

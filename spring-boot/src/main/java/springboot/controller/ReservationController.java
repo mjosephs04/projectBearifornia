@@ -1,16 +1,11 @@
 package springboot.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.*;
-import springboot.database.InitializeDatabase;
-import springboot.database.Setup;
 import springboot.service.AccountService;
 import springboot.service.ReservationService;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,7 +138,7 @@ public class ReservationController {
 
         if(username != null && LoggedIn.type.equals(UserType.ADMIN)) {
             List<User> list;
-            list = UserFunctions.readInAllUsers();
+            list = AccountService.readInAllUsers();
 
             //get only the guests from the list
             list.removeIf(curr -> !(curr instanceof Guest));
