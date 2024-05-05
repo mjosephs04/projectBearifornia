@@ -16,7 +16,7 @@ Willie Brown | Design Engineer |
 
 ## Description
 
-Maven-based Java SE system with a Swing UI providing input/output functionality, tested with JUnit.
+Maven-based Java SE system with a React UI and Spring Boot application backend, tested with JUnit.
 
 ## Installation
 
@@ -24,6 +24,15 @@ Maven-based Java SE system with a Swing UI providing input/output functionality,
 git clone https://github.com/mjosephs04/projectBearifornia.git
 ```
 
-Navigate to ```spring-boot/```, and open the ```pom.xml``` file as a project. When prompted, agree to import Maven dependencies.
+Open the `pom.xml` file as a project. When prompted, agree to import Maven dependencies.
 
-Run from ```spring-boot/src/main/java/springboot/Application```.
+## Usage
+
+Run the backend from `spring-boot/src/main/java/springboot/Application`.
+
+Navigate to the front end directory and run the React app with `npm`:
+
+```
+cd frontend
+npm start
+```
