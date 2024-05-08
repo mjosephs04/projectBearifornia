@@ -1,13 +1,8 @@
 package springboot;
 
-import springboot.database.Setup;
-
-import java.sql.*;
+import springboot.service.SearchRoomsService;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Reservation {
@@ -29,7 +24,7 @@ public class Reservation {
 
     public Reservation(Integer roomNum, LocalDate start, LocalDate end, String username) {
         try {
-            this.room = Room.findRoom(roomNum);
+            this.room = SearchRoomsService.findRoom(roomNum);
         }catch(Exception e) {
             System.out.println("could not make reservation-- roomNum is not associated with a room" + e);
         }
@@ -48,33 +43,6 @@ public class Reservation {
         }
 
         return cost;
-    }
-
-    //returns a list of all existing reservations
-    public static List<Reservation> readInAllReservations(){
-        List<Reservation> reservations = new ArrayList<>();
-        String selectSQL = "SELECT * FROM RESERVATIONS";
-        Connection conn = Setup.getDBConnection();
-
-        try (PreparedStatement statement = conn.prepareStatement(selectSQL)) {
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                // Retrieve values from the ResultSet and create reservation objects
-                Integer roomNum = resultSet.getInt("roomNumber");
-                LocalDate startDate = resultSet.getDate("startDate").toLocalDate();
-                LocalDate endDate = resultSet.getDate("endDate").toLocalDate();
-                String username = resultSet.getString("username");
-
-                // Create a room object and add it to the list
-                reservations.add(new Reservation(roomNum, startDate, endDate, username));
-            }
-        }
-        catch(SQLException e) {
-            System.out.println("failure " + e);
-            return null;
-        }
-        return reservations;
     }
 
     //returns true if the given reservation conflicts with the desired times
@@ -97,35 +65,6 @@ public class Reservation {
 
 
         return result;
-    }
-
-    public static String addToDatabase(LocalDate checkInDate, LocalDate checkOutDate, int roomNumber, String name) {
-        Room room = Room.findRoom(roomNumber);
-
-        if(room == null){
-            return "failure -- room does not exist";
-        }
-        if(Room.isAvailable(room, checkInDate, checkOutDate)){
-            try (Connection conn = Setup.getDBConnection()) {
-                // Insert the reservation into the database
-                String sql = "INSERT INTO RESERVATIONS (ROOMNUMBER, STARTDATE, ENDDATE, USERNAME) VALUES (?, ?, ?, ?)";
-                try (PreparedStatement statement = conn.prepareStatement(sql)) {
-                    statement.setInt(1, roomNumber);
-                    statement.setDate(2, Date.valueOf(checkInDate));
-                    statement.setDate(3, Date.valueOf(checkOutDate));
-                    statement.setString(4, name);
-                    statement.executeUpdate();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return "failure -- An error occurred while adding the reservation. " + e.getMessage();
-            }
-
-            return "success";
-        }
-        else{
-            return "failure -- room is not available for those dates";
-        }
     }
 
     @Override

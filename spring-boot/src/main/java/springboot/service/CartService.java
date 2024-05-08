@@ -2,12 +2,10 @@
 
 package springboot.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springboot.Cart;
 import springboot.Product;
 import springboot.database.Setup;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

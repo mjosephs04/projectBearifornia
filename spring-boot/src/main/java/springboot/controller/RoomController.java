@@ -3,6 +3,7 @@ package springboot.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.*;
+import springboot.service.RoomAvailabilityService;
 import springboot.service.RoomService;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class RoomController {
     @GetMapping("/getAllRooms")
     public ResponseEntity<List<Room>> getAllRooms(){
         List<Room> rooms;
-         rooms = Room.readInAllRooms();
+         rooms = RoomAvailabilityService.readInAllRooms();
 
         return ResponseEntity.ok().body(rooms);
     }

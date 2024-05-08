@@ -3,8 +3,7 @@ package springboot.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springboot.*;
-import springboot.service.AccountService;
-import springboot.service.ReservationService;
+import springboot.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +23,6 @@ public class ReservationController {
     @PostMapping("/create")
     public ResponseEntity<String> createReservation(@RequestBody String[] payload) {
         String username = null;
-        String message;
-        boolean good = true;
         //if payload is length three, then they should be trying to make a reservation
         //for the current user that is logged in
         if(payload.length == 3) {
@@ -35,10 +32,10 @@ public class ReservationController {
         }
         if(username != null && ! LoggedIn.type.equals(UserType.ADMIN)) {
             //find the room associated with the room number
-            Room room = Room.findRoom(Integer.parseInt(payload[2]));
+            Room room = SearchRoomsService.findRoom(Integer.parseInt(payload[2]));
 
             if(room != null) {
-                return ResponseEntity.ok().body(ReservationService.createReservation(
+                return ResponseEntity.ok().body(CreateReservationService.createReservation(
                             payload[0], payload[1], room.getRoomNumber(), username
                 ));
             }
@@ -71,7 +68,7 @@ public class ReservationController {
         }
 
         ArrayList<Room> availableRooms;
-        availableRooms = (ArrayList<Room>) Room.searchRooms(
+        availableRooms = (ArrayList<Room>) RoomAvailabilityService.searchRooms(
                 Boolean.parseBoolean(payload[0]),
                 payload[1], bedNum, payload[2],
                 payload[3], payload[4]);
@@ -174,7 +171,7 @@ public class ReservationController {
         String username = LoggedIn.getUsername();
 
         if(username != null) {
-            String message = ReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), username);
+            String message = DeleteReservationService.deleteReservation(payload[0], payload[1], Integer.parseInt(payload[2]), username);
 
             if (message.equalsIgnoreCase("success")) {
                 return ResponseEntity.ok("successfully deleted reservation");
