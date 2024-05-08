@@ -32,7 +32,7 @@ public class RoomService {
 
     //adds a room to the database if it does not already exist
     public static String addRoom(Room room){
-        Room copy = Room.findRoom(room.getRoomNumber()); //see if room already exists in database
+        Room copy = SearchRoomsService.findRoom(room.getRoomNumber()); //see if room already exists in database
 
         //if room does not already exist in database
         if(copy == null){
@@ -64,28 +64,6 @@ public class RoomService {
 
 
     public static String modifyRoom(Integer roomNumber, Room newRoom){
-        /*
-        String updateQuery = "UPDATE ROOMS SET cost = " + newRoom.getCost() +
-                ", roomType = " + newRoom.getTypeOfRoom() +
-                ", numBeds = " + newRoom.getNumOfBeds() +
-                ", qualityLevel = " + newRoom.getQualityLevel() +
-                ", bedType = " + newRoom.getBedType() +
-                ", smokingAllowed = " + newRoom.getSmokingAllowed() +
-                " WHERE ROOMNUMBER = " + roomNumber;
-
-        try {
-            Statement stmt = Setup.getDBConnection().createStatement();
-            int rowsAffected = stmt.executeUpdate(updateQuery);
-
-            if (rowsAffected == 0) {
-                // No matching reservation found
-                return "No matching reservation found to modify.";
-            } else {
-                return "success";
-            }
-        } catch (SQLException e) {
-            return "Failed to modify reservation" + e.getMessage();
-        }*/
         String updateQuery = "UPDATE ROOMS SET cost = ?, roomType = ?, numBeds = ?, qualityLevel = ?, bedType = ?, smokingAllowed = ? WHERE ROOMNUMBER = ?";
         try (Connection conn = Setup.getDBConnection();
              PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {

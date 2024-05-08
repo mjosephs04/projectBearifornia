@@ -1,18 +1,11 @@
 package springboot.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springboot.DateParsing;
 import springboot.LoggedIn;
-import springboot.Reservation;
-import springboot.Room;
 import springboot.service.BillService;
 import springboot.service.CartService;
 import springboot.service.ReservationService;
-
-import java.time.LocalDate;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
